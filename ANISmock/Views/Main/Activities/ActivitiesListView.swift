@@ -42,22 +42,7 @@ struct ActivitiesListView: View {
                     .padding(.top, AppSpacing.lg)
                     
                     // Join Requests section
-                    VStack(alignment: .leading, spacing: AppSpacing.md) {
-                        Text("Join Requests")
-                            .font(AppFonts.title2)
-                            .foregroundColor(AppColors.primaryText)
-                            .padding(.horizontal, AppSpacing.lg)
-                        
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: AppSpacing.md) {
-                                ForEach(mockJoinRequests, id: \.name) { request in
-                                    JoinRequestCard(request: request)
-                                }
-                            }
-                            .padding(.horizontal, AppSpacing.lg)
-                        }
-                    }
-                    .padding(.vertical, AppSpacing.lg)
+                    // Join requests section removed - now handled in ChatListView
                     
                     // Activity Groups section
                     VStack(alignment: .leading, spacing: AppSpacing.md) {
@@ -95,83 +80,7 @@ struct ActivitiesListView: View {
     }
 }
 
-struct JoinRequestCard: View {
-    let request: JoinRequest
-    
-    var body: some View {
-        VStack(spacing: AppSpacing.sm) {
-            // Profile image
-            ZStack {
-                Circle()
-                    .fill(AppColors.secondaryBackground)
-                    .frame(width: 60, height: 60)
-                
-                Text(request.name.prefix(1))
-                    .font(AppFonts.title2)
-                    .foregroundColor(AppColors.primaryText)
-                
-                // Sport icon overlay
-                VStack {
-                    HStack {
-                        Spacer()
-                        
-                        ZStack {
-                            Circle()
-                                .fill(request.sport.color)
-                                .frame(width: 20, height: 20)
-                            
-                            Text(request.sport.emoji)
-                                .font(.system(size: 10))
-                        }
-                    }
-                    
-                    Spacer()
-                }
-                .frame(width: 60, height: 60)
-            }
-            
-            Text(request.name)
-                .font(AppFonts.body)
-                .foregroundColor(AppColors.primaryText)
-            
-            // Action buttons
-            HStack(spacing: AppSpacing.sm) {
-                Button(action: {
-                    // Decline request
-                }) {
-                    Image(systemName: "xmark")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundColor(AppColors.primaryText)
-                        .frame(width: 24, height: 24)
-                        .background(
-                            Circle()
-                                .fill(AppColors.secondaryBackground)
-                        )
-                }
-                
-                Button(action: {
-                    // Accept request
-                }) {
-                    Image(systemName: "checkmark")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundColor(AppColors.primaryText)
-                        .frame(width: 24, height: 24)
-                        .background(
-                            Circle()
-                                .fill(AppColors.accentGreen)
-                        )
-                }
-            }
-        }
-        .padding(AppSpacing.md)
-        .background(
-            RoundedRectangle(cornerRadius: AppCornerRadius.medium)
-                .fill(AppColors.cardBackground)
-                .shadow(color: AppColors.shadowColor, radius: 3, x: 0, y: 1)
-        )
-        .frame(width: 120)
-    }
-}
+// JoinRequestCard removed - using shared definition from ChatListView
 
 struct ActivityCardView: View {
     let activity: Activity
@@ -246,18 +155,7 @@ struct ActivityCardView: View {
     }
 }
 
-// Mock data
-struct JoinRequest {
-    let name: String
-    let sport: SportType
-}
-
-let mockJoinRequests = [
-    JoinRequest(name: "Ahmed", sport: .padel),
-    JoinRequest(name: "Sarah", sport: .football),
-    JoinRequest(name: "Mike", sport: .tennis),
-    JoinRequest(name: "Lisa", sport: .basketball)
-]
+// Mock data removed - using shared JoinRequest model from ChatListView
 
 
 

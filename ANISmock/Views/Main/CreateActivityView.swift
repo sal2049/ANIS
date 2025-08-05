@@ -21,7 +21,6 @@ struct CreateActivityView: View {
     @State private var maxParticipants = 4
     @State private var skillLevel: SkillLevel = .intermediate
     @State private var selectedLocation: Location?
-    @State private var showSportPicker = false
     @State private var isCreating = false
     
     var body: some View {
@@ -151,42 +150,46 @@ struct DetailsStepView: View {
     @Binding var dateTime: Date
     @Binding var maxParticipants: Int
     @Binding var skillLevel: SkillLevel
-    @State private var showSportPicker = false
     
     var body: some View {
         ScrollView {
             VStack(spacing: AppSpacing.lg) {
                 // Sport selection
                 VStack(alignment: .leading, spacing: AppSpacing.md) {
-                    Text("Choose a sport")
+                    Text("Choose Sport")
                         .font(AppFonts.headline)
                         .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267)) // #152C44
                     
-                    Button(action: {
-                        showSportPicker = true
-                    }) {
-                        HStack(spacing: AppSpacing.md) {
-                            Text(selectedSport.emoji)
-                                .font(.system(size: 32))
-                            
-                            Text(selectedSport.displayName)
-                                .font(AppFonts.body)
-                                .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267)) // #152C44
-                            
-                            Spacer()
-                            
-                            Image(systemName: "chevron.down")
-                                .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.7))
+                    // Sport Grid
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 4), spacing: 12) {
+                        ForEach(SportType.allCases, id: \.self) { sport in
+                            Button(action: {
+                                selectedSport = sport
+                            }) {
+                                VStack(spacing: 8) {
+                                    ZStack {
+                                        Circle()
+                                            .fill(selectedSport == sport ? 
+                                                  Color(red: 0.541, green: 0.757, blue: 0.522) : // #8AC185 - Selected
+                                                  Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.1)) // Light #152C44 - Unselected
+                                            .frame(width: 60, height: 60)
+                                        
+                                        Text(sport.emoji)
+                                            .font(.system(size: 24))
+                                    }
+                                    
+                                    Text(sport.displayName)
+                                        .font(.caption)
+                                        .fontWeight(.medium)
+                                        .foregroundColor(selectedSport == sport ? 
+                                                        Color(red: 0.541, green: 0.757, blue: 0.522) : // #8AC185 - Selected
+                                                        Color(red: 0.082, green: 0.173, blue: 0.267)) // #152C44 - Unselected
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.8)
+                                }
+                            }
+                            .buttonStyle(.plain)
                         }
-                        .padding(AppSpacing.md)
-                        .background(
-                            RoundedRectangle(cornerRadius: AppCornerRadius.medium)
-                                .fill(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.05))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: AppCornerRadius.medium)
-                                        .stroke(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.2), lineWidth: 1)
-                                )
-                        )
                     }
                     .buttonStyle(.plain)
                 }
@@ -270,16 +273,7 @@ struct DetailsStepView: View {
             }
             .padding(AppSpacing.lg)
         }
-        .actionSheet(isPresented: $showSportPicker) {
-            ActionSheet(
-                title: Text("Choose Sport"),
-                buttons: SportType.allCases.map { sport in
-                    ActionSheet.Button.default(Text("\(sport.emoji) \(sport.displayName)")) {
-                        selectedSport = sport
-                    }
-                } + [ActionSheet.Button.cancel()]
-            )
-        }
+
     }
 }
 
