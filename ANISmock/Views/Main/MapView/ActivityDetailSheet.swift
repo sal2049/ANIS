@@ -136,7 +136,6 @@ struct ActivityDetailSheet: View {
                 )
             }
         }
-        .padding(.horizontal, 20)
     }
     
     private var participantsSection: some View {
