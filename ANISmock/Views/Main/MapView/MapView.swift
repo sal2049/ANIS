@@ -20,6 +20,9 @@ struct MapView: View {
     @State private var showActivityDetail = false
     @State private var searchText = ""
     
+    // Using activity ID to prevent reference issues
+    @State private var selectedActivityId: String?
+    
     // Filtered activities based on search
     private var filteredActivities: [Activity] {
         if searchText.isEmpty {
@@ -35,6 +38,12 @@ struct MapView: View {
         }
     }
     
+    // Get selected activity from ID to ensure it's always valid
+    private var currentSelectedActivity: Activity? {
+        guard let selectedActivityId = selectedActivityId else { return nil }
+        return viewModel.activities.first { $0.id == selectedActivityId }
+    }
+    
     var body: some View {
         ZStack {
             // Modern iOS 17+ Map with MapContentBuilder
@@ -47,9 +56,16 @@ struct MapView: View {
                     ) {
                         ActivityPinView(activity: activity) {
                             print("DEBUG: Pin tapped for activity: \(activity.title)")
+                            // Use activity ID to prevent reference issues
+                            selectedActivityId = activity.id
                             selectedActivity = activity
-                            showActivityDetail = true
-                            print("DEBUG: Sheet presentation state set to: \(showActivityDetail)")
+                            
+                            // Delay sheet presentation slightly to ensure state is updated
+                            DispatchQueue.main.async {
+                                showActivityDetail = true
+                                print("DEBUG: Sheet presentation state set to: \(showActivityDetail)")
+                                print("DEBUG: Selected activity ID: \(selectedActivityId ?? "nil")")
+                            }
                         }
                     }
                 }
@@ -82,7 +98,7 @@ struct MapView: View {
             .animation(.easeInOut(duration: 0.3), value: searchText)
         }
         .sheet(isPresented: $showActivityDetail) {
-            if let activity = selectedActivity {
+            if let activity = currentSelectedActivity {
                 ActivityDetailSheet(
                     activity: activity,
                     isPresented: $showActivityDetail
@@ -91,20 +107,60 @@ struct MapView: View {
                 .presentationDragIndicator(.visible)
                 .presentationCornerRadius(AppCornerRadius.xl)
                 .onAppear {
-                    print("DEBUG: Presenting sheet for activity: \(activity.title)")
+                    print("DEBUG: Successfully presenting sheet for activity: \(activity.title)")
                 }
             } else {
-                Text("No activity selected")
-                    .foregroundColor(.red)
-                    .padding()
+                // Fallback - try using selectedActivity directly
+                if let activity = selectedActivity {
+                    ActivityDetailSheet(
+                        activity: activity,
+                        isPresented: $showActivityDetail
+                    )
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
+                    .presentationCornerRadius(AppCornerRadius.xl)
                     .onAppear {
-                        print("DEBUG: ERROR - selectedActivity is nil when trying to present sheet")
+                        print("DEBUG: Fallback - presenting sheet for activity: \(activity.title)")
                     }
+                } else {
+                    VStack(spacing: 16) {
+                        Text("Unable to load activity details")
+                            .font(.headline)
+                            .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267))
+                        
+                        Text("Please try tapping the pin again")
+                            .font(.subheadline)
+                            .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.7))
+                        
+                        Button("Close") {
+                            showActivityDetail = false
+                        }
+                        .padding()
+                        .background(Color(red: 0.541, green: 0.757, blue: 0.522))
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                    }
+                    .padding()
+                    .background(Color(red: 1.0, green: 0.957, blue: 0.867))
+                    .onAppear {
+                        print("DEBUG: ERROR - Both currentSelectedActivity and selectedActivity are nil")
+                        print("DEBUG: selectedActivityId: \(selectedActivityId ?? "nil")")
+                        print("DEBUG: Available activities count: \(viewModel.activities.count)")
+                    }
+                }
             }
         }
 
         .onAppear {
             viewModel.fetchActivities()
+        }
+        .onChange(of: showActivityDetail) { _, newValue in
+            if !newValue {
+                // Reset selection when sheet is dismissed
+                selectedActivity = nil
+                selectedActivityId = nil
+                print("DEBUG: Sheet dismissed, cleared selection")
+            }
         }
     }
 }
