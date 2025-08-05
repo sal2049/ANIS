@@ -77,7 +77,7 @@ struct MapView: View {
                 MapScaleView()
             }
             .safeAreaInset(edge: .top) {
-                VStack(spacing: 8) {
+                VStack(alignment: .leading, spacing: 8) {
                     SearchBarView(searchText: $searchText)
                     
                     // Search results counter
@@ -88,9 +88,11 @@ struct MapView: View {
                                 .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.7))
                             Spacer()
                         }
+                        .padding(.leading, 16) // Align with search bar content
                         .transition(.opacity.combined(with: .move(edge: .top)))
                     }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, AppSpacing.lg)
                 .padding(.top, AppSpacing.sm)
             }
@@ -170,12 +172,13 @@ struct SearchBarView: View {
     @FocusState private var isSearchFocused: Bool
     
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(alignment: .center, spacing: 12) {
             // Modern search bar following HIG
-            HStack(spacing: 8) {
+            HStack(alignment: .center, spacing: 8) {
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(.secondary)
                     .font(.system(size: 16, weight: .medium))
+                    .frame(width: 16, height: 16)
                 
                 TextField("Search activities", text: $searchText)
                     .focused($isSearchFocused)
@@ -194,19 +197,21 @@ struct SearchBarView: View {
                         Image(systemName: "xmark.circle.fill")
                             .foregroundStyle(.secondary)
                             .font(.system(size: 16))
+                            .frame(width: 16, height: 16)
                     }
                     .buttonStyle(.plain)
                 }
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 10)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .frame(height: 44)
             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(.quaternary, lineWidth: 0.5)
             )
             
-            // Filter button (instead of voice)
+            // Filter button with consistent height
             Button {
                 // Handle filter options
             } label: {
@@ -215,9 +220,14 @@ struct SearchBarView: View {
                     .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267))
                     .frame(width: 44, height: 44)
                     .background(.ultraThinMaterial, in: Circle())
+                    .overlay(
+                        Circle()
+                            .stroke(.quaternary, lineWidth: 0.5)
+                    )
             }
             .buttonStyle(.plain)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .animation(.easeInOut(duration: 0.2), value: searchText.isEmpty)
     }
 }
