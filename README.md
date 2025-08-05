@@ -1,153 +1,46 @@
-# Anis (أنيس) - iOS Sports Activity App
+# 🏃‍♂️ ANISmock - Sports Activity Matching App
 
-A modern iOS app that connects people through sports activities in Saudi Arabia. Built with SwiftUI and Firebase.
+A modern iOS app built with SwiftUI that connects people through sports activities. Find, create, and join sports activities in your area with ease.
 
-## 🎯 Project Overview
+## ✨ Features
 
-**Problem Statement:** Young adults in Saudi cities struggle to quickly fill or join group activities when plans change last minute, so spontaneous fun is often lost.
+### 🗺️ Interactive Map
+- **Activity Discovery**: Browse sports activities on an interactive map
+- **Real-time Pins**: See activity locations with sport-specific icons
+- **Location Services**: Find activities near you
+- **Detailed Info**: Tap pins to see comprehensive activity details
 
-**Solution:** A focused, low-friction app that lets users see, host, or join real-time group sports within minutes.
+### 📝 Activity Management
+- **Create Activities**: Step-by-step wizard for creating sports activities
+- **Sport Selection**: Choose from 12+ sports with interactive picker
+- **Location Selection**: Popular venues or custom location selection
+- **Skill Levels**: Beginner, Intermediate, and Advanced options
+- **Participant Management**: Set and track participant limits
 
-## 🏗️ Architecture
+### 💬 Communication
+- **Activity Chat**: Dedicated chat rooms for each activity
+- **Real-time Messaging**: Stay connected with other participants
+- **Join Requests**: Simple request system to join activities
 
-- **Framework:** SwiftUI + MVVM
-- **Backend:** Firebase (Firestore + Auth)
-- **Maps:** MapKit with dark mode
-- **Target:** iOS 17+
-- **Design:** Dark mode focused with frosted glass effects
+### 🎨 Design & UX
+- **Modern UI**: Clean, intuitive interface following iOS design guidelines
+- **Custom Color Palette**: Carefully chosen colors (#152C44, #FFF4DD, #8AC185)
+- **SF Symbols**: Native iOS icons throughout the app
+- **Accessibility**: Full VoiceOver and accessibility support
+- **Animations**: Smooth transitions and feedback
 
-## 🎨 Design System
-
-### Color Palette
-- **Primary Background:** Dark blue-grey (#1A1A2E)
-- **Secondary Background:** Dark grey (#2A2A3E)
-- **Accent Colors:** Green (#4CAF50), Red (#FF0000), Blue (#007AFF), Pink (#FF69B4)
-- **Text:** White (primary), Light grey (secondary)
-
-### Typography
-- **Primary Font:** San Francisco (System)
-- **Weights:** Regular, Medium, Bold
-- **Sizes:** 12pt (caption) to 34pt (large title)
-
-## 📱 Key Features
-
-### ✅ Implemented (MVP)
-1. **Onboarding Flow**
-   - Splash screen with Anis owl mascot
-   - Welcome screen with Arabic text
-   - Interests selection
-   - Apple Sign In
-
-2. **Live Map View**
-   - Dark-mode MapKit integration
-   - Activity pins with sport icons
-   - Search bar with frosted glass effect
-   - Activity detail sheets
-
-3. **Activity Management**
-   - Two-step create flow (Details → Location)
-   - Activity listing with join requests
-   - Skill level tagging (Beginner/Intermediate/Advanced)
-
-4. **Chat System**
-   - Activity-specific group chats
-   - Real-time messaging (Firebase)
-   - Join/leave notifications
-
-5. **Profile & Settings**
-   - User profile with interests
-   - Past activities tracking
-   - Settings with safety features
-
-### 🔄 Current State
-- **Mock Data Backend**: Complete implementation with simulated network delays
-- **Ready for Firebase**: Easy migration path when ready for production backend
-- **Functional MVP**: All features working with realistic mock data
-- **Performance Optimized**: Efficient loading states and animations
-
-## 🚀 Implementation Plan
-
-### Phase 1: Foundation (Days 1-2) ✅
-- [x] Project setup and navigation
-- [x] Design system implementation
-- [x] Basic UI components
-- [x] Color scheme and typography
-
-### Phase 2: Core Features (Days 3-6) ✅
-- [x] Map integration with MapKit
-- [x] Activity creation flow
-- [x] Basic chat functionality
-- [x] Mock data implementation
-
-### Phase 3: Polish & Integration (Days 7-9) ✅
-- [x] Activity detail sheets
-- [x] Join/request functionality
-- [x] Chat UI completion
-- [x] Profile screens
-
-### Phase 4: Onboarding & Auth (Days 10-11) ✅
-- [x] Splash screen with animations
-- [x] Welcome flow with Arabic text
-- [x] Interests selection
-- [x] Sign up process
-
-### Phase 5: Testing & Launch Prep (Days 12-14) 🔄
-- [ ] Bug fixes and optimization
-- [ ] Firebase integration
-- [ ] TestFlight preparation
-- [ ] App Store assets
-
-## 📁 Project Structure
-
-```
-ANISmock/
-├── App/
-│   ├── ANISmockApp.swift
-│   └── ContentView.swift
-├── Views/
-│   ├── Onboarding/
-│   │   ├── SplashView.swift
-│   │   ├── OnboardingView.swift
-│   │   ├── InterestsView.swift
-│   │   └── SignUpView.swift
-│   ├── Main/
-│   │   ├── MainTabView.swift
-│   │   ├── MapView/
-│   │   │   ├── MapView.swift
-│   │   │   ├── ActivityPinView.swift
-│   │   │   └── ActivityDetailSheet.swift
-│   │   ├── Activities/
-│   │   │   └── ActivitiesListView.swift
-│   │   ├── Chat/
-│   │   │   ├── ChatListView.swift
-│   │   │   └── ChatView.swift
-│   │   └── Profile/
-│   │       ├── ProfileView.swift
-│   │       └── SettingsView.swift
-│   └── CreateActivityView.swift
-├── Models/
-│   ├── User.swift
-│   ├── Activity.swift
-│   └── Message.swift
-├── ViewModels/
-│   ├── AuthViewModel.swift
-│   └── MapViewModel.swift
-└── Utils/
-    └── Constants.swift
-```
-
-## 🛠️ Setup Instructions
+## 🚀 Getting Started
 
 ### Prerequisites
-- Xcode 15.0+
-- iOS 17.0+
-- Firebase account
+- **Xcode 15.0+**
+- **iOS 18.5+** deployment target
+- **macOS 14.0+** for development
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/yourusername/ANISmock.git
    cd ANISmock
    ```
 
@@ -156,118 +49,111 @@ ANISmock/
    open ANISmock.xcodeproj
    ```
 
-3. **Configure Firebase**
-   - Create a new Firebase project
-   - Download `GoogleService-Info.plist`
-   - Replace the placeholder file in the project
-   - Enable Authentication and Firestore
+3. **Build and Run**
+   - Select your target device or simulator
+   - Press `Cmd + R` to build and run
 
-4. **Add Firebase dependencies**
-   - Add via Swift Package Manager:
-     - `https://github.com/firebase/firebase-ios-sdk`
-   - Select: FirebaseAuth, FirebaseFirestore
+### GitHub Setup
+To connect this project to GitHub:
 
-5. **Build and run**
-   - Select your target device
-   - Press Cmd+R to build and run
+1. **Create a new repository** on GitHub.com:
+   - Go to [github.com/new](https://github.com/new)
+   - Name it `ANISmock`
+   - Don't initialize with README (already exists)
+   - Create repository
 
-## 🎯 User Personas
+2. **Connect your local repository**:
+   ```bash
+   git remote add origin https://github.com/yourusername/ANISmock.git
+   git branch -M main
+   git push -u origin main
+   ```
 
-### Hadi – Host
-- 26 y/o padel fan
-- Wants fast way to publish openings
-- Needs to build balanced teams
+## 🏗️ Architecture
 
-### Leila – Joiner
-- 23 y/o newcomer to Riyadh
-- Seeks safe, nearby sports
-- Wants to join spontaneously
+### Tech Stack
+- **SwiftUI**: Modern declarative UI framework
+- **MapKit**: Location services and mapping
+- **Combine**: Reactive programming for data flow
+- **Swift 5.9+**: Latest Swift features
 
-### Omar – Captain
-- 30 y/o football enthusiast
-- Organizes weekly pick-up games
-- Needs one hub for coordination
+### Project Structure
+```
+ANISmock/
+├── Models/           # Data models (Activity, User, Message)
+├── Views/           # SwiftUI views organized by feature
+│   ├── Main/        # Core app screens
+│   └── Onboarding/  # Welcome and setup flows
+├── ViewModels/      # MVVM view models
+├── Services/        # Data services and API layer
+└── Utils/           # Utilities and constants
+```
 
-## 📊 Success Metrics
+### Design Patterns
+- **MVVM**: Model-View-ViewModel architecture
+- **Service Layer**: Clean separation of data and business logic
+- **Dependency Injection**: Flexible and testable code structure
 
-### Quantitative (30 days post-launch)
-- 500+ unique users
-- ≥20% Day-7 retention
-- ≥50 sports activities created
-- ≥70% average fill-rate
-- ≥98% crash-free session rate
+## 🎨 Design System
 
-### Qualitative
-- Ship stable MVP in <60s activity creation
-- Focused, low-friction experience
-- No social-media noise
+### Color Palette
+- **Primary Dark**: `#152C44` - Main text and UI elements
+- **Background Light**: `#FFF4DD` - App background and cards
+- **Accent Green**: `#8AC185` - Actions and highlights
 
-## 🔧 Technical Stack
+### Typography
+- **SF Pro**: System font family for consistency
+- **Semantic Sizing**: Dynamic type support for accessibility
 
-### Frontend
-- **SwiftUI** - Modern declarative UI
-- **MapKit** - Location and mapping
-- **Combine** - Reactive programming
+## 🚀 Features in Development
 
-### Backend
-- **Firebase Auth** - User authentication
-- **Firestore** - Real-time database
-- **Firebase Storage** - File storage (future)
-
-### Design
-- **Dark Mode** - Primary theme
-- **Frosted Glass** - Modern iOS aesthetic
-- **Arabic Support** - Localized content
-
-## 🚨 Known Issues & TODOs
-
-### High Priority
-- [ ] Implement real Firebase integration
-- [ ] Add Apple Sign In functionality
-- [ ] Implement location services
-- [ ] Add push notifications
-
-### Medium Priority
-- [ ] Add activity filtering
-- [ ] Implement user blocking
-- [ ] Add activity reporting
-- [ ] Add activity search
-
-### Low Priority
-- [ ] Add activity photos
-- [ ] Implement team balancing
-- [ ] Add social media links
-- [ ] Add activity reminders
-
-## 📱 Screenshots
-
-The app includes the following key screens:
-1. **Splash Screen** - Anis owl mascot with Arabic tagline
-2. **Onboarding** - Welcome, interests selection, sign up
-3. **Map View** - Dark mode map with activity pins
-4. **Activity Details** - Bottom sheet with join functionality
-5. **Chat** - Activity-specific group conversations
-6. **Profile** - User information and settings
+- [ ] **Real-time Location Tracking**
+- [ ] **Push Notifications**
+- [ ] **User Profiles & Reviews**
+- [ ] **Activity History**
+- [ ] **Social Features**
+- [ ] **Payment Integration**
 
 ## 🤝 Contributing
 
-This is a 14-day MVP sprint. For contributions:
-1. Follow the existing code style
-2. Use the established design system
-3. Add tests for new features
-4. Update documentation
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📱 Screenshots
+
+*Screenshots coming soon...*
+
+## 🔧 Development Setup
+
+### Mock Data
+The app currently uses a mock data service for development:
+- **Sample Activities**: Pre-populated sports activities
+- **Mock Users**: Test user accounts
+- **Simulated Chat**: Sample conversations
+
+### Environment Configuration
+```swift
+// Development vs Production configuration
+#if DEBUG
+// Mock data and debug features
+#else
+// Production API and services
+#endif
+```
 
 ## 📄 License
 
-This project is proprietary and confidential.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 📞 Support
+## 🙏 Acknowledgments
 
-For questions or issues:
-- Create an issue in the repository
-- Contact the development team
-- Check the Firebase documentation
+- **Apple**: For the amazing SwiftUI framework
+- **SF Symbols**: Beautiful iconography
+- **Community**: Open source inspiration and libraries
 
 ---
 
-**Built with ❤️ for the Saudi sports community** 
+**Built with ❤️ using SwiftUI**
