@@ -30,8 +30,10 @@ struct MapView: View {
                         anchor: .center
                     ) {
                         ActivityPinView(activity: activity) {
+                            print("DEBUG: Pin tapped for activity: \(activity.title)")
                             selectedActivity = activity
                             showActivityDetail = true
+                            print("DEBUG: Sheet presentation state set to: \(showActivityDetail)")
                         }
                     }
                 }
@@ -58,6 +60,16 @@ struct MapView: View {
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
                 .presentationCornerRadius(AppCornerRadius.xl)
+                .onAppear {
+                    print("DEBUG: Presenting sheet for activity: \(activity.title)")
+                }
+            } else {
+                Text("No activity selected")
+                    .foregroundColor(.red)
+                    .padding()
+                    .onAppear {
+                        print("DEBUG: ERROR - selectedActivity is nil when trying to present sheet")
+                    }
             }
         }
 
