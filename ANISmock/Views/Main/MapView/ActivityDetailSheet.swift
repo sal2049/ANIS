@@ -22,7 +22,7 @@ struct ActivityDetailSheet: View {
                 .frame(width: 36, height: 5)
                 .padding(.top, 8)
             
-            // Header with close button
+            // Header with close button and sport name
             HStack {
                 Button(action: {
                     dismiss()
@@ -35,7 +35,8 @@ struct ActivityDetailSheet: View {
                 Spacer()
                 
                 Text(activity.sportType.displayName)
-                    .font(.headline)
+                    .font(.title2)
+                    .fontWeight(.semibold)
                     .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267))
                 
                 Spacer()
@@ -50,11 +51,11 @@ struct ActivityDetailSheet: View {
             .padding(.horizontal, 20)
             .padding(.top, 16)
             
-            // Main content
+            // Main scrollable content
             ScrollView {
                 VStack(spacing: 24) {
-                    // Simple hero section
-                    VStack(spacing: 16) {
+                    // Hero section with sport icon and details
+                    HStack(spacing: 16) {
                         // Sport icon
                         ZStack {
                             Circle()
@@ -65,69 +66,81 @@ struct ActivityDetailSheet: View {
                                 .font(.system(size: 28))
                         }
                         
-                        // Title and description
-                        VStack(spacing: 8) {
-                            Text(activity.title)
-                                .font(.title2)
-                                .fontWeight(.bold)
+                        // Activity details
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("\(activity.hostName) is going for \(activity.sportType.displayName) on \(activity.dateTime.formatted(date: .abbreviated, time: .shortened))")
+                                .font(.headline)
+                                .fontWeight(.semibold)
                                 .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267))
-                            
-                            Text("Hosted by \(activity.hostName)")
-                                .font(.subheadline)
-                                .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.7))
-                            
-                            Text(activity.dateTime.formatted(date: .abbreviated, time: .shortened))
-                                .font(.subheadline)
-                                .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.7))
+                                .multilineTextAlignment(.leading)
                             
                             if let description = activity.description {
                                 Text(description)
-                                    .font(.body)
-                                    .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267))
-                                    .multilineTextAlignment(.center)
-                                    .padding(.top, 4)
+                                    .font(.subheadline)
+                                    .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.7))
+                                    .lineLimit(3)
+                                    .padding(.top, 2)
                             }
+                        }
+                        
+                        Spacer()
+                    }
+                    .padding(.horizontal, 20)
+                    
+                    // Info cards section
+                    VStack(spacing: 12) {
+                        // When
+                        InfoCard(
+                            icon: "calendar",
+                            iconColor: Color(red: 0.541, green: 0.757, blue: 0.522),
+                            title: "When",
+                            content: activity.dateTime.formatted(date: .abbreviated, time: .shortened)
+                        )
+                        
+                        // Location
+                        InfoCard(
+                            icon: "location",
+                            iconColor: Color(red: 0.541, green: 0.757, blue: 0.522),
+                            title: "Location",
+                            content: activity.location.address ?? "Location not specified"
+                        )
+                        
+                        // Skill Level
+                        InfoCard(
+                            icon: "star.fill",
+                            iconColor: Color(red: 0.541, green: 0.757, blue: 0.522),
+                            title: "Skill Level",
+                            content: activity.skillLevel.displayName
+                        )
+                        
+                        // Details (if description exists)
+                        if let description = activity.description {
+                            InfoCard(
+                                icon: "text.alignleft",
+                                iconColor: Color(red: 0.541, green: 0.757, blue: 0.522),
+                                title: "Details",
+                                content: description
+                            )
                         }
                     }
                     .padding(.horizontal, 20)
                     
-                    // Basic info cards
-                    VStack(spacing: 12) {
-                        // Location
-                        HStack {
-                            Image(systemName: "location.fill")
-                                .foregroundColor(Color(red: 0.541, green: 0.757, blue: 0.522))
-                            Text(activity.location.address ?? "Location not specified")
-                                .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267))
-                            Spacer()
+                    // Participants circles
+                    HStack(spacing: 12) {
+                        ForEach(0..<min(activity.maxParticipants, 5), id: \.self) { index in
+                            Circle()
+                                .fill(index < activity.currentParticipants ? 
+                                      Color(red: 0.541, green: 0.757, blue: 0.522) : 
+                                      Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.3))
+                                .frame(width: 40, height: 40)
+                                .overlay(
+                                    Image(systemName: index < activity.currentParticipants ? "person.fill" : "person")
+                                        .font(.system(size: 16, weight: .medium))
+                                        .foregroundColor(index < activity.currentParticipants ? .white : Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.5))
+                                )
                         }
-                        .padding()
-                        .background(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.05))
-                        .cornerRadius(10)
                         
-                        // Participants
-                        HStack {
-                            Image(systemName: "person.2.fill")
-                                .foregroundColor(Color(red: 0.541, green: 0.757, blue: 0.522))
-                            Text("\(activity.currentParticipants)/\(activity.maxParticipants) participants")
-                                .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267))
-                            Spacer()
-                        }
-                        .padding()
-                        .background(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.05))
-                        .cornerRadius(10)
-                        
-                        // Skill level
-                        HStack {
-                            Image(systemName: "star.fill")
-                                .foregroundColor(Color(red: 0.541, green: 0.757, blue: 0.522))
-                            Text(activity.skillLevel.displayName)
-                                .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267))
-                            Spacer()
-                        }
-                        .padding()
-                        .background(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.05))
-                        .cornerRadius(10)
+                        Spacer()
                     }
                     .padding(.horizontal, 20)
                 }
@@ -148,7 +161,7 @@ struct ActivityDetailSheet: View {
                             .progressViewStyle(CircularProgressViewStyle(tint: .white))
                             .scaleEffect(0.8)
                     } else {
-                        Text("Request to Join")
+                        Text("Request")
                             .font(.system(size: 18, weight: .semibold))
                     }
                 }
@@ -169,6 +182,40 @@ struct ActivityDetailSheet: View {
         .sheet(isPresented: $showChat) {
             ChatView(activity: activity)
         }
+    }
+}
+
+// Info card component that matches the design in the screenshot
+struct InfoCard: View {
+    let icon: String
+    let iconColor: Color
+    let title: String
+    let content: String
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .font(.system(size: 16, weight: .medium))
+                .foregroundColor(iconColor)
+                .frame(width: 24, height: 24)
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.subheadline)
+                    .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.7))
+                
+                Text(content)
+                    .font(.body)
+                    .fontWeight(.medium)
+                    .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267))
+            }
+            
+            Spacer()
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .background(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.05))
+        .cornerRadius(10)
     }
 }
 
