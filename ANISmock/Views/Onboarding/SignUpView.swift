@@ -1,0 +1,167 @@
+//
+//  SignUpView.swift
+//  ANISmock
+//
+//  Created by Salman on 08/02/1447 AH.
+//
+
+import SwiftUI
+
+struct SignUpView: View {
+    @Binding var currentStep: Int
+    @EnvironmentObject var authViewModel: AuthViewModel
+    @State private var email = ""
+    @State private var isLoading = false
+    
+    var body: some View {
+        VStack(spacing: AppSpacing.xxl) {
+            Spacer()
+            
+            // App branding
+            VStack(spacing: AppSpacing.lg) {
+                // Owl mascot
+                ZStack {
+                    Circle()
+                        .fill(AppColors.secondaryBackground)
+                        .frame(width: 100, height: 100)
+                        .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 5)
+                    
+                    // Owl face
+                    VStack(spacing: 8) {
+                        // Eyes
+                        HStack(spacing: 16) {
+                            Circle()
+                                .fill(AppColors.primaryText)
+                                .frame(width: 18, height: 18)
+                            Circle()
+                                .fill(AppColors.primaryText)
+                                .frame(width: 18, height: 18)
+                        }
+                        
+                        // Beak
+                        Triangle()
+                            .fill(AppColors.mutedText)
+                            .frame(width: 12, height: 8)
+                    }
+                }
+                
+                Text("Anis")
+                    .font(AppFonts.title)
+                    .foregroundColor(AppColors.primaryText)
+            }
+            
+            VStack(spacing: AppSpacing.lg) {
+                Text("Create an account")
+                    .font(AppFonts.title2)
+                    .foregroundColor(AppColors.primaryText)
+                
+                Text("Enter your email to sign up for this app")
+                    .font(AppFonts.body)
+                    .foregroundColor(AppColors.secondaryText)
+                    .multilineTextAlignment(.center)
+            }
+            
+            // Email input
+            VStack(spacing: AppSpacing.md) {
+                TextField("Email", text: $email)
+                    .textFieldStyle(CustomTextFieldStyle())
+                    .keyboardType(.emailAddress)
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
+                
+                // Or separator
+                HStack {
+                    Rectangle()
+                        .fill(AppColors.mutedText.opacity(0.3))
+                        .frame(height: 1)
+                    
+                    Text("or")
+                        .font(AppFonts.footnote)
+                        .foregroundColor(AppColors.mutedText)
+                        .padding(.horizontal, AppSpacing.md)
+                    
+                    Rectangle()
+                        .fill(AppColors.mutedText.opacity(0.3))
+                        .frame(height: 1)
+                }
+                .padding(.vertical, AppSpacing.md)
+                
+                // Apple Sign In button
+                Button(action: {
+                    isLoading = true
+                    Task {
+                        await authViewModel.signInWithApple()
+                        isLoading = false
+                    }
+                }) {
+                    HStack(spacing: AppSpacing.md) {
+                        Image(systemName: "applelogo")
+                            .font(.title2)
+                        
+                        Text("Continue with Apple")
+                            .font(AppFonts.headline)
+                    }
+                    .foregroundColor(AppColors.primaryText)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 50)
+                    .background(
+                        RoundedRectangle(cornerRadius: AppCornerRadius.medium)
+                            .fill(AppColors.secondaryBackground)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: AppCornerRadius.medium)
+                                    .stroke(AppColors.mutedText.opacity(0.3), lineWidth: 1)
+                            )
+                    )
+                    .shadow(color: .black.opacity(0.1), radius: 3, x: 0, y: 1)
+                }
+                .disabled(isLoading)
+            }
+            .padding(.horizontal, AppSpacing.xl)
+            
+            Spacer()
+            
+            // Terms and privacy
+            Text("By clicking continue, you agree to our Terms of Service and Privacy Policy")
+                .font(AppFonts.caption)
+                .foregroundColor(AppColors.mutedText)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, AppSpacing.xl)
+                .padding(.bottom, AppSpacing.lg)
+        }
+        .overlay(
+            Group {
+                if isLoading {
+                    ZStack {
+                        Color.black.opacity(0.3)
+                            .ignoresSafeArea()
+                        
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: AppColors.primaryText))
+                            .scaleEffect(1.5)
+                    }
+                }
+            }
+        )
+    }
+}
+
+struct CustomTextFieldStyle: TextFieldStyle {
+    func _body(configuration: TextField<Self._Label>) -> some View {
+        configuration
+            .padding(AppSpacing.md)
+            .background(
+                RoundedRectangle(cornerRadius: AppCornerRadius.medium)
+                    .fill(AppColors.secondaryBackground)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: AppCornerRadius.medium)
+                            .stroke(AppColors.mutedText.opacity(0.3), lineWidth: 1)
+                    )
+            )
+            .foregroundColor(AppColors.primaryText)
+    }
+}
+
+#Preview {
+    SignUpView(currentStep: .constant(2))
+        .environmentObject(AuthViewModel())
+} 
