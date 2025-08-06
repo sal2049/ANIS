@@ -94,7 +94,7 @@ struct MapView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, AppSpacing.lg)
-                .padding(.top, AppSpacing.sm)
+                .padding(.top, 60) // Positioned under the Dynamic Island
             }
             .ignoresSafeArea()
             .animation(.easeInOut(duration: 0.3), value: searchText)

@@ -19,35 +19,10 @@ struct SignUpView: View {
             
             // App branding
             VStack(spacing: AppSpacing.lg) {
-                // Owl mascot
-                ZStack {
-                    Circle()
-                        .fill(AppColors.secondaryBackground)
-                        .frame(width: 100, height: 100)
-                        .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 5)
-                    
-                    // Owl face
-                    VStack(spacing: 8) {
-                        // Eyes
-                        HStack(spacing: 16) {
-                            Circle()
-                                .fill(AppColors.primaryText)
-                                .frame(width: 18, height: 18)
-                            Circle()
-                                .fill(AppColors.primaryText)
-                                .frame(width: 18, height: 18)
-                        }
-                        
-                        // Beak
-                        Triangle()
-                            .fill(AppColors.mutedText)
-                            .frame(width: 12, height: 8)
-                    }
-                }
-                
-                Text("Anis")
-                    .font(AppFonts.title)
-                    .foregroundColor(AppColors.primaryText)
+                // App logo text only
+                Text("ANISmock")
+                    .font(.system(size: 32, weight: .bold, design: .rounded))
+                    .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267)) // #152C44
             }
             
             VStack(spacing: AppSpacing.lg) {

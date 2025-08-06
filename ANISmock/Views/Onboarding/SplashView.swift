@@ -14,59 +14,33 @@ struct SplashView: View {
     
     var body: some View {
         ZStack {
-            // Background gradient
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    AppColors.primaryBackground,
-                    AppColors.secondaryBackground
-                ]),
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
+            // Background - User's preferred color
+            Color(red: 1.0, green: 0.957, blue: 0.867) // #FFF4DD
+                .ignoresSafeArea()
             
             VStack(spacing: AppSpacing.xl) {
-                // Anis Owl Logo
+                // App Logo - Simple Text Only
                 VStack(spacing: AppSpacing.md) {
-                    // Owl character
-                    ZStack {
-                        Circle()
-                            .fill(AppColors.cardBackground)
-                            .frame(width: 120, height: 120)
-                            .shadow(color: AppColors.shadowColor, radius: 15, x: 0, y: 8)
-                        
-                        // Owl face
-                        VStack(spacing: 8) {
-                            // Eyes
-                            HStack(spacing: 20) {
-                                Circle()
-                                    .fill(AppColors.primaryText)
-                                    .frame(width: 20, height: 20)
-                                Circle()
-                                    .fill(AppColors.primaryText)
-                                    .frame(width: 20, height: 20)
-                            }
-                            
-                            // Beak
-                            Triangle()
-                                .fill(AppColors.mutedText)
-                                .frame(width: 12, height: 8)
-                        }
-                    }
-                    .scaleEffect(logoScale)
-                    .opacity(logoOpacity)
-                    
                     // App name
-                    Text("Anis")
-                        .font(AppFonts.largeTitle)
-                        .foregroundColor(AppColors.primaryText)
-                        .opacity(textOpacity)
+                    Text("ANISmock")
+                        .font(.system(size: 48, weight: .bold, design: .rounded))
+                        .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267)) // #152C44
+                        .scaleEffect(logoScale)
+                        .opacity(logoOpacity)
                 }
                 
                 // Tagline
-                Text("من البادل للجرى... كل الأنشطة اللى تهمك بمكان واحد")
+                Text("Connect through sports activities")
+                    .font(AppFonts.title3)
+                    .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.7))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, AppSpacing.xl)
+                    .opacity(textOpacity)
+                
+                // Subtitle
+                Text("Find, create, and join sports activities in your area")
                     .font(AppFonts.body)
-                    .foregroundColor(AppColors.secondaryText)
+                    .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.6))
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, AppSpacing.xl)
                     .opacity(textOpacity)
@@ -85,17 +59,7 @@ struct SplashView: View {
     }
 }
 
-// Custom triangle shape for owl beak
-struct Triangle: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        path.move(to: CGPoint(x: rect.midX, y: rect.minY))
-        path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
-        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
-        path.closeSubpath()
-        return path
-    }
-}
+
 
 #Preview {
     SplashView()
