@@ -20,7 +20,7 @@ struct SignUpView: View {
             // App branding
             VStack(spacing: AppSpacing.lg) {
                 // App logo text only
-                Text("ANISmock")
+                Text("ANIS")
                     .font(.system(size: 32, weight: .bold, design: .rounded))
                     .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267)) // #152C44
             }

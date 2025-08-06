@@ -1,159 +1,160 @@
-# 🏃‍♂️ ANISmock - Sports Activity Matching App
+# ANIS
 
-A modern iOS app built with SwiftUI that connects people through sports activities. Find, create, and join sports activities in your area with ease.
+A modern iOS SwiftUI application for finding, creating, and joining sports activities in your area.
 
-## ✨ Features
+## 📱 Features
 
-### 🗺️ Interactive Map
-- **Activity Discovery**: Browse sports activities on an interactive map
-- **Real-time Pins**: See activity locations with sport-specific icons
-- **Location Services**: Find activities near you
-- **Detailed Info**: Tap pins to see comprehensive activity details
+- **Interactive Map**: Discover sports activities on an interactive map with custom pins
+- **Activity Search**: Real-time search functionality to find activities by sport, location, or skill level
+- **Create Activities**: Easy-to-use interface for creating new sports activities
+- **Chat System**: Connect with other participants through built-in messaging
+- **Join Requests**: Send and manage requests to join activities
+- **User Profiles**: Personalized user profiles and settings
 
-### 📝 Activity Management
-- **Create Activities**: Step-by-step wizard for creating sports activities
-- **Sport Selection**: Choose from 12+ sports with interactive picker
-- **Location Selection**: Popular venues or custom location selection
-- **Skill Levels**: Beginner, Intermediate, and Advanced options
-- **Participant Management**: Set and track participant limits
+## 🎨 Design
 
-### 💬 Communication
-- **Activity Chat**: Dedicated chat rooms for each activity
-- **Real-time Messaging**: Stay connected with other participants
-- **Join Requests**: Simple request system to join activities
+The app features a clean, modern design with a carefully chosen color palette:
+- **Primary**: #152C44 (Deep Navy)
+- **Background**: #FFF4DD (Warm Cream)
+- **Accent**: #8AC185 (Fresh Green)
 
-### 🎨 Design & UX
-- **Modern UI**: Clean, intuitive interface following iOS design guidelines
-- **Custom Color Palette**: Carefully chosen colors (#152C44, #FFF4DD, #8AC185)
-- **SF Symbols**: Native iOS icons throughout the app
-- **Accessibility**: Full VoiceOver and accessibility support
-- **Animations**: Smooth transitions and feedback
+## 🏗️ Architecture
+
+- **Framework**: SwiftUI + iOS 18.5+
+- **Architecture**: MVVM (Model-View-ViewModel)
+- **State Management**: @State, @StateObject, @Binding
+- **Maps**: MapKit integration
+- **UI Components**: Custom reusable components
+
+## 📂 Project Structure
+
+```
+ANIS/
+├── Views/
+│   ├── Main/
+│   │   ├── MapView/          # Map interface and activity pins
+│   │   ├── Chat/             # Messaging and chat functionality
+│   │   ├── Activities/       # Activity lists and management
+│   │   └── Profile/          # User profile and settings
+│   └── Onboarding/           # Welcome and sign-up flows
+├── Models/                   # Data models (Activity, User, Message, etc.)
+├── ViewModels/              # Business logic and state management
+├── Services/                # Mock data and external services
+└── Utils/                   # Constants, helpers, and utilities
+```
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- **Xcode 15.0+**
-- **iOS 18.5+** deployment target
-- **macOS 14.0+** for development
+
+- Xcode 16.0+
+- iOS 18.5+ deployment target
+- macOS for development
 
 ### Installation
 
-1. **Clone the repository**
+1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/ANISmock.git
-   cd ANISmock
+   git clone https://github.com/sal2049/ANIS.git
+   cd ANIS
    ```
 
-2. **Open in Xcode**
+2. Open the project in Xcode:
    ```bash
-   open ANISmock.xcodeproj
+   open ANIS.xcodeproj
    ```
 
-3. **Build and Run**
-   - Select your target device or simulator
-   - Press `Cmd + R` to build and run
+3. Build and run the project (⌘+R)
 
-### GitHub Setup
-To connect this project to GitHub:
+## 🎯 Core Components
 
-1. **Create a new repository** on GitHub.com:
-   - Go to [github.com/new](https://github.com/new)
-   - Name it `ANISmock`
-   - Don't initialize with README (already exists)
-   - Create repository
+### MapView
+- Interactive map with custom activity pins
+- Real-time search with filtering
+- Activity detail sheets with join functionality
 
-2. **Connect your local repository**:
-   ```bash
-   git remote add origin https://github.com/yourusername/ANISmock.git
-   git branch -M main
-   git push -u origin main
-   ```
+### Activity Management
+- Grid-style sport selection
+- Skill level categorization
+- Date/time scheduling
+- Location selection
 
-## 🏗️ Architecture
+### Chat System
+- Real-time messaging interface
+- Join request management
+- Group chat functionality
 
-### Tech Stack
-- **SwiftUI**: Modern declarative UI framework
-- **MapKit**: Location services and mapping
-- **Combine**: Reactive programming for data flow
-- **Swift 5.9+**: Latest Swift features
+## 🔧 Development
 
-### Project Structure
-```
-ANISmock/
-├── Models/           # Data models (Activity, User, Message)
-├── Views/           # SwiftUI views organized by feature
-│   ├── Main/        # Core app screens
-│   └── Onboarding/  # Welcome and setup flows
-├── ViewModels/      # MVVM view models
-├── Services/        # Data services and API layer
-└── Utils/           # Utilities and constants
+### Building
+```bash
+xcodebuild -scheme ANIS -destination 'platform=iOS Simulator,name=iPhone 16' build
 ```
 
-### Design Patterns
-- **MVVM**: Model-View-ViewModel architecture
-- **Service Layer**: Clean separation of data and business logic
-- **Dependency Injection**: Flexible and testable code structure
+### Testing
+```bash
+xcodebuild test -scheme ANIS -destination 'platform=iOS Simulator,name=iPhone 16'
+```
 
-## 🎨 Design System
+## 📱 Supported Devices
 
-### Color Palette
-- **Primary Dark**: `#152C44` - Main text and UI elements
-- **Background Light**: `#FFF4DD` - App background and cards
-- **Accent Green**: `#8AC185` - Actions and highlights
+- iPhone (iOS 18.5+)
+- iPad (iOS 18.5+)
+- Optimized for iPhone 16 and newer
 
-### Typography
-- **SF Pro**: System font family for consistency
-- **Semantic Sizing**: Dynamic type support for accessibility
+## 🎨 UI Components
 
-## 🚀 Features in Development
+- Custom search bar with real-time filtering
+- Interactive activity pins with detailed popups
+- Modern onboarding flow
+- Responsive grid layouts
+- SF Symbols integration
 
-- [ ] **Real-time Location Tracking**
-- [ ] **Push Notifications**
-- [ ] **User Profiles & Reviews**
-- [ ] **Activity History**
-- [ ] **Social Features**
-- [ ] **Payment Integration**
+## 🗺️ Key Features in Detail
+
+### Smart Search
+- Real-time activity filtering
+- Search by sport type, location, host name
+- Results counter with smooth animations
+
+### Activity Creation
+- Two-step creation process
+- Visual sport selection grid
+- Skill level and timing options
+
+### Map Integration
+- Custom activity pins with sport emojis
+- Detailed activity sheets
+- Location-based discovery
+
+## 🔄 Recent Updates
+
+- ✅ Fixed map pin popup state management
+- ✅ Improved search bar alignment
+- ✅ Removed mascot characters for cleaner design
+- ✅ Enhanced error handling and debugging
+- ✅ Positioned search bar properly under Dynamic Island
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-## 📱 Screenshots
-
-*Screenshots coming soon...*
-
-## 🔧 Development Setup
-
-### Mock Data
-The app currently uses a mock data service for development:
-- **Sample Activities**: Pre-populated sports activities
-- **Mock Users**: Test user accounts
-- **Simulated Chat**: Sample conversations
-
-### Environment Configuration
-```swift
-// Development vs Production configuration
-#if DEBUG
-// Mock data and debug features
-#else
-// Production API and services
-#endif
-```
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## 📞 Contact
+
+- GitHub: [@sal2049](https://github.com/sal2049)
+- Project Link: [https://github.com/sal2049/ANIS](https://github.com/sal2049/ANIS)
+
 ## 🙏 Acknowledgments
 
-- **Apple**: For the amazing SwiftUI framework
-- **SF Symbols**: Beautiful iconography
-- **Community**: Open source inspiration and libraries
-
----
-
-**Built with ❤️ using SwiftUI**
+- SwiftUI framework
+- MapKit for location services
+- SF Symbols for iconography
+- Community feedback and testing

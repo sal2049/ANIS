@@ -12,37 +12,37 @@
 			containerPortal = 22DB245A2E3F3CB200BC48D3 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 22DB24612E3F3CB200BC48D3;
-			remoteInfo = ANISmock;
+			remoteInfo = ANIS;
 		};
 		22DB247A2E3F3CB400BC48D3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 22DB245A2E3F3CB200BC48D3 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 22DB24612E3F3CB200BC48D3;
-			remoteInfo = ANISmock;
+			remoteInfo = ANIS;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		22DB24622E3F3CB200BC48D3 /* ANISmock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ANISmock.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		22DB246F2E3F3CB400BC48D3 /* ANISmockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ANISmockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		22DB24792E3F3CB400BC48D3 /* ANISmockUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ANISmockUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		22DB24622E3F3CB200BC48D3 /* ANIS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ANIS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		22DB246F2E3F3CB400BC48D3 /* ANISTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ANISTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		22DB24792E3F3CB400BC48D3 /* ANISUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ANISUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		22DB24642E3F3CB200BC48D3 /* ANISmock */ = {
+		22DB24642E3F3CB200BC48D3 /* ANIS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ANISmock;
+			path = ANIS;
 			sourceTree = "<group>";
 		};
-		22DB24722E3F3CB400BC48D3 /* ANISmockTests */ = {
+		22DB24722E3F3CB400BC48D3 /* ANISTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ANISmockTests;
+			path = ANISTests;
 			sourceTree = "<group>";
 		};
-		22DB247C2E3F3CB400BC48D3 /* ANISmockUITests */ = {
+		22DB247C2E3F3CB400BC48D3 /* ANISUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ANISmockUITests;
+			path = ANISUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -75,9 +75,9 @@
 		22DB24592E3F3CB200BC48D3 = {
 			isa = PBXGroup;
 			children = (
-				22DB24642E3F3CB200BC48D3 /* ANISmock */,
-				22DB24722E3F3CB400BC48D3 /* ANISmockTests */,
-				22DB247C2E3F3CB400BC48D3 /* ANISmockUITests */,
+				22DB24642E3F3CB200BC48D3 /* ANIS */,
+				22DB24722E3F3CB400BC48D3 /* ANISTests */,
+				22DB247C2E3F3CB400BC48D3 /* ANISUITests */,
 				22DB24632E3F3CB200BC48D3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -85,9 +85,9 @@
 		22DB24632E3F3CB200BC48D3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				22DB24622E3F3CB200BC48D3 /* ANISmock.app */,
-				22DB246F2E3F3CB400BC48D3 /* ANISmockTests.xctest */,
-				22DB24792E3F3CB400BC48D3 /* ANISmockUITests.xctest */,
+				22DB24622E3F3CB200BC48D3 /* ANIS.app */,
+				22DB246F2E3F3CB400BC48D3 /* ANISTests.xctest */,
+				22DB24792E3F3CB400BC48D3 /* ANISUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,9 +95,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		22DB24612E3F3CB200BC48D3 /* ANISmock */ = {
+		22DB24612E3F3CB200BC48D3 /* ANIS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 22DB24832E3F3CB400BC48D3 /* Build configuration list for PBXNativeTarget "ANISmock" */;
+			buildConfigurationList = 22DB24832E3F3CB400BC48D3 /* Build configuration list for PBXNativeTarget "ANIS" */;
 			buildPhases = (
 				22DB245E2E3F3CB200BC48D3 /* Sources */,
 				22DB245F2E3F3CB200BC48D3 /* Frameworks */,
@@ -108,18 +108,18 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				22DB24642E3F3CB200BC48D3 /* ANISmock */,
+				22DB24642E3F3CB200BC48D3 /* ANIS */,
 			);
-			name = ANISmock;
+			name = ANIS;
 			packageProductDependencies = (
 			);
-			productName = ANISmock;
-			productReference = 22DB24622E3F3CB200BC48D3 /* ANISmock.app */;
+			productName = ANIS;
+			productReference = 22DB24622E3F3CB200BC48D3 /* ANIS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		22DB246E2E3F3CB400BC48D3 /* ANISmockTests */ = {
+		22DB246E2E3F3CB400BC48D3 /* ANISTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 22DB24862E3F3CB400BC48D3 /* Build configuration list for PBXNativeTarget "ANISmockTests" */;
+			buildConfigurationList = 22DB24862E3F3CB400BC48D3 /* Build configuration list for PBXNativeTarget "ANISTests" */;
 			buildPhases = (
 				22DB246B2E3F3CB400BC48D3 /* Sources */,
 				22DB246C2E3F3CB400BC48D3 /* Frameworks */,
@@ -131,18 +131,18 @@
 				22DB24712E3F3CB400BC48D3 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				22DB24722E3F3CB400BC48D3 /* ANISmockTests */,
+				22DB24722E3F3CB400BC48D3 /* ANISTests */,
 			);
-			name = ANISmockTests;
+			name = ANISTests;
 			packageProductDependencies = (
 			);
-			productName = ANISmockTests;
-			productReference = 22DB246F2E3F3CB400BC48D3 /* ANISmockTests.xctest */;
+			productName = ANISTests;
+			productReference = 22DB246F2E3F3CB400BC48D3 /* ANISTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		22DB24782E3F3CB400BC48D3 /* ANISmockUITests */ = {
+		22DB24782E3F3CB400BC48D3 /* ANISUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 22DB24892E3F3CB400BC48D3 /* Build configuration list for PBXNativeTarget "ANISmockUITests" */;
+			buildConfigurationList = 22DB24892E3F3CB400BC48D3 /* Build configuration list for PBXNativeTarget "ANISUITests" */;
 			buildPhases = (
 				22DB24752E3F3CB400BC48D3 /* Sources */,
 				22DB24762E3F3CB400BC48D3 /* Frameworks */,
@@ -154,13 +154,13 @@
 				22DB247B2E3F3CB400BC48D3 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				22DB247C2E3F3CB400BC48D3 /* ANISmockUITests */,
+				22DB247C2E3F3CB400BC48D3 /* ANISUITests */,
 			);
-			name = ANISmockUITests;
+			name = ANISUITests;
 			packageProductDependencies = (
 			);
-			productName = ANISmockUITests;
-			productReference = 22DB24792E3F3CB400BC48D3 /* ANISmockUITests.xctest */;
+			productName = ANISUITests;
+			productReference = 22DB24792E3F3CB400BC48D3 /* ANISUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -186,7 +186,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 22DB245D2E3F3CB200BC48D3 /* Build configuration list for PBXProject "ANISmock" */;
+			buildConfigurationList = 22DB245D2E3F3CB200BC48D3 /* Build configuration list for PBXProject "ANIS" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -200,9 +200,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				22DB24612E3F3CB200BC48D3 /* ANISmock */,
-				22DB246E2E3F3CB400BC48D3 /* ANISmockTests */,
-				22DB24782E3F3CB400BC48D3 /* ANISmockUITests */,
+				22DB24612E3F3CB200BC48D3 /* ANIS */,
+				22DB246E2E3F3CB400BC48D3 /* ANISTests */,
+				22DB24782E3F3CB400BC48D3 /* ANISUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -258,12 +258,12 @@
 /* Begin PBXTargetDependency section */
 		22DB24712E3F3CB400BC48D3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 22DB24612E3F3CB200BC48D3 /* ANISmock */;
+			target = 22DB24612E3F3CB200BC48D3 /* ANIS */;
 			targetProxy = 22DB24702E3F3CB400BC48D3 /* PBXContainerItemProxy */;
 		};
 		22DB247B2E3F3CB400BC48D3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 22DB24612E3F3CB200BC48D3 /* ANISmock */;
+			target = 22DB24612E3F3CB200BC48D3 /* ANIS */;
 			targetProxy = 22DB247A2E3F3CB400BC48D3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -407,7 +407,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "-3.ANISmock";
+				PRODUCT_BUNDLE_IDENTIFIER = "-3.ANIS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -434,7 +434,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "-3.ANISmock";
+				PRODUCT_BUNDLE_IDENTIFIER = "-3.ANIS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -451,12 +451,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "-3.ANISmockTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "-3.ANISTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ANISmock.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ANISmock";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ANIS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ANIS";
 			};
 			name = Debug;
 		};
@@ -469,12 +469,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "-3.ANISmockTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "-3.ANISTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ANISmock.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ANISmock";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ANIS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ANIS";
 			};
 			name = Release;
 		};
@@ -485,12 +485,12 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "-3.ANISmockUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = "-3.ANISUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ANISmock;
+				TEST_TARGET_NAME = ANIS;
 			};
 			name = Debug;
 		};
@@ -501,19 +501,19 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "-3.ANISmockUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = "-3.ANISUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ANISmock;
+				TEST_TARGET_NAME = ANIS;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		22DB245D2E3F3CB200BC48D3 /* Build configuration list for PBXProject "ANISmock" */ = {
+		22DB245D2E3F3CB200BC48D3 /* Build configuration list for PBXProject "ANIS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				22DB24812E3F3CB400BC48D3 /* Debug */,
@@ -522,7 +522,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		22DB24832E3F3CB400BC48D3 /* Build configuration list for PBXNativeTarget "ANISmock" */ = {
+		22DB24832E3F3CB400BC48D3 /* Build configuration list for PBXNativeTarget "ANIS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				22DB24842E3F3CB400BC48D3 /* Debug */,
@@ -531,7 +531,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		22DB24862E3F3CB400BC48D3 /* Build configuration list for PBXNativeTarget "ANISmockTests" */ = {
+		22DB24862E3F3CB400BC48D3 /* Build configuration list for PBXNativeTarget "ANISTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				22DB24872E3F3CB400BC48D3 /* Debug */,
@@ -540,7 +540,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		22DB24892E3F3CB400BC48D3 /* Build configuration list for PBXNativeTarget "ANISmockUITests" */ = {
+		22DB24892E3F3CB400BC48D3 /* Build configuration list for PBXNativeTarget "ANISUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				22DB248A2E3F3CB400BC48D3 /* Debug */,

@@ -1,5 +1,5 @@
 //
-//  ANISmockApp.swift
+//  ANISApp.swift
 //  ANISmock
 //
 //  Created by Salman on 08/02/1447 AH.
@@ -10,7 +10,7 @@ import SwiftUI
 // import Firebase
 
 @main
-struct ANISmockApp: App {
+struct ANISApp: App {
     @StateObject private var authViewModel = AuthViewModel()
     
     init() {

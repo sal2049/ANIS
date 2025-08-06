@@ -58,7 +58,7 @@ struct WelcomeView: View {
             // Welcome content without mascot
             VStack(spacing: AppSpacing.xl) {
                 // App logo text
-                Text("ANISmock")
+                Text("ANIS")
                     .font(.system(size: 42, weight: .bold, design: .rounded))
                     .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267)) // #152C44
                 

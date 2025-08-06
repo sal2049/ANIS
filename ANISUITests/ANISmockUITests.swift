@@ -1,13 +1,13 @@
 //
-//  ANISmockUITests.swift
-//  ANISmockUITests
+//  ANISUITests.swift
+//  ANISUITests
 //
 //  Created by Salman on 08/02/1447 AH.
 //
 
 import XCTest
 
-final class ANISmockUITests: XCTestCase {
+final class ANISUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

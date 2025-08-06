@@ -1,13 +1,13 @@
 //
-//  ANISmockUITestsLaunchTests.swift
-//  ANISmockUITests
+//  ANISUITestsLaunchTests.swift
+//  ANISUITests
 //
 //  Created by Salman on 08/02/1447 AH.
 //
 
 import XCTest
 
-final class ANISmockUITestsLaunchTests: XCTestCase {
+final class ANISUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

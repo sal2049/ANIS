@@ -22,7 +22,7 @@ struct SplashView: View {
                 // App Logo - Simple Text Only
                 VStack(spacing: AppSpacing.md) {
                     // App name
-                    Text("ANISmock")
+                    Text("ANIS")
                         .font(.system(size: 48, weight: .bold, design: .rounded))
                         .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267)) // #152C44
                         .scaleEffect(logoScale)
