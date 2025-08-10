@@ -13,7 +13,8 @@ import Foundation
 
 @MainActor
 class AuthViewModel: ObservableObject {
-    @Published var isAuthenticated = false
+    private let signedInFlagKey = "isSignedIn"
+    @Published var isAuthenticated: Bool = UserDefaults.standard.bool(forKey: "isSignedIn")
     @Published var currentUser: User?
     @Published var isLoading = false
     @Published var errorMessage: String?
@@ -24,28 +25,15 @@ class AuthViewModel: ObservableObject {
     private let mockDataService = MockDataService.shared
     
     init() {
-        setupAuthStateListener()
-    }
-    
-    private func setupAuthStateListener() {
-        // Firebase auth listener commented out for mock data phase
-        // auth.addStateDidChangeListener { [weak self] _, user in
-        //     DispatchQueue.main.async {
-        //         self?.isAuthenticated = user != nil
-        //         if let user = user {
-        //             self?.fetchUserData(userId: user.uid)
-        //         } else {
-        //             self?.currentUser = nil
-        //         }
-        //     }
-        // }
-        
-        // For mock data, simulate initial state
-        Task {
-            let mockUser = await mockDataService.fetchUser(id: "user1")
-            await MainActor.run {
-                self.currentUser = mockUser
-                self.isAuthenticated = self.currentUser != nil
+        // Restore authentication state from persistence
+        isAuthenticated = UserDefaults.standard.bool(forKey: signedInFlagKey)
+        if isAuthenticated {
+            // Only hydrate a user if already signed in
+            Task {
+                let mockUser = await mockDataService.fetchUser(id: "user1")
+                await MainActor.run {
+                    self.currentUser = mockUser
+                }
             }
         }
     }
@@ -71,6 +59,7 @@ class AuthViewModel: ObservableObject {
             
             self.currentUser = user
             self.isAuthenticated = true
+            UserDefaults.standard.set(true, forKey: signedInFlagKey)
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -81,6 +70,7 @@ class AuthViewModel: ObservableObject {
     func signOut() {
         // Simulate sign out for mock data
         isAuthenticated = false
+        UserDefaults.standard.set(false, forKey: signedInFlagKey)
         currentUser = nil
         // Firebase sign out commented out for mock data phase
         // do {

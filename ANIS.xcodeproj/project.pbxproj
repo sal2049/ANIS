@@ -30,9 +30,9 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		22DB24642E3F3CB200BC48D3 /* ANIS */ = {
+        22DB24642E3F3CB200BC48D3 /* ANISApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ANIS;
+            path = ANISApp;
 			sourceTree = "<group>";
 		};
 		22DB24722E3F3CB400BC48D3 /* ANISTests */ = {
@@ -75,7 +75,7 @@
 		22DB24592E3F3CB200BC48D3 = {
 			isa = PBXGroup;
 			children = (
-				22DB24642E3F3CB200BC48D3 /* ANIS */,
+                22DB24642E3F3CB200BC48D3 /* ANISApp */,
 				22DB24722E3F3CB400BC48D3 /* ANISTests */,
 				22DB247C2E3F3CB400BC48D3 /* ANISUITests */,
 				22DB24632E3F3CB200BC48D3 /* Products */,
@@ -107,9 +107,9 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				22DB24642E3F3CB200BC48D3 /* ANIS */,
-			);
+            fileSystemSynchronizedGroups = (
+                22DB24642E3F3CB200BC48D3 /* ANISApp */,
+            );
 			name = ANIS;
 			packageProductDependencies = (
 			);
@@ -395,6 +395,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3R75JJ3AP7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -422,6 +423,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3R75JJ3AP7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

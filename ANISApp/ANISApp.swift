@@ -16,6 +16,12 @@ struct ANISApp: App {
     init() {
         // Firebase configuration commented out for mock data phase
         // FirebaseApp.configure()
+        #if DEBUG
+        // Reset onboarding/auth state on every Run from Xcode (Debug builds only)
+        UserDefaults.standard.set(false, forKey: "isSignedIn")
+        UserDefaults.standard.set(false, forKey: "hasCompletedOnboarding")
+        UserDefaults.standard.set(false, forKey: "didShowAppSplash")
+        #endif
     }
     
     var body: some Scene {

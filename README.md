@@ -29,7 +29,7 @@ The app features a clean, modern design with a carefully chosen color palette:
 ## 📂 Project Structure
 
 ```
-ANIS/
+ANISApp/
 ├── Views/
 │   ├── Main/
 │   │   ├── MapView/          # Map interface and activity pins

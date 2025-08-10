@@ -19,6 +19,10 @@ struct SignUpView: View {
             
             // App branding
             VStack(spacing: AppSpacing.lg) {
+                Image("Mascot")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100, height: 100)
                 // App logo text only
                 Text("ANIS")
                     .font(.system(size: 32, weight: .bold, design: .rounded))

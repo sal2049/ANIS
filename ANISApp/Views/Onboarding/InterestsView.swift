@@ -18,12 +18,12 @@ struct InterestsView: View {
             VStack(spacing: AppSpacing.md) {
                 Text("What are you into?")
                     .font(AppFonts.title)
-                    .foregroundColor(AppColors.primaryText)
+                    .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267))
                     .multilineTextAlignment(.center)
                 
                 Text("Select your interests to find activities that match your style")
                     .font(AppFonts.body)
-                    .foregroundColor(AppColors.secondaryText)
+                    .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.7))
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, AppSpacing.xl)
             }
@@ -94,16 +94,16 @@ struct InterestButton: View {
                 
                 Text(sport.displayName)
                     .font(AppFonts.body)
-                    .foregroundColor(isSelected ? AppColors.primaryBackground : AppColors.primaryText)
+                    .foregroundColor(isSelected ? Color.white : Color(red: 0.082, green: 0.173, blue: 0.267))
             }
             .frame(maxWidth: .infinity)
             .frame(height: 80)
             .background(
                 RoundedRectangle(cornerRadius: AppCornerRadius.medium)
-                    .fill(isSelected ? AppColors.primaryText : AppColors.secondaryBackground)
+                    .fill(isSelected ? Color(red: 0.082, green: 0.173, blue: 0.267) : Color.white)
                     .overlay(
                         RoundedRectangle(cornerRadius: AppCornerRadius.medium)
-                            .stroke(AppColors.mutedText.opacity(0.3), lineWidth: 1)
+                            .stroke(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.15), lineWidth: 1)
                     )
             )
             .shadow(color: .black.opacity(0.1), radius: 3, x: 0, y: 1)
