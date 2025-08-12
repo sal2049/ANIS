@@ -60,6 +60,15 @@ class AuthViewModel: ObservableObject {
             self.currentUser = user
             self.isAuthenticated = true
             UserDefaults.standard.set(true, forKey: signedInFlagKey)
+
+            // If onboarding interests were selected prior to sign-in, apply them now
+            if let stored = UserDefaults.standard.array(forKey: "onboarding_selected_interests") as? [String] {
+                let restored = stored.compactMap { SportType(rawValue: $0) }
+                if !restored.isEmpty {
+                    self.updateUserInterests(restored)
+                    UserDefaults.standard.removeObject(forKey: "onboarding_selected_interests")
+                }
+            }
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -131,7 +140,12 @@ class AuthViewModel: ObservableObject {
             age: user.age,
             interests: interests,
             profileImageURL: user.profileImageURL,
-            bio: user.bio
+            bio: user.bio,
+            instagram: user.instagram,
+            x: user.x,
+            snapchat: user.snapchat,
+            tiktok: user.tiktok,
+            website: user.website
         )
         
         Task {
@@ -140,6 +154,53 @@ class AuthViewModel: ObservableObject {
                 if success {
                     self.currentUser = updatedUser
                 }
+            }
+        }
+    }
+
+    func updateBio(_ bio: String) {
+        guard let user = currentUser else { return }
+        let updatedUser = User(
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            age: user.age,
+            interests: user.interests,
+            profileImageURL: user.profileImageURL,
+            bio: bio,
+            instagram: user.instagram,
+            x: user.x,
+            snapchat: user.snapchat,
+            tiktok: user.tiktok,
+            website: user.website
+        )
+        Task {
+            // Reuse interests update as persistence is mock; replace entire user via social links method if needed
+            _ = await MockDataService.shared.updateUserInterests(user.interests, for: user.id)
+            await MainActor.run { self.currentUser = updatedUser }
+        }
+    }
+    
+    func updateSocialLinks(_ links: SocialLinks) {
+        guard let user = currentUser else { return }
+        Task {
+            let ok = await MockDataService.shared.updateUserSocialLinks(userId: user.id, links: links)
+            if ok {
+                let updated = User(
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    age: user.age,
+                    interests: user.interests,
+                    profileImageURL: user.profileImageURL,
+                    bio: user.bio,
+                    instagram: links.instagram,
+                    x: links.x,
+                    snapchat: links.snapchat,
+                    tiktok: links.tiktok,
+                    website: links.website
+                )
+                await MainActor.run { self.currentUser = updated }
             }
         }
     }

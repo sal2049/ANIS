@@ -14,8 +14,7 @@ class MockDataService: ObservableObject {
     
     @Published var activities: [Activity] = []
     @Published var users: [User] = []
-    @Published var chats: [Chat] = []
-    @Published var messages: [String: [Message]] = [:] // chatId -> messages
+    @Published var joinRequests: [JoinRequest] = []
     
     private init() {
         generateMockData()
@@ -53,7 +52,7 @@ class MockDataService: ObservableObject {
                 name: "Mike Rodriguez",
                 email: "mike@example.com",
                 age: 30,
-                interests: [.volleyball, .surfing, .cycling],
+                interests: [.volleyball, .cycling],
                 bio: "Beach volleyball player and adventure seeker"
             ),
             User(
@@ -155,114 +154,34 @@ class MockDataService: ObservableObject {
                 dateTime: Date().addingTimeInterval(25200), // Tomorrow afternoon
                 maxParticipants: 8,
                 skillLevel: .intermediate
-            ),
-            Activity(
-                title: "Bowling Night",
-                description: "Fun bowling night with friends. Pizza and drinks included!",
-                sportType: .bowling,
-                hostId: "user2",
-                hostName: "Ahmed Al-Mansouri",
-                location: riyadhLocations[7],
-                dateTime: Date().addingTimeInterval(32400), // Tomorrow evening
-                maxParticipants: 16,
-                skillLevel: .beginner
             )
         ]
-        
-        // Generate mock chats
-        chats = [
-            Chat(
-                activityId: activities[0].id,
-                activityTitle: activities[0].title,
-                participants: ["user1", "user2", "user3", "user4"],
-                lastMessage: Message(
-                    senderId: "user1",
-                    senderName: "Yazeed",
-                    content: "Great game yesterday! Same time next week?",
-                    messageType: .text
-                )
+
+        // Seed join requests (incoming for hosts and pending for current user user1)
+        joinRequests = [
+            JoinRequest(
+                id: UUID().uuidString,
+                requesterUserId: "user2",
+                requesterName: "Ahmed Al-Mansouri",
+                requesterAvatar: nil,
+                sportType: .football,
+                targetActivityId: activities[0].id,
+                targetActivityTitle: activities[0].title,
+                status: .incoming,
+                createdAt: Date().addingTimeInterval(-3600)
             ),
-            Chat(
-                activityId: activities[1].id,
-                activityTitle: activities[1].title,
-                participants: ["user1", "user2", "user3", "user4", "user5"],
-                lastMessage: Message(
-                    senderId: "user2", 
-                    senderName: "Ahmed",
-                    content: "Who's bringing the water bottles?",
-                    messageType: .text
-                )
-            ),
-            Chat(
-                activityId: activities[2].id,
-                activityTitle: activities[2].title,
-                participants: ["user1", "user3", "user4", "user5"],
-                lastMessage: Message(
-                    senderId: "user3",
-                    senderName: "Sarah",
-                    content: "Court booking confirmed for tomorrow",
-                    messageType: .text
-                )
-            ),
-            Chat(
-                activityId: activities[3].id,
-                activityTitle: activities[3].title,
-                participants: ["user1", "user2", "user4", "user5"],
-                lastMessage: Message(
-                    senderId: "user4",
-                    senderName: "Mike", 
-                    content: "Rain cancelled today's game 😔",
-                    messageType: .text
-                )
+            JoinRequest(
+                id: UUID().uuidString,
+                requesterUserId: "user1",
+                requesterName: "Yazeed Al-Rashid",
+                requesterAvatar: nil,
+                sportType: .tennis,
+                targetActivityId: activities[2].id,
+                targetActivityTitle: activities[2].title,
+                status: .pending,
+                createdAt: Date().addingTimeInterval(-7200)
             )
         ]
-        
-        // Generate mock messages for each chat
-        generateMockMessages()
-    }
-    
-    private func generateMockMessages() {
-        for chat in chats {
-            var chatMessages: [Message] = []
-            
-            // Add some historical messages
-            chatMessages.append(Message(
-                senderId: chat.participants[0],
-                senderName: getUserName(chat.participants[0]),
-                content: "Hey everyone! Looking forward to the game",
-                messageType: .text
-            ))
-            
-            chatMessages.append(Message(
-                senderId: "system",
-                senderName: "System",
-                content: "\(getUserName(chat.participants[1])) joined the activity",
-                messageType: .join
-            ))
-            
-            chatMessages.append(Message(
-                senderId: chat.participants[1],
-                senderName: getUserName(chat.participants[1]),
-                content: "Thanks for having me! What should I bring?",
-                messageType: .text
-            ))
-            
-            if chat.participants.count > 2 {
-                chatMessages.append(Message(
-                    senderId: chat.participants[2],
-                    senderName: getUserName(chat.participants[2]),
-                    content: "I can bring extra equipment if needed",
-                    messageType: .text
-                ))
-            }
-            
-            // Add the last message
-            if let lastMessage = chat.lastMessage {
-                chatMessages.append(lastMessage)
-            }
-            
-            messages[chat.id] = chatMessages
-        }
     }
     
     private func getUserName(_ userId: String) -> String {
@@ -311,38 +230,62 @@ class MockDataService: ObservableObject {
         return false
     }
     
-    func fetchChats() async -> [Chat] {
-        try? await Task.sleep(nanoseconds: 300_000_000) // 0.3 seconds
-        return chats
+    // MARK: - Requests
+    func fetchJoinRequests(for userId: String) async -> (incoming: [JoinRequest], pending: [JoinRequest]) {
+        try? await Task.sleep(nanoseconds: 200_000_000)
+        // Incoming are those targeting activities where user is host and status is incoming
+        let incoming = joinRequests.filter { req in
+            if let activity = activities.first(where: { $0.id == req.targetActivityId }) {
+                return activity.hostId == userId && req.status == .incoming
+            }
+            return false
+        }
+        let pending = joinRequests.filter { $0.requesterUserId == userId && $0.status == .pending }
+        return (incoming, pending)
     }
     
-    func fetchMessages(for chatId: String) async -> [Message] {
-        try? await Task.sleep(nanoseconds: 200_000_000) // 0.2 seconds
-        return messages[chatId] ?? []
-    }
-    
-    func sendMessage(_ message: Message, to chatId: String) async -> Bool {
-        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
-        
-        if messages[chatId] != nil {
-            messages[chatId]?.append(message)
-        } else {
-            messages[chatId] = [message]
+    func sendJoinRequest(activityId: String, requesterUserId: String) async -> Bool {
+        try? await Task.sleep(nanoseconds: 150_000_000)
+        guard let activity = activities.first(where: { $0.id == activityId }),
+              let requester = users.first(where: { $0.id == requesterUserId }) else { return false }
+        // Prevent duplicates
+        if joinRequests.contains(where: { $0.targetActivityId == activityId && $0.requesterUserId == requesterUserId && $0.status == .pending }) {
+            return true
         }
-        
-        // Update chat's last message
-        if let chatIndex = chats.firstIndex(where: { $0.id == chatId }) {
-            let updatedChat = Chat(
-                id: chats[chatIndex].id,
-                activityId: chats[chatIndex].activityId,
-                activityTitle: chats[chatIndex].activityTitle,
-                participants: chats[chatIndex].participants,
-                lastMessage: message
-            )
-            chats[chatIndex] = updatedChat
-        }
-        
+        let newReq = JoinRequest(
+            id: UUID().uuidString,
+            requesterUserId: requester.id,
+            requesterName: requester.name,
+            requesterAvatar: nil,
+            sportType: activity.sportType,
+            targetActivityId: activity.id,
+            targetActivityTitle: activity.title,
+            status: .pending,
+            createdAt: Date()
+        )
+        joinRequests.append(newReq)
         return true
+    }
+    
+    func acceptJoinRequest(_ id: String, by hostId: String) async -> Bool {
+        try? await Task.sleep(nanoseconds: 120_000_000)
+        guard let idx = joinRequests.firstIndex(where: { $0.id == id }) else { return false }
+        // Validate host owns the activity
+        if let activity = activities.first(where: { $0.id == joinRequests[idx].targetActivityId }), activity.hostId == hostId {
+            joinRequests[idx].status = .accepted
+            return true
+        }
+        return false
+    }
+    
+    func declineJoinRequest(_ id: String, by hostId: String) async -> Bool {
+        try? await Task.sleep(nanoseconds: 120_000_000)
+        guard let idx = joinRequests.firstIndex(where: { $0.id == id }) else { return false }
+        if let activity = activities.first(where: { $0.id == joinRequests[idx].targetActivityId }), activity.hostId == hostId {
+            joinRequests[idx].status = .declined
+            return true
+        }
+        return false
     }
     
     func updateUserInterests(_ interests: [SportType], for userId: String) async -> Bool {
@@ -356,7 +299,35 @@ class MockDataService: ObservableObject {
                 age: users[userIndex].age,
                 interests: interests,
                 profileImageURL: users[userIndex].profileImageURL,
-                bio: users[userIndex].bio
+                bio: users[userIndex].bio,
+                instagram: users[userIndex].instagram,
+                x: users[userIndex].x,
+                snapchat: users[userIndex].snapchat,
+                tiktok: users[userIndex].tiktok,
+                website: users[userIndex].website
+            )
+            users[userIndex] = updatedUser
+            return true
+        }
+        return false
+    }
+    
+    func updateUserSocialLinks(userId: String, links: SocialLinks) async -> Bool {
+        try? await Task.sleep(nanoseconds: 200_000_000)
+        if let userIndex = users.firstIndex(where: { $0.id == userId }) {
+            let updatedUser = User(
+                id: users[userIndex].id,
+                name: users[userIndex].name,
+                email: users[userIndex].email,
+                age: users[userIndex].age,
+                interests: users[userIndex].interests,
+                profileImageURL: users[userIndex].profileImageURL,
+                bio: users[userIndex].bio,
+                instagram: links.instagram,
+                x: links.x,
+                snapchat: links.snapchat,
+                tiktok: links.tiktok,
+                website: links.website
             )
             users[userIndex] = updatedUser
             return true

@@ -43,7 +43,7 @@ struct OnboardingView: View {
                         .tag(2)
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                .animation(.easeInOut(duration: 0.3), value: currentStep)
+                .animation(.spring(response: 0.5, dampingFraction: 0.9), value: currentStep)
             }
         }
         .onChange(of: authViewModel.isAuthenticated) { _, newValue in
@@ -118,7 +118,7 @@ struct WelcomeView: View {
                 Spacer()
                 
                 Button(action: {
-                    withAnimation {
+                    withAnimation(.spring(response: 0.5, dampingFraction: 0.9)) {
                         currentStep += 1
                     }
                 }) {
@@ -133,6 +133,7 @@ struct WelcomeView: View {
                             .foregroundColor(.white)
                     }
                 }
+                .pressable()
             }
             .padding(.horizontal, AppSpacing.xl)
             .padding(.bottom, AppSpacing.lg)

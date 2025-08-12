@@ -16,6 +16,12 @@ struct User: Identifiable, Codable {
     let interests: [SportType]
     let profileImageURL: String?
     let bio: String?
+    // Social links
+    let instagram: String?
+    let x: String?
+    let snapchat: String?
+    let tiktok: String?
+    let website: String?
     let createdAt: Date
     let lastActive: Date
     
@@ -27,11 +33,29 @@ struct User: Identifiable, Codable {
         case interests
         case profileImageURL
         case bio
+        case instagram
+        case x
+        case snapchat
+        case tiktok
+        case website
         case createdAt
         case lastActive
     }
     
-    init(id: String, name: String, email: String, age: Int? = nil, interests: [SportType] = [], profileImageURL: String? = nil, bio: String? = nil) {
+    init(
+        id: String,
+        name: String,
+        email: String,
+        age: Int? = nil,
+        interests: [SportType] = [],
+        profileImageURL: String? = nil,
+        bio: String? = nil,
+        instagram: String? = nil,
+        x: String? = nil,
+        snapchat: String? = nil,
+        tiktok: String? = nil,
+        website: String? = nil
+    ) {
         self.id = id
         self.name = name
         self.email = email
@@ -39,73 +63,74 @@ struct User: Identifiable, Codable {
         self.interests = interests
         self.profileImageURL = profileImageURL
         self.bio = bio
+        self.instagram = instagram
+        self.x = x
+        self.snapchat = snapchat
+        self.tiktok = tiktok
+        self.website = website
         self.createdAt = Date()
         self.lastActive = Date()
     }
 }
 
 enum SportType: String, CaseIterable, Codable {
+    case gym = "gym"
+    case yoga = "yoga"
     case padel = "padel"
     case football = "football"
     case tennis = "tennis"
-    case volleyball = "volleyball"
-    case basketball = "basketball"
-    case yoga = "yoga"
     case cycling = "cycling"
-    case surfing = "surfing"
-    case bowling = "bowling"
+    case running = "running"
     case golf = "golf"
+    case volleyball = "volleyball"
     case pilates = "pilates"
-    case boardGames = "boardGames"
+    case basketball = "basketball"
     
     var displayName: String {
         switch self {
+        case .gym: return "Gym"
+        case .yoga: return "Yoga"
         case .padel: return "Padel"
         case .football: return "Football"
         case .tennis: return "Tennis"
-        case .volleyball: return "Volleyball"
-        case .basketball: return "Basketball"
-        case .yoga: return "Yoga"
         case .cycling: return "Cycling"
-        case .surfing: return "Surfing"
-        case .bowling: return "Bowling"
+        case .running: return "Running"
         case .golf: return "Golf"
+        case .volleyball: return "Volleyball"
         case .pilates: return "Pilates"
-        case .boardGames: return "Board Games"
+        case .basketball: return "Basketball"
         }
     }
     
     var emoji: String {
         switch self {
+        case .gym: return "🏋️‍♂️"
+        case .yoga: return "🧘"
         case .padel: return "🏓"
         case .football: return "⚽"
         case .tennis: return "🎾"
-        case .volleyball: return "🏐"
-        case .basketball: return "🏀"
-        case .yoga: return "🧘‍♀️"
-        case .cycling: return "🚴‍♂️"
-        case .surfing: return "🏄‍♂️"
-        case .bowling: return "🎳"
+        case .cycling: return "🚴"
+        case .running: return "🏃"
         case .golf: return "⛳"
-        case .pilates: return "🧘‍♂️"
-        case .boardGames: return "🎲"
+        case .volleyball: return "🏐"
+        case .pilates: return "🤸"
+        case .basketball: return "🏀"
         }
     }
     
     var color: Color {
         switch self {
+        case .gym: return AppColors.accentOrange
+        case .yoga: return AppColors.accentGreen
         case .padel: return AppColors.padelColor
         case .football: return AppColors.footballColor
         case .tennis: return AppColors.tennisColor
-        case .volleyball: return AppColors.volleyballColor
-        case .basketball: return AppColors.basketballColor
-        case .yoga: return AppColors.accentGreen
         case .cycling: return AppColors.accentBlue
-        case .surfing: return AppColors.accentBlue
-        case .bowling: return AppColors.accentOrange
+        case .running: return AppColors.accentBlue
         case .golf: return AppColors.accentGreen
+        case .volleyball: return AppColors.volleyballColor
         case .pilates: return AppColors.accentGreen
-        case .boardGames: return AppColors.accentOrange
+        case .basketball: return AppColors.basketballColor
         }
     }
 } 

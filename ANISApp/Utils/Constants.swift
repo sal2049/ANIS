@@ -72,3 +72,42 @@ struct AppBlur {
     static let medium = UIBlurEffect(style: .systemThinMaterial)
     static let heavy = UIBlurEffect(style: .systemMaterial)
 } 
+
+// MARK: - Reusable UI Helpers
+import SwiftUI
+
+struct PressableScaleStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.96 : 1.0)
+            .animation(reduceMotion ? .none : .spring(response: 0.35, dampingFraction: 0.85), value: configuration.isPressed)
+    }
+}
+
+struct AppearAnimation: ViewModifier {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var appeared = false
+    let delay: Double
+    
+    func body(content: Content) -> some View {
+        content
+            .opacity(appeared ? 1 : 0)
+            .offset(y: appeared || reduceMotion ? 0 : 8)
+            .onAppear {
+                if reduceMotion {
+                    appeared = true
+                } else {
+                    withAnimation(.spring(response: 0.5, dampingFraction: 0.9).delay(delay)) {
+                        appeared = true
+                    }
+                }
+            }
+    }
+}
+
+extension View {
+    func pressable() -> some View { self.buttonStyle(PressableScaleStyle()) }
+    func animatedOnAppear(delay: Double = 0) -> some View { self.modifier(AppearAnimation(delay: delay)) }
+}

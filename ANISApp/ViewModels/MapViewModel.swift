@@ -13,6 +13,7 @@ class MapViewModel: ObservableObject {
     @Published var activities: [Activity] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var focusedActivityId: String? = nil
     
     private let mockDataService = MockDataService.shared
     

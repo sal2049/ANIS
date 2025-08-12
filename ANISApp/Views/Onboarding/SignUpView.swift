@@ -32,11 +32,11 @@ struct SignUpView: View {
             VStack(spacing: AppSpacing.lg) {
                 Text("Create an account")
                     .font(AppFonts.title2)
-                    .foregroundColor(AppColors.primaryText)
+                    .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267))
                 
                 Text("Enter your email to sign up for this app")
                     .font(AppFonts.body)
-                    .foregroundColor(AppColors.secondaryText)
+                    .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.75))
                     .multilineTextAlignment(.center)
             }
             
@@ -56,7 +56,7 @@ struct SignUpView: View {
                     
                     Text("or")
                         .font(AppFonts.footnote)
-                        .foregroundColor(AppColors.mutedText)
+                        .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267))
                         .padding(.horizontal, AppSpacing.md)
                     
                     Rectangle()
@@ -80,19 +80,16 @@ struct SignUpView: View {
                         Text("Continue with Apple")
                             .font(AppFonts.headline)
                     }
-                    .foregroundColor(AppColors.primaryText)
+                    .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .frame(height: 50)
                     .background(
                         RoundedRectangle(cornerRadius: AppCornerRadius.medium)
-                            .fill(AppColors.secondaryBackground)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: AppCornerRadius.medium)
-                                    .stroke(AppColors.mutedText.opacity(0.3), lineWidth: 1)
-                            )
+                            .fill(Color.black)
                     )
                     .shadow(color: .black.opacity(0.1), radius: 3, x: 0, y: 1)
                 }
+                .pressable()
                 .disabled(isLoading)
             }
             .padding(.horizontal, AppSpacing.xl)
@@ -121,6 +118,7 @@ struct SignUpView: View {
                 }
             }
         )
+        .animation(.easeInOut(duration: 0.2), value: isLoading)
     }
 }
 

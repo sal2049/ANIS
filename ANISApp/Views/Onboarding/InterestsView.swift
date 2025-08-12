@@ -55,12 +55,14 @@ struct InterestsView: View {
             
             // Complete button
             Button(action: {
-                // Save interests to user profile
-                authViewModel.updateUserInterests(Array(selectedInterests))
-                
-                withAnimation {
-                    currentStep += 1
+                // Persist for onboarding handoff to sign-up
+                let raw = selectedInterests.map { $0.rawValue }
+                UserDefaults.standard.set(raw, forKey: "onboarding_selected_interests")
+                // If user already exists (returning user redoing onboarding), update immediately
+                if authViewModel.currentUser != nil {
+                    authViewModel.updateUserInterests(Array(selectedInterests))
                 }
+                withAnimation { currentStep += 1 }
             }) {
                 Text("Complete")
                     .font(AppFonts.headline)
@@ -77,6 +79,15 @@ struct InterestsView: View {
             .opacity(selectedInterests.isEmpty ? 0.5 : 1.0)
             .padding(.horizontal, AppSpacing.xl)
             .padding(.bottom, AppSpacing.lg)
+        }
+        .onAppear {
+            // Preload from current user or previously stored onboarding selection
+            if let stored = UserDefaults.standard.array(forKey: "onboarding_selected_interests") as? [String] {
+                let restored = stored.compactMap { SportType(rawValue: $0) }
+                selectedInterests = Set(restored)
+            } else if let userInterests = authViewModel.currentUser?.interests {
+                selectedInterests = Set(userInterests)
+            }
         }
     }
 }

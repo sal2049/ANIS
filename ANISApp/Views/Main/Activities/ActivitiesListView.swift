@@ -53,11 +53,12 @@ struct ActivitiesListView: View {
                         
                         ScrollView {
                             LazyVStack(spacing: AppSpacing.md) {
-                                ForEach(viewModel.activities) { activity in
+                                ForEach(Array(viewModel.activities.enumerated()), id: \.element.id) { index, activity in
                                     ActivityCardView(activity: activity) {
                                         selectedActivity = activity
                                         showActivityDetail = true
                                     }
+                                    .animatedOnAppear(delay: Double(index) * 0.03)
                                 }
                             }
                             .padding(.horizontal, AppSpacing.lg)
@@ -152,6 +153,7 @@ struct ActivityCardView: View {
             )
         }
         .buttonStyle(PlainButtonStyle())
+        .pressable()
     }
 }
 

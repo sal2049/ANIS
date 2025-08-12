@@ -9,7 +9,7 @@ import SwiftUI
 import MapKit
 
 struct MapView: View {
-    @StateObject private var viewModel = MapViewModel()
+    @EnvironmentObject var viewModel: MapViewModel
     @State private var cameraPosition = MapCameraPosition.region(
         MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: 24.7136, longitude: 46.6753), // Riyadh
@@ -152,10 +152,7 @@ struct MapView: View {
                 }
             }
         }
-
-        .onAppear {
-            viewModel.fetchActivities()
-        }
+        .onAppear { viewModel.fetchActivities() }
         .onChange(of: showActivityDetail) { _, newValue in
             if !newValue {
                 // Reset selection when sheet is dismissed
@@ -163,6 +160,23 @@ struct MapView: View {
                 selectedActivityId = nil
                 print("DEBUG: Sheet dismissed, cleared selection")
             }
+        }
+        .onChange(of: viewModel.focusedActivityId) { _, newValue in
+            guard let id = newValue,
+                  let activity = viewModel.activities.first(where: { $0.id == id }) else { return }
+            selectedActivityId = id
+            selectedActivity = activity
+            withAnimation(.snappy) {
+                cameraPosition = .region(
+                    MKCoordinateRegion(
+                        center: activity.location.coordinate,
+                        span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+                    )
+                )
+                showActivityDetail = true
+            }
+            // reset trigger
+            DispatchQueue.main.async { viewModel.focusedActivityId = nil }
         }
     }
 }

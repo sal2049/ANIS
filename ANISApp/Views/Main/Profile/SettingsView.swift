@@ -16,115 +16,62 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                AppColors.primaryBackground
-                    .ignoresSafeArea()
-                
+                AppColors.primaryBackground.ignoresSafeArea()
+
                 VStack(spacing: 0) {
-                    // Header
+                    // Header container with true centered title
                     HStack {
-                        Button("Back") {
-                            dismiss()
+                        Button(action: { dismiss() }) {
+                            HStack(spacing: 6) {
+                                Image(systemName: "chevron.left")
+                                Text("Back")
+                            }
+                            .foregroundColor(AppColors.primaryText)
                         }
-                        .foregroundColor(AppColors.primaryText)
-                        
                         Spacer()
-                        
+                    }
+                    .overlay(alignment: .center) {
                         Text("Settings")
                             .font(AppFonts.title2)
                             .foregroundColor(AppColors.primaryText)
-                        
-                        Spacer()
-                        
-                        Color.clear
-                            .frame(width: 40)
                     }
                     .padding(.horizontal, AppSpacing.lg)
                     .padding(.top, AppSpacing.lg)
-                    
+
                     // Settings list
-                    ScrollView {
+                    ScrollView(showsIndicators: false) {
                         VStack(spacing: AppSpacing.md) {
                             // Settings options
                             VStack(spacing: 0) {
-                                SettingsRow(
-                                    icon: "person.crop.circle.badge.xmark",
-                                    title: "Blocked users",
-                                    action: {
-                                        // Navigate to blocked users
-                                    }
-                                )
-                                
-                                Divider()
-                                    .background(AppColors.mutedText.opacity(0.3))
-                                    .padding(.leading, 60)
-                                
-                                SettingsRow(
-                                    icon: "exclamationmark.bubble",
-                                    title: "Report an issue",
-                                    action: {
-                                        // Open report form
-                                    }
-                                )
-                                
-                                Divider()
-                                    .background(AppColors.mutedText.opacity(0.3))
-                                    .padding(.leading, 60)
-                                
-                                SettingsRow(
-                                    icon: "star",
-                                    title: "Leave a review",
-                                    action: {
-                                        // Open App Store review
-                                    }
-                                )
-                                
-                                Divider()
-                                    .background(AppColors.mutedText.opacity(0.3))
-                                    .padding(.leading, 60)
-                                
-                                SettingsRow(
-                                    icon: "person",
-                                    title: "Safety tips",
-                                    action: {
-                                        // Show safety tips
-                                    }
-                                )
+                                SettingsRow(icon: "person.crop.circle.badge.xmark", title: "Blocked users", action: {})
+                                Divider().background(AppColors.mutedText.opacity(0.3)).padding(.leading, 60)
+                                SettingsRow(icon: "exclamationmark.bubble", title: "Report an issue", action: {})
+                                Divider().background(AppColors.mutedText.opacity(0.3)).padding(.leading, 60)
+                                SettingsRow(icon: "star", title: "Leave a review", action: {})
+                                Divider().background(AppColors.mutedText.opacity(0.3)).padding(.leading, 60)
+                                SettingsRow(icon: "person", title: "Safety tips", action: {})
                             }
-                            .background(
-                                RoundedRectangle(cornerRadius: AppCornerRadius.medium)
-                                    .fill(AppColors.secondaryBackground)
-                            )
+                            .background(RoundedRectangle(cornerRadius: AppCornerRadius.medium).fill(AppColors.secondaryBackground))
                             .padding(.horizontal, AppSpacing.lg)
                             .padding(.top, AppSpacing.lg)
-                            
+
                             // Action buttons
                             VStack(spacing: AppSpacing.md) {
-                                Button(action: {
-                                    showLogoutAlert = true
-                                }) {
+                                Button(action: { showLogoutAlert = true }) {
                                     Text("Log out")
                                         .font(AppFonts.headline)
                                         .foregroundColor(AppColors.primaryText)
                                         .frame(maxWidth: .infinity)
-                                        .frame(height: 50)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: AppCornerRadius.medium)
-                                                .fill(AppColors.secondaryBackground)
-                                        )
+                                        .frame(height: 52)
+                                        .background(RoundedRectangle(cornerRadius: AppCornerRadius.medium).fill(AppColors.secondaryBackground))
                                 }
-                                
-                                Button(action: {
-                                    showDeleteAlert = true
-                                }) {
+                                Button(action: { showDeleteAlert = true }) {
                                     Text("Delete account")
                                         .font(AppFonts.headline)
                                         .foregroundColor(AppColors.accentRed)
                                         .frame(maxWidth: .infinity)
-                                        .frame(height: 50)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: AppCornerRadius.medium)
-                                                .fill(AppColors.secondaryBackground)
-                                        )
+                                        .frame(height: 52)
+                                        .background(RoundedRectangle(cornerRadius: AppCornerRadius.medium).fill(AppColors.secondaryBackground))
                                 }
                             }
                             .padding(.horizontal, AppSpacing.lg)

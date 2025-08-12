@@ -6,13 +6,15 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct ActivityDetailSheet: View {
     let activity: Activity
     @Binding var isPresented: Bool
-    @State private var showChat = false
+    @State private var showRequestPending = false
     @State private var isRequesting = false
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var authViewModel: AuthViewModel
     
     var body: some View {
         VStack(spacing: 0) {
@@ -62,7 +64,7 @@ struct ActivityDetailSheet: View {
                                 .fill(activity.sportType.color.opacity(0.2))
                                 .frame(width: 60, height: 60)
                             
-                            Text(activity.sportType.emoji)
+                Text(activity.sportType.emoji)
                                 .font(.system(size: 28))
                         }
                         
@@ -83,6 +85,31 @@ struct ActivityDetailSheet: View {
                             }
                         }
                         
+                        Spacer()
+                    }
+                    .padding(.horizontal, 20)
+                    
+                    // Participants inline avatar stack directly under hero
+                    HStack(spacing: -10) {
+                        let maxShown = min(activity.maxParticipants, 6)
+                        ForEach(0..<maxShown, id: \.self) { index in
+                            ZStack {
+                                Circle()
+                                    .fill(index < activity.currentParticipants ? Color(red: 0.541, green: 0.757, blue: 0.522) : Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.2))
+                                    .frame(width: 32, height: 32)
+                                Text(index < activity.currentParticipants ? "\(index+1)" : "")
+                                    .font(.caption2)
+                                    .foregroundColor(.white)
+                            }
+                            .overlay(Circle().stroke(Color.white.opacity(0.8), lineWidth: 1))
+                        }
+                        if activity.currentParticipants > 6 {
+                            let overflow = activity.currentParticipants - 6
+                            Text("+\(overflow)")
+                                .font(AppFonts.footnote)
+                                .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267))
+                                .padding(.leading, 6)
+                        }
                         Spacer()
                     }
                     .padding(.horizontal, 20)
@@ -125,24 +152,7 @@ struct ActivityDetailSheet: View {
                     }
                     .padding(.horizontal, 20)
                     
-                    // Participants circles
-                    HStack(spacing: 12) {
-                        ForEach(0..<min(activity.maxParticipants, 5), id: \.self) { index in
-                            Circle()
-                                .fill(index < activity.currentParticipants ? 
-                                      Color(red: 0.541, green: 0.757, blue: 0.522) : 
-                                      Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.3))
-                                .frame(width: 40, height: 40)
-                                .overlay(
-                                    Image(systemName: index < activity.currentParticipants ? "person.fill" : "person")
-                                        .font(.system(size: 16, weight: .medium))
-                                        .foregroundColor(index < activity.currentParticipants ? .white : Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.5))
-                                )
-                        }
-                        
-                        Spacer()
-                    }
-                    .padding(.horizontal, 20)
+                    // Removed older large participants row to avoid duplication
                 }
                 .padding(.bottom, 20)
             }
@@ -150,9 +160,14 @@ struct ActivityDetailSheet: View {
             // Action button
             Button {
                 isRequesting = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    isRequesting = false
-                    showChat = true
+                Task {
+                    let uid = authViewModel.currentUser?.id
+                    let requesterId = (MockDataService.shared.users.contains { $0.id == uid } ? (uid ?? "user1") : "user1")
+                    _ = await MockDataService.shared.sendJoinRequest(activityId: activity.id, requesterUserId: requesterId)
+                    await MainActor.run {
+                        isRequesting = false
+                        showRequestPending = true
+                    }
                 }
             } label: {
                 HStack {
@@ -161,7 +176,7 @@ struct ActivityDetailSheet: View {
                             .progressViewStyle(CircularProgressViewStyle(tint: .white))
                             .scaleEffect(0.8)
                     } else {
-                        Text("Request")
+                        Text("Request to Join")
                             .font(.system(size: 18, weight: .semibold))
                     }
                 }
@@ -171,6 +186,7 @@ struct ActivityDetailSheet: View {
                 .background(Color(red: 0.541, green: 0.757, blue: 0.522), in: RoundedRectangle(cornerRadius: 27))
             }
             .buttonStyle(.plain)
+            .pressable()
             .disabled(isRequesting)
             .padding(.horizontal, 20)
             .padding(.bottom, 16)
@@ -179,8 +195,10 @@ struct ActivityDetailSheet: View {
         .onAppear {
             print("DEBUG: ActivityDetailSheet displayed for: \(activity.title)")
         }
-        .sheet(isPresented: $showChat) {
-            ChatView(activity: activity)
+        .alert("Request Sent", isPresented: $showRequestPending) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Your request to join has been sent. You can track it under Requests > Pending.")
         }
     }
 }

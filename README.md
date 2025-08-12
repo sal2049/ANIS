@@ -7,7 +7,7 @@ A modern iOS SwiftUI application for finding, creating, and joining sports activ
 - **Interactive Map**: Discover sports activities on an interactive map with custom pins
 - **Activity Search**: Real-time search functionality to find activities by sport, location, or skill level
 - **Create Activities**: Easy-to-use interface for creating new sports activities
-- **Chat System**: Connect with other participants through built-in messaging
+- **Requests (Incoming & Pending)**: Manage activity join requests without chat
 - **Join Requests**: Send and manage requests to join activities
 - **User Profiles**: Personalized user profiles and settings
 
@@ -66,6 +66,8 @@ ANISApp/
 
 3. Build and run the project (⌘+R)
 
+Note: Group chat is mock-only for now. The Requests tab consolidates Incoming and Pending requests; Group list is a non-functional preview.
+
 ## 🎯 Core Components
 
 ### MapView
@@ -79,10 +81,9 @@ ANISApp/
 - Date/time scheduling
 - Location selection
 
-### Chat System
-- Real-time messaging interface
-- Join request management
-- Group chat functionality
+### Requests
+- Incoming and Pending tabs
+- Accept, decline, and cancel flows with haptics and animations
 
 ## 🔧 Development
 
@@ -118,7 +119,7 @@ xcodebuild test -scheme ANIS -destination 'platform=iOS Simulator,name=iPhone 16
 - Results counter with smooth animations
 
 ### Activity Creation
-- Two-step creation process
+- Three-step creation with a full Pinpoint-on-Map step (interactive map + search)
 - Visual sport selection grid
 - Skill level and timing options
 
@@ -129,11 +130,10 @@ xcodebuild test -scheme ANIS -destination 'platform=iOS Simulator,name=iPhone 16
 
 ## 🔄 Recent Updates
 
-- ✅ Fixed map pin popup state management
-- ✅ Improved search bar alignment
-- ✅ Removed mascot characters for cleaner design
-- ✅ Enhanced error handling and debugging
-- ✅ Positioned search bar properly under Dynamic Island
+- ✅ Replaced Chat with Requests tab (Incoming & Pending)
+- ✅ Added interactive Pinpoint on Map step in Create Activity
+- ✅ Redesigned Profile to Instagram-like layout with social capsule buttons
+- ✅ Restricted Sports list across app and mock data
 
 ## 🤝 Contributing
 

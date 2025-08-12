@@ -10,33 +10,39 @@ import SwiftUI
 struct MainTabView: View {
     @State private var selectedTab = 0
     @State private var showCreateActivity = false
+    @StateObject private var mapViewModel = MapViewModel()
     
     var body: some View {
         ZStack {
             // Main tab content
             TabView(selection: $selectedTab) {
                 MapView()
+                    .environmentObject(mapViewModel)
                     .tabItem {
                         Image(systemName: "map.fill")
                         Text("Map")
                     }
                     .tag(0)
                 
-                ChatListView()
+                RequestsView()
                     .tabItem {
-                        Image(systemName: "bubble.left.and.bubble.right.fill")
-                        Text("Chat")
+                        Image(systemName: "tray.and.arrow.down")
+                        Text("Requests")
                     }
                     .tag(1)
                 
                 ProfileView()
                     .tabItem {
-                        Image(systemName: "person.circle.fill")
+                        Image(systemName: "person.crop.circle.fill")
                         Text("Profile")
                     }
                     .tag(2)
             }
-            .accentColor(Color(red: 0.541, green: 0.757, blue: 0.522)) // #8AC185 - User's preferred accent color
+            .tint(Color(red: 0.541, green: 0.757, blue: 0.522))
+            // Liquid Glass tab bar styling
+            .toolbarBackground(.ultraThinMaterial, for: .tabBar)
+            .toolbarBackgroundVisibility(.visible, for: .tabBar)
+            .toolbarColorScheme(.dark, for: .tabBar)
             
             // Modern floating action button following HIG
             VStack {
@@ -70,7 +76,11 @@ struct MainTabView: View {
             }
         }
         .sheet(isPresented: $showCreateActivity) {
-            CreateActivityView()
+            CreateActivityView(onCreated: { activity in
+                selectedTab = 0
+                mapViewModel.focusedActivityId = activity.id
+            })
+            .environmentObject(mapViewModel)
         }
     }
 }
