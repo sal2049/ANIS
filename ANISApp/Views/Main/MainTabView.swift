@@ -39,10 +39,8 @@ struct MainTabView: View {
                     .tag(2)
             }
             .tint(Color(red: 0.541, green: 0.757, blue: 0.522))
-            // Liquid Glass tab bar styling
-            .toolbarBackground(.ultraThinMaterial, for: .tabBar)
-            .toolbarBackgroundVisibility(.visible, for: .tabBar)
-            .toolbarColorScheme(.dark, for: .tabBar)
+            // Liquid Glass tab bar styling with iOS version guards
+            .modifier(TabBarAppearanceModifier())
             
             // Modern floating action button following HIG
             VStack {
@@ -81,6 +79,23 @@ struct MainTabView: View {
                 mapViewModel.focusedActivityId = activity.id
             })
             .environmentObject(mapViewModel)
+        }
+    }
+}
+
+private struct TabBarAppearanceModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 18.0, *) {
+            content
+                .toolbarBackground(.ultraThinMaterial, for: .tabBar)
+                .toolbarBackgroundVisibility(.visible, for: .tabBar)
+                .toolbarColorScheme(.dark, for: .tabBar)
+        } else if #available(iOS 16.0, *) {
+            content
+                .toolbarBackground(.ultraThinMaterial, for: .tabBar)
+                .toolbarColorScheme(.dark, for: .tabBar)
+        } else {
+            content
         }
     }
 }
