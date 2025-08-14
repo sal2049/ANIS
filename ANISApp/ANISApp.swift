@@ -13,6 +13,7 @@ import UIKit
 @main
 struct ANISApp: App {
     @StateObject private var authViewModel = AuthViewModel()
+    @StateObject private var locationPermission = LocationPermissionManager()
     
     init() {
         // Firebase configuration commented out for mock data phase
@@ -46,7 +47,8 @@ struct ANISApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(authViewModel)
-                .preferredColorScheme(.dark)
+                .environmentObject(locationPermission)
+                .preferredColorScheme(.light)
         }
     }
 }

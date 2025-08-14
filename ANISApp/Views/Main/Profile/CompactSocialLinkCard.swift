@@ -9,13 +9,12 @@ struct CompactSocialLinkCard: View {
     let handle: String
     var onEdit: () -> Void = {}
     
-    private var iconName: String {
+    private var brandAssetName: String? {
         switch platform {
-        case .instagram: return "camera.aperture"
-        case .x: return "xmark"
-        case .snapchat: return "bolt.circle"
-        case .tiktok: return "music.note"
-        case .website: return "globe"
+        case .instagram: return "icon_instagram"
+        case .x: return "icon_x"
+        case .website: return "icon_whatsapp"
+        default: return nil
         }
     }
     
@@ -37,29 +36,42 @@ struct CompactSocialLinkCard: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 8) {
-                Image(systemName: iconName)
-                    .foregroundColor(.white)
-                    .font(.subheadline)
-                Text(handle.isEmpty ? "Add" : handle)
-                    .font(AppFonts.subheadline)
-                    .foregroundColor(.white)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-                Spacer()
-                Image(systemName: "pencil")
-                    .foregroundColor(.white.opacity(0.9))
-                    .font(.footnote)
-                    .onTapGesture { onEdit() }
+        HStack(spacing: 10) {
+            Group {
+                if let asset = brandAssetName, UIImage(named: asset) != nil {
+                    Image(asset)
+                        .resizable()
+                        .renderingMode(.template)
+                        .scaledToFit()
+                } else {
+                    Image(systemName: platform == .website ? "globe" : (platform == .x ? "xmark" : "camera"))
+                }
             }
+            .frame(width: 20, height: 20)
+            .foregroundColor(.white)
+
+            Text(handle.isEmpty ? "Add" : handle)
+                .font(AppFonts.subheadline)
+                .foregroundColor(.white)
+                .lineLimit(1)
+                .truncationMode(.tail)
+
             Spacer(minLength: 0)
         }
         .padding(.horizontal, 12)
-        .frame(height: 56)
+        .padding(.vertical, 10)
+        .frame(height: 60)
         .background(background)
         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
         .shadow(color: AppColors.shadowColor.opacity(0.2), radius: 6, x: 0, y: 4)
+        .overlay(alignment: .topTrailing) {
+            Image(systemName: "pencil")
+                .foregroundColor(.white.opacity(0.9))
+                .font(.footnote)
+                .padding(8)
+                .contentShape(Rectangle())
+                .onTapGesture { onEdit() }
+        }
     }
 }
 

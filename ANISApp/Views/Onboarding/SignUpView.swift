@@ -22,11 +22,13 @@ struct SignUpView: View {
                 Image("Mascot")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 100, height: 100)
+                    .frame(width: 240, height: 240)
+                    .animatedOnAppear()
                 // App logo text only
                 Text("ANIS")
-                    .font(.system(size: 32, weight: .bold, design: .rounded))
+                    .font(.system(size: 16, weight: .bold, design: .rounded))
                     .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267)) // #152C44
+                    .animatedOnAppear(delay: 0.06)
             }
             
             VStack(spacing: AppSpacing.lg) {
@@ -68,7 +70,7 @@ struct SignUpView: View {
                 // Apple Sign In button
                 Button(action: {
                     isLoading = true
-                    Task {
+                    Task { @MainActor in
                         await authViewModel.signInWithApple()
                         isLoading = false
                     }
@@ -91,6 +93,7 @@ struct SignUpView: View {
                 }
                 .pressable()
                 .disabled(isLoading)
+                .animatedOnAppear(delay: 0.12)
             }
             .padding(.horizontal, AppSpacing.xl)
             

@@ -8,20 +8,21 @@
 import SwiftUI
 
 struct AppColors {
-    // Primary Colors - Matching your design references
-    static let primaryBackground = Color(red: 0.06, green: 0.11, blue: 0.24) // Deep blue from your mockups
-    static let secondaryBackground = Color(red: 0.12, green: 0.18, blue: 0.32) // Lighter blue-grey
-    static let cardBackground = Color(red: 0.15, green: 0.20, blue: 0.35) // Card backgrounds
+    // Primary Colors - Mascot-aligned light palette
+    static let primaryBackground = Color(red: 1.0, green: 0.957, blue: 0.867) // #FFF4DD
+    static let navyDarker = Color(red: 0.03, green: 0.07, blue: 0.16) // Retained for compatibility, avoid using
+    static let secondaryBackground = Color.white.opacity(0.6)
+    static let cardBackground = Color.white.opacity(0.9)
     
-    // Accent Colors - From your design palette
-    static let accentGreen = Color(red: 0.30, green: 0.69, blue: 0.31) // #4CAF50 - Success/Accept
+    // Accent Colors - From mascot palette
+    static let accentGreen = Color(red: 0.541, green: 0.757, blue: 0.522) // #8AC185 - Success/Accept
     static let accentRed = Color(red: 0.95, green: 0.26, blue: 0.21) // #F44336 - Decline/Error
     static let accentBlue = Color(red: 0.13, green: 0.59, blue: 0.95) // #2196F3 - Primary action
     static let accentOrange = Color(red: 1.0, green: 0.60, blue: 0.0) // #FF9800 - Warning/Secondary
     
     // Text Colors
-    static let primaryText = Color.white
-    static let secondaryText = Color(red: 0.78, green: 0.78, blue: 0.78) // Light grey
+    static let primaryText = Color(red: 0.082, green: 0.173, blue: 0.267) // #152C44
+    static let secondaryText = primaryText.opacity(0.7)
     static let mutedText = Color(red: 0.54, green: 0.54, blue: 0.54) // Muted grey
     static let placeholderText = Color(red: 0.42, green: 0.42, blue: 0.42) // Placeholder
     
@@ -34,7 +35,7 @@ struct AppColors {
     
     // Special UI Colors
     static let glassMaterial = Color.white.opacity(0.1) // For frosted glass effects
-    static let dividerColor = Color.white.opacity(0.12) // For dividers
+    static let dividerColor = primaryText.opacity(0.12) // For dividers
     static let shadowColor = Color.black.opacity(0.25) // For shadows
 }
 

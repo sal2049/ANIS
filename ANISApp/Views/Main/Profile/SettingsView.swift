@@ -10,6 +10,8 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var authViewModel: AuthViewModel
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = true
+    @AppStorage("didShowAppSplash") private var didShowAppSplash = true
     @State private var showLogoutAlert = false
     @State private var showDeleteAlert = false
     
@@ -69,6 +71,20 @@ struct SettingsView: View {
                                     Text("Delete account")
                                         .font(AppFonts.headline)
                                         .foregroundColor(AppColors.accentRed)
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 52)
+                                        .background(RoundedRectangle(cornerRadius: AppCornerRadius.medium).fill(AppColors.secondaryBackground))
+                                }
+                                Button(action: {
+                                    // Restart onboarding
+                                    hasCompletedOnboarding = false
+                                    didShowAppSplash = false
+                                    NotificationCenter.default.post(name: .resetAppState, object: nil)
+                                    dismiss()
+                                }) {
+                                    Text("Restart Onboarding")
+                                        .font(AppFonts.headline)
+                                        .foregroundColor(AppColors.primaryText)
                                         .frame(maxWidth: .infinity)
                                         .frame(height: 52)
                                         .background(RoundedRectangle(cornerRadius: AppCornerRadius.medium).fill(AppColors.secondaryBackground))

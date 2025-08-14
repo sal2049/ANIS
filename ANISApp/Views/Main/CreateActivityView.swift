@@ -7,6 +7,7 @@
 
 import SwiftUI
 import MapKit
+import UIKit
 
 struct CreateActivityView: View {
     @Environment(\.dismiss) private var dismiss
@@ -23,93 +24,91 @@ struct CreateActivityView: View {
     @State private var skillLevel: SkillLevel = .intermediate
     @State private var selectedLocation: Location?
     @State private var isCreating = false
+    @FocusState private var focusedField: Bool
     
     var body: some View {
-        NavigationView {
-                            ZStack {
-                Color(red: 1.0, green: 0.957, blue: 0.867) // #FFF4DD - User's preferred background
-                    .ignoresSafeArea()
-                
-                VStack(spacing: 0) {
-                    // Header
-                    HStack {
-                        Button("Cancel") {
-                            dismiss()
-                        }
-                        .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267)) // #152C44
-                        
-                        Spacer()
-                        
-                        Text("Create Activity")
-                            .font(AppFonts.title2)
-                            .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267)) // #152C44
-                        
-                        Spacer()
-                        
+        ZStack {
+            Color(red: 1.0, green: 0.957, blue: 0.867)
+                .ignoresSafeArea()
+            
+            VStack(spacing: 0) {
+                // Header
+                HStack {
+                    Button("Cancel") { dismiss() }
+                        .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267))
+                    
+                    Spacer()
+                    
+                    Text("Create Activity")
+                        .font(AppFonts.title2)
+                        .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267))
+                    
+                    Spacer()
+                    
+                    if currentStep == 0 {
                         Button {
-                            if currentStep == 0 {
-                                withAnimation(.snappy) {
-                                    currentStep = 1
-                                }
-                            } else {
-                                createActivity()
-                            }
+                            dismissKeyboard()
+                            withAnimation(.snappy) { currentStep = 1 }
                         } label: {
                             if isCreating {
                                 ProgressView()
                                     .scaleEffect(0.8)
-                                    .tint(Color(red: 0.541, green: 0.757, blue: 0.522)) // #8AC185
+                                    .tint(Color(red: 0.541, green: 0.757, blue: 0.522))
                             } else {
-                                Text(currentStep == 0 ? "Next" : "Create")
-                                    .foregroundColor(canProceed ? Color(red: 0.541, green: 0.757, blue: 0.522) : Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.5)) // #8AC185 or muted #152C44
+                                Text("Next")
+                                    .foregroundColor(canProceed ? Color(red: 0.541, green: 0.757, blue: 0.522) : Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.5))
                             }
                         }
                         .disabled(!canProceed || isCreating)
+                    } else {
+                        // Keep space for alignment
+                        Color.clear.frame(width: 44, height: 1)
                     }
-                    .padding(.horizontal, AppSpacing.lg)
-                    .padding(.top, AppSpacing.lg)
-                    
-                    // Progress indicator
-                    HStack {
-                        ForEach(0..<2) { index in
-                            Rectangle()
-                                .fill(index <= currentStep ? Color(red: 0.541, green: 0.757, blue: 0.522) : Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.3)) // #8AC185 or muted #152C44
-                                .frame(height: 3)
-                                .cornerRadius(1.5)
-                        }
-                    }
-                    .padding(.horizontal, AppSpacing.xl)
-                    .padding(.top, AppSpacing.md)
-                    
-                    // Content
-                    TabView(selection: $currentStep) {
-                        DetailsStepView(
-                            selectedSport: $selectedSport,
-                            title: $title,
-                            description: $description,
-                            dateTime: $dateTime,
-                            maxParticipants: $maxParticipants,
-                            skillLevel: $skillLevel
-                        )
-                        .tag(0)
-                        
-                        MapPinStepView(selectedLocation: $selectedLocation)
-                            .tag(1)
-                    }
-                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                    .animation(.snappy, value: currentStep)
                 }
+                .padding(.horizontal, AppSpacing.lg)
+                .padding(.top, AppSpacing.lg)
+                
+                // Progress indicator
+                HStack {
+                    ForEach(0..<2) { index in
+                        Rectangle()
+                            .fill(index <= currentStep ? Color(red: 0.541, green: 0.757, blue: 0.522) : Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.3))
+                            .frame(height: 3)
+                            .cornerRadius(1.5)
+                    }
+                }
+                .padding(.horizontal, AppSpacing.xl)
+                .padding(.top, AppSpacing.md)
+                
+                // Content
+                TabView(selection: $currentStep) {
+                    DetailsStepView(
+                        selectedSport: $selectedSport,
+                        title: $title,
+                        description: $description,
+                        dateTime: $dateTime,
+                        maxParticipants: $maxParticipants,
+                        skillLevel: $skillLevel
+                    )
+                    .tag(0)
+                    
+                    MapPinStepView(selectedLocation: $selectedLocation)
+                        .tag(1)
+                }
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                .animation(.snappy, value: currentStep)
             }
+        }
+        .ignoresSafeArea(.keyboard)
+        .onChange(of: selectedLocation) { _, newValue in
+            // When location is confirmed on map, create immediately
+            if newValue != nil { createActivity() }
         }
     }
     
     private var canProceed: Bool {
         if currentStep == 0 { return !title.isEmpty }
         return selectedLocation != nil
-    }
-    
-    private var canCreate: Bool {
-        !title.isEmpty && selectedLocation != nil
     }
     
     private func createActivity() {
@@ -137,6 +136,10 @@ struct CreateActivityView: View {
             onCreated(activity)
             dismiss()
         }
+    }
+
+    private func dismissKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 
@@ -270,6 +273,7 @@ struct DetailsStepView: View {
             }
             .padding(AppSpacing.lg)
         }
+        .scrollDismissesKeyboard(.interactively)
 
     }
 }

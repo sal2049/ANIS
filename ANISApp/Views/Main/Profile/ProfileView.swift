@@ -24,151 +24,30 @@ struct ProfileView: View {
 
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: AppSpacing.lg) {
-                        // Header
-                        VStack(spacing: AppSpacing.md) {
-                            ZStack {
-                                if let image = selectedImage {
-                                    Image(uiImage: image)
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 120, height: 120)
-                                        .clipShape(Circle())
-                                        .overlay(Circle().stroke(AppColors.dividerColor, lineWidth: 2))
-                                } else {
-                                    Circle()
-                                        .fill(AppColors.secondaryBackground)
-                                        .frame(width: 120, height: 120)
-                                        .overlay(Circle().stroke(AppColors.dividerColor, lineWidth: 2))
-                                    Image(systemName: "person.fill")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 56, height: 56)
-                                        .foregroundColor(AppColors.primaryText)
-                                }
+                        ProfileHeaderSection(selectedItem: $selectedItem, selectedImage: $selectedImage, name: authViewModel.currentUser?.name ?? "User", age: authViewModel.currentUser?.age)
+                            .animatedOnAppear()
+                            .padding(.top, AppSpacing.lg)
 
-                                // Camera badge
-                                VStack { Spacer() }
-                                    .overlay(alignment: .bottomTrailing) {
-                                        PhotosPicker(selection: $selectedItem, matching: .images) {
-                                            ZStack {
-                                                Circle().fill(Color.white)
-                                                    .frame(width: 34, height: 34)
-                                                Image(systemName: "camera")
-                                                    .foregroundColor(.black)
-                                                    .font(.caption)
-                                            }
-                                        }
-                                    }
-                                    .frame(width: 120, height: 120)
-                            }
+                        ProfileMetaRow()
+                            .animatedOnAppear(delay: 0.06)
 
-                            // Name and age chips
-                            HStack(spacing: AppSpacing.md) {
-                                Text(authViewModel.currentUser?.name ?? "User")
-                                    .font(AppFonts.title2)
-                                    .foregroundColor(AppColors.primaryText)
-                                    .padding(.horizontal, AppSpacing.lg)
-                                    .padding(.vertical, AppSpacing.sm)
-                                    .background(RoundedRectangle(cornerRadius: AppCornerRadius.large).fill(AppColors.secondaryBackground))
-                                if let age = authViewModel.currentUser?.age {
-                                    Text("\(age)")
-                                        .font(AppFonts.title3)
-                                        .foregroundColor(AppColors.primaryText)
-                                        .frame(width: 64)
-                                        .padding(.vertical, AppSpacing.sm)
-                                        .background(RoundedRectangle(cornerRadius: AppCornerRadius.large).fill(AppColors.secondaryBackground))
-                                }
-                            }
-                        }
-                        .padding(.top, AppSpacing.lg)
-
-                        // Meta row
-                        HStack(spacing: AppSpacing.lg) {
-                            Label("Riyadh, Saudi Arabia", systemImage: "mappin.and.ellipse")
-                                .font(AppFonts.callout)
-                                .foregroundColor(AppColors.secondaryText)
-                            Label("Joined March 2024", systemImage: "calendar")
-                                .font(AppFonts.callout)
-                                .foregroundColor(AppColors.secondaryText)
-                        }
-
-                        // Bio block
-                        VStack(alignment: .leading, spacing: AppSpacing.sm) {
-                            Text(authViewModel.currentUser?.bio ?? "Fitness enthusiast | Morning runner | Tennis player | Always up for new adventures in Riyadh")
-                                .font(AppFonts.body)
-                                .foregroundColor(AppColors.primaryText)
-                                .multilineTextAlignment(.center)
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(RoundedRectangle(cornerRadius: AppCornerRadius.large).fill(AppColors.secondaryBackground))
-                        }
-                        .padding(.horizontal, AppSpacing.lg)
-
-                        // Connect grid (compact cards)
-                        VStack(alignment: .leading, spacing: AppSpacing.sm) {
-                            Text("CONNECT").font(AppFonts.footnote).foregroundColor(AppColors.secondaryText).textCase(.uppercase)
-                            let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 3)
-                            LazyVGrid(columns: columns, spacing: 12) {
-                                CompactSocialLinkCard(platform: .instagram, handle: authViewModel.currentUser?.instagram ?? "@username", onEdit: { showEdit = true })
-                                CompactSocialLinkCard(platform: .website, handle: authViewModel.currentUser?.website ?? "+966 50 123 4567", onEdit: { showEdit = true })
-                                CompactSocialLinkCard(platform: .x, handle: authViewModel.currentUser?.x ?? "@username", onEdit: { showEdit = true })
-                            }
-                            .frame(maxWidth: .infinity)
-                        }
-                        .padding(.horizontal, AppSpacing.lg)
-
-                        // Interests compact list
-                        VStack(alignment: .leading, spacing: AppSpacing.sm) {
-                            HStack {
-                                Text("Sports Interests")
-                                    .font(AppFonts.title3)
-                                    .foregroundColor(AppColors.primaryText)
-                                Spacer()
-                                Text("\(authViewModel.currentUser?.interests.count ?? 0) sports")
-                                    .font(AppFonts.footnote)
-                                    .foregroundColor(AppColors.secondaryText)
-                            }
+                        ProfileBioBlock(bio: authViewModel.currentUser?.bio ?? "Fitness enthusiast | Morning runner | Tennis player | Always up for new adventures in Riyadh")
                             .padding(.horizontal, AppSpacing.lg)
+                            .animatedOnAppear(delay: 0.1)
 
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: AppSpacing.md) {
-                                    ForEach(authViewModel.currentUser?.interests ?? [], id: \.self) { sport in
-                                        InterestTag(sport: sport, size: .medium)
-                                            .scaleEffect(1.0)
-                                    }
-                                    // If no interests yet, show add hint
-                                    if (authViewModel.currentUser?.interests.isEmpty ?? true) {
-                                        Text("Add your interests from Edit")
-                                            .font(AppFonts.footnote)
-                                            .foregroundColor(AppColors.secondaryText)
-                                            .padding(.horizontal, AppSpacing.md)
-                                            .padding(.vertical, AppSpacing.sm)
-                                            .background(RoundedRectangle(cornerRadius: AppCornerRadius.small).fill(AppColors.secondaryBackground))
-                                    }
-                                }
-                                .padding(.horizontal, AppSpacing.lg)
-                            }
-                        }
+                        // Removed brand icon row above; Connect cards below include real brand icons
 
-                        // Past Activities (redesigned)
-                        VStack(alignment: .leading, spacing: AppSpacing.sm) {
-                            HStack {
-                                Text("Past Activities")
-                                    .font(AppFonts.title3)
-                                    .foregroundColor(AppColors.primaryText)
-                                Spacer()
-                                Text("\(mockPastActivities.count) activities")
-                                    .font(AppFonts.footnote)
-                                    .foregroundColor(AppColors.secondaryText)
-                            }
-                            VStack(spacing: AppSpacing.md) {
-                                ForEach(mockPastActivities, id: \.id) { activity in
-                                    ActivityHistoryCard(activity: activity)
-                                }
-                            }
-                        }
-                        .padding(.horizontal, AppSpacing.lg)
-                        .padding(.bottom, AppSpacing.xl)
+                        ProfileConnectGrid(instagram: authViewModel.currentUser?.instagram, website: authViewModel.currentUser?.website, x: authViewModel.currentUser?.x, onEdit: { showEdit = true })
+                            .padding(.horizontal, AppSpacing.lg)
+                            .animatedOnAppear(delay: 0.14)
+
+                        ProfileInterestsSection(interests: authViewModel.currentUser?.interests ?? [])
+                            .animatedOnAppear(delay: 0.18)
+
+                        ProfilePastActivitiesSection()
+                            .padding(.horizontal, AppSpacing.lg)
+                            .padding(.bottom, AppSpacing.xl)
+                            .animatedOnAppear(delay: 0.22)
                     }
                 }
             }
@@ -185,26 +64,216 @@ struct ProfileView: View {
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showSettings = true
-                    }) {
+                    Button(action: { showSettings = true }) {
                         Image(systemName: "gearshape")
                             .foregroundColor(AppColors.primaryText)
                     }
                 }
             }
         }
-        .sheet(isPresented: $showSettings) {
-            SettingsView().environmentObject(authViewModel)
-        }
-        .sheet(isPresented: $showEdit) {
-            ProfileEditView().environmentObject(authViewModel)
-        }
+        .sheet(isPresented: $showSettings) { SettingsView().environmentObject(authViewModel) }
+        .sheet(isPresented: $showEdit) { ProfileEditView().environmentObject(authViewModel) }
         .onChange(of: selectedItem) { _, newValue in
             guard let item = newValue else { return }
             Task {
                 if let data = try? await item.loadTransferable(type: Data.self), let uiImage = UIImage(data: data) {
                     await MainActor.run { self.selectedImage = uiImage }
+                }
+            }
+        }
+    }
+}
+
+struct BrandIconButton: View {
+    let assetName: String
+    let fallbackSystemName: String
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            Group {
+                if UIImage(named: assetName) != nil {
+                    Image(assetName)
+                        .resizable()
+                        .scaledToFit()
+                } else {
+                    Image(systemName: fallbackSystemName)
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(AppColors.primaryText)
+                }
+            }
+            .frame(width: 28, height: 28)
+            .padding(10)
+            .background(Circle().fill(AppColors.cardBackground))
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+private struct ProfileHeaderSection: View {
+    @Binding var selectedItem: PhotosPickerItem?
+    @Binding var selectedImage: UIImage?
+    let name: String
+    let age: Int?
+    
+    var body: some View {
+        VStack(spacing: AppSpacing.md) {
+            ZStack {
+                if let image = selectedImage {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 120, height: 120)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(AppColors.dividerColor, lineWidth: 2))
+                } else {
+                    Circle()
+                        .fill(AppColors.secondaryBackground)
+                        .frame(width: 120, height: 120)
+                        .overlay(Circle().stroke(AppColors.dividerColor, lineWidth: 2))
+                    Image(systemName: "person.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 56, height: 56)
+                        .foregroundColor(AppColors.primaryText)
+                }
+            }
+            .overlay(alignment: .bottomTrailing) {
+                PhotosPicker(selection: $selectedItem, matching: .images) {
+                    ZStack {
+                        Circle()
+                            .fill(Color.white)
+                            .frame(width: 34, height: 34)
+                            .overlay(Circle().stroke(Color.white, lineWidth: 1))
+                            .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
+                        Image(systemName: "camera")
+                            .foregroundColor(.black)
+                            .font(.system(size: 14, weight: .medium))
+                    }
+                    .offset(x: 6, y: 6)
+                }
+            }
+            .frame(width: 120, height: 120)
+            
+            HStack(spacing: AppSpacing.md) {
+                Text(name)
+                    .font(AppFonts.title2)
+                    .foregroundColor(AppColors.primaryText)
+                    .padding(.horizontal, AppSpacing.lg)
+                    .padding(.vertical, AppSpacing.sm)
+                    .background(RoundedRectangle(cornerRadius: AppCornerRadius.large).fill(AppColors.secondaryBackground))
+                if let age = age {
+                    Text("\(age)")
+                        .font(AppFonts.title3)
+                        .foregroundColor(AppColors.primaryText)
+                        .frame(width: 64)
+                        .padding(.vertical, AppSpacing.sm)
+                        .background(RoundedRectangle(cornerRadius: AppCornerRadius.large).fill(AppColors.secondaryBackground))
+                }
+            }
+        }
+    }
+}
+
+private struct ProfileMetaRow: View {
+    var body: some View {
+        HStack(spacing: AppSpacing.lg) {
+            Label("Riyadh, Saudi Arabia", systemImage: "mappin.and.ellipse")
+                .font(AppFonts.callout)
+                .foregroundColor(AppColors.secondaryText)
+            Label("Joined March 2024", systemImage: "calendar")
+                .font(AppFonts.callout)
+                .foregroundColor(AppColors.secondaryText)
+        }
+    }
+}
+
+private struct ProfileBioBlock: View {
+    let bio: String
+    var body: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            Text(bio)
+                .font(AppFonts.body)
+                .foregroundColor(AppColors.primaryText)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(RoundedRectangle(cornerRadius: AppCornerRadius.large).fill(AppColors.secondaryBackground))
+        }
+    }
+}
+
+private struct ProfileConnectGrid: View {
+    let instagram: String?
+    let website: String?
+    let x: String?
+    let onEdit: () -> Void
+    var body: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            Text("CONNECT").font(AppFonts.footnote).foregroundColor(AppColors.secondaryText).textCase(.uppercase)
+            let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 2)
+            LazyVGrid(columns: columns, spacing: 12) {
+                CompactSocialLinkCard(platform: .instagram, handle: instagram ?? "@username", onEdit: onEdit)
+                CompactSocialLinkCard(platform: .website, handle: website ?? "+966 50 123 4567", onEdit: onEdit)
+                CompactSocialLinkCard(platform: .x, handle: x ?? "@username", onEdit: onEdit)
+            }
+            .frame(maxWidth: .infinity)
+        }
+    }
+}
+
+private struct ProfileInterestsSection: View {
+    let interests: [SportType]
+    var body: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            HStack {
+                Text("Sports Interests")
+                    .font(AppFonts.title3)
+                    .foregroundColor(AppColors.primaryText)
+                Spacer()
+                Text("\(interests.count) sports")
+                    .font(AppFonts.footnote)
+                    .foregroundColor(AppColors.secondaryText)
+            }
+            .padding(.horizontal, AppSpacing.lg)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: AppSpacing.md) {
+                    ForEach(interests, id: \.self) { sport in
+                        InterestTag(sport: sport, size: .medium)
+                            .scaleEffect(1.0)
+                    }
+                    if interests.isEmpty {
+                        Text("Add your interests from Edit")
+                            .font(AppFonts.footnote)
+                            .foregroundColor(AppColors.secondaryText)
+                            .padding(.horizontal, AppSpacing.md)
+                            .padding(.vertical, AppSpacing.sm)
+                            .background(RoundedRectangle(cornerRadius: AppCornerRadius.small).fill(AppColors.secondaryBackground))
+                    }
+                }
+                .padding(.horizontal, AppSpacing.lg)
+            }
+        }
+    }
+}
+
+private struct ProfilePastActivitiesSection: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            HStack {
+                Text("Past Activities")
+                    .font(AppFonts.title3)
+                    .foregroundColor(AppColors.primaryText)
+                Spacer()
+                Text("\(mockPastActivities.count) activities")
+                    .font(AppFonts.footnote)
+                    .foregroundColor(AppColors.secondaryText)
+            }
+            VStack(spacing: AppSpacing.md) {
+                ForEach(mockPastActivities, id: \.id) { activity in
+                    ActivityHistoryCard(activity: activity)
+                        .animatedOnAppear()
                 }
             }
         }

@@ -30,6 +30,7 @@ struct OnboardingView: View {
                 }
                 .padding(.horizontal, AppSpacing.xl)
                 .padding(.top, AppSpacing.lg)
+                .animatedOnAppear()
                 
                 // Content
                 TabView(selection: $currentStep) {
@@ -65,12 +66,13 @@ struct WelcomeView: View {
                 Image("Mascot")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 120, height: 120)
+                    .frame(width: 260, height: 260)
                     .shadow(color: .black.opacity(0.1), radius: 6, x: 0, y: 3)
+                    .animatedOnAppear()
 
                 // App logo text
                 Text("ANIS")
-                    .font(.system(size: 42, weight: .bold, design: .rounded))
+                    .font(.system(size: 18, weight: .bold, design: .rounded))
                         .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267)) // #152C44
                 
                 VStack(spacing: AppSpacing.lg) {
@@ -79,12 +81,14 @@ struct WelcomeView: View {
                             .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267))
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, AppSpacing.xl)
+                        .animatedOnAppear(delay: 0.06)
                     
                     Text("Find, create, and join sports activities in your area with people who share your passion")
                         .font(AppFonts.body)
                             .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.7))
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, AppSpacing.xl)
+                        .animatedOnAppear(delay: 0.12)
                 }
             }
             

@@ -22,17 +22,10 @@ class MapViewModel: ObservableObject {
         errorMessage = nil
         
         Task {
-            do {
-                let fetchedActivities = await mockDataService.fetchActivities()
-                await MainActor.run {
-                    self.activities = fetchedActivities
-                    self.isLoading = false
-                }
-            } catch {
-                await MainActor.run {
-                    self.errorMessage = "Failed to fetch activities"
-                    self.isLoading = false
-                }
+            let fetchedActivities = await mockDataService.fetchActivities()
+            await MainActor.run {
+                self.activities = fetchedActivities
+                self.isLoading = false
             }
         }
     }

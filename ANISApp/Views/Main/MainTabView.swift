@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @State private var selectedTab = 0
-    @State private var showCreateActivity = false
-    @StateObject private var mapViewModel = MapViewModel()
+    @State private var selectedTab: Int = 0
+    @State private var showCreateActivity: Bool = false
+    @StateObject private var mapViewModel: MapViewModel = MapViewModel()
+    @StateObject private var locationPermission: LocationPermissionManager = LocationPermissionManager()
     
     var body: some View {
         ZStack {
@@ -18,6 +19,7 @@ struct MainTabView: View {
             TabView(selection: $selectedTab) {
                 MapView()
                     .environmentObject(mapViewModel)
+                    .environmentObject(locationPermission)
                     .tabItem {
                         Image(systemName: "map.fill")
                         Text("Map")
@@ -79,6 +81,7 @@ struct MainTabView: View {
                 mapViewModel.focusedActivityId = activity.id
             })
             .environmentObject(mapViewModel)
+            .environmentObject(locationPermission)
         }
     }
 }

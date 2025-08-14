@@ -7,6 +7,7 @@
 
 import SwiftUI
 import MapKit
+import Combine
 
 struct ActivityDetailSheet: View {
     let activity: Activity
@@ -167,6 +168,7 @@ struct ActivityDetailSheet: View {
                     await MainActor.run {
                         isRequesting = false
                         showRequestPending = true
+                        NotificationCenter.default.post(name: .didSendJoinRequest, object: nil)
                     }
                 }
             } label: {

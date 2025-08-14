@@ -11,6 +11,7 @@ struct InterestsView: View {
     @Binding var currentStep: Int
     @State private var selectedInterests: Set<SportType> = []
     @EnvironmentObject var authViewModel: AuthViewModel
+    @AppStorage("hasCompletedOnboarding") var hasCompletedOnboarding = false
     
     var body: some View {
         VStack(spacing: AppSpacing.lg) {
@@ -61,6 +62,7 @@ struct InterestsView: View {
                 // If user already exists (returning user redoing onboarding), update immediately
                 if authViewModel.currentUser != nil {
                     authViewModel.updateUserInterests(Array(selectedInterests))
+                    hasCompletedOnboarding = true
                 }
                 withAnimation { currentStep += 1 }
             }) {

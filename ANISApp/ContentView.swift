@@ -42,10 +42,20 @@ struct ContentView: View {
         }
         .animation(.easeInOut(duration: 0.5), value: showSplash)
         .animation(.easeInOut(duration: 0.5), value: authViewModel.isAuthenticated)
+        .onReceive(NotificationCenter.default.publisher(for: .resetAppState)) { _ in
+            didShowAppSplash = false
+            hasCompletedOnboarding = false
+            showSplash = true
+        }
     }
+}
+
+extension Notification.Name {
+    static let resetAppState = Notification.Name("resetAppState")
 }
 
 #Preview {
     ContentView()
         .environmentObject(AuthViewModel())
+        .environmentObject(LocationPermissionManager())
 }

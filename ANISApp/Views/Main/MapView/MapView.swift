@@ -7,9 +7,11 @@
 
 import SwiftUI
 import MapKit
+import Combine
 
 struct MapView: View {
     @EnvironmentObject var viewModel: MapViewModel
+    @EnvironmentObject var locationPermission: LocationPermissionManager
     @State private var cameraPosition = MapCameraPosition.region(
         MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: 24.7136, longitude: 46.6753), // Riyadh
@@ -19,23 +21,26 @@ struct MapView: View {
     @State private var selectedActivity: Activity?
     @State private var showActivityDetail = false
     @State private var searchText = ""
+    @State private var showFilters = false
+    @State private var selectedSportFilter: SportType? = nil
     
     // Using activity ID to prevent reference issues
     @State private var selectedActivityId: String?
     
     // Filtered activities based on search
     private var filteredActivities: [Activity] {
-        if searchText.isEmpty {
-            return viewModel.activities
-        } else {
-            return viewModel.activities.filter { activity in
-                activity.title.localizedCaseInsensitiveContains(searchText) ||
-                activity.sportType.displayName.localizedCaseInsensitiveContains(searchText) ||
-                activity.hostName.localizedCaseInsensitiveContains(searchText) ||
-                (activity.description?.localizedCaseInsensitiveContains(searchText) ?? false) ||
-                (activity.location.address?.localizedCaseInsensitiveContains(searchText) ?? false)
-            }
+        let base = viewModel.activities.filter { activity in
+            if searchText.isEmpty { return true }
+            return activity.title.localizedCaseInsensitiveContains(searchText) ||
+            activity.sportType.displayName.localizedCaseInsensitiveContains(searchText) ||
+            activity.hostName.localizedCaseInsensitiveContains(searchText) ||
+            (activity.description?.localizedCaseInsensitiveContains(searchText) ?? false) ||
+            (activity.location.address?.localizedCaseInsensitiveContains(searchText) ?? false)
         }
+        if let filter = selectedSportFilter {
+            return base.filter { $0.sportType == filter }
+        }
+        return base
     }
     
     // Get selected activity from ID to ensure it's always valid
@@ -78,7 +83,9 @@ struct MapView: View {
             }
             .safeAreaInset(edge: .top) {
                 VStack(alignment: .leading, spacing: 8) {
-                    SearchBarView(searchText: $searchText)
+                    SearchBarView(searchText: $searchText, onFilterTapped: {
+                        withAnimation(.easeInOut(duration: 0.2)) { showFilters.toggle() }
+                    })
                     
                     // Search results counter
                     if !searchText.isEmpty {
@@ -90,6 +97,23 @@ struct MapView: View {
                         }
                         .padding(.leading, 16) // Align with search bar content
                         .transition(.opacity.combined(with: .move(edge: .top)))
+                    }
+
+                    if showFilters {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 8) {
+                                sportChip(title: "All", isOn: selectedSportFilter == nil) {
+                                    selectedSportFilter = nil
+                                }
+                                ForEach(SportType.allCases, id: \.self) { sport in
+                                    sportChip(title: sport.displayName, isOn: selectedSportFilter == sport) {
+                                        selectedSportFilter = sport
+                                    }
+                                }
+                            }
+                            .padding(.horizontal, 4)
+                        }
+                        .transition(.move(edge: .top).combined(with: .opacity))
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -152,7 +176,20 @@ struct MapView: View {
                 }
             }
         }
-        .onAppear { viewModel.fetchActivities() }
+        .onAppear {
+            viewModel.fetchActivities()
+            locationPermission.requestWhenInUse()
+        }
+        .onReceive(locationPermission.$lastKnownLocation.compactMap { $0 }) { coordinate in
+            withAnimation(.snappy) {
+                cameraPosition = .region(
+                    MKCoordinateRegion(
+                        center: coordinate,
+                        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+                    )
+                )
+            }
+        }
         .onChange(of: showActivityDetail) { _, newValue in
             if !newValue {
                 // Reset selection when sheet is dismissed
@@ -183,6 +220,7 @@ struct MapView: View {
 
 struct SearchBarView: View {
     @Binding var searchText: String
+    var onFilterTapped: () -> Void = {}
     @FocusState private var isSearchFocused: Bool
     
     var body: some View {
@@ -227,7 +265,7 @@ struct SearchBarView: View {
             
             // Filter button with consistent height
             Button {
-                // Handle filter options
+                onFilterTapped()
             } label: {
                 Image(systemName: "slider.horizontal.3")
                     .font(.system(size: 16, weight: .medium))
@@ -246,8 +284,30 @@ struct SearchBarView: View {
     }
 }
 
+extension MapView {
+    @ViewBuilder
+    fileprivate func sportChip(title: String, isOn: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(title)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundColor(isOn ? .white : Color(red: 0.082, green: 0.173, blue: 0.267))
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(
+                    Capsule().fill(isOn ? Color(red: 0.541, green: 0.757, blue: 0.522) : Color.white.opacity(0.8))
+                )
+                .overlay(
+                    Capsule().stroke(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.2), lineWidth: 1)
+                )
+        }
+        .buttonStyle(.plain)
+    }
+}
+
 #Preview {
     MapView()
+        .environmentObject(MapViewModel())
+        .environmentObject(LocationPermissionManager())
 }
 
 // Preview for SearchBarView

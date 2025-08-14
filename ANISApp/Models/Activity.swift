@@ -92,7 +92,7 @@ struct Activity: Identifiable, Codable, Equatable, Hashable {
 
 
 
-struct Location: Codable {
+struct Location: Codable, Equatable, Hashable {
     let latitude: Double
     let longitude: Double
     let address: String?
@@ -105,6 +105,16 @@ struct Location: Codable {
         self.latitude = latitude
         self.longitude = longitude
         self.address = address
+    }
+    
+    static func == (lhs: Location, rhs: Location) -> Bool {
+        lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude && lhs.address == rhs.address
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(latitude)
+        hasher.combine(longitude)
+        hasher.combine(address)
     }
 }
 

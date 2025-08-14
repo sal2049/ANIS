@@ -4,6 +4,7 @@
 
 import SwiftUI
 import UIKit
+import Combine
 
 struct RequestsView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
@@ -28,6 +29,7 @@ struct RequestsView: View {
                     .padding(.vertical, AppSpacing.md)
                     .background(.ultraThinMaterial)
                     .overlay(Divider().background(AppColors.dividerColor), alignment: .bottom)
+                    .animatedOnAppear()
                     
                     // Top-level segmented control: Requests / Groups
                     Picker("TopSegment", selection: $topSegment) {
@@ -37,6 +39,7 @@ struct RequestsView: View {
                     .pickerStyle(.segmented)
                     .padding(.horizontal, AppSpacing.lg)
                     .padding(.top, AppSpacing.md)
+                    .animatedOnAppear(delay: 0.05)
                     
                     // Content
                     Group {
@@ -122,6 +125,11 @@ struct RequestsView: View {
         }
         .sheet(isPresented: $showProfileShare) {
             ProfileShareSheet().environmentObject(authViewModel)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .didSendJoinRequest)) { _ in
+            if let id = authViewModel.currentUser?.id {
+                viewModel.load(for: id)
+            }
         }
     }
     

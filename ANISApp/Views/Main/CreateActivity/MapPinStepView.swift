@@ -5,10 +5,12 @@
 import SwiftUI
 import MapKit
 import CoreLocation
+import Combine
 
 struct MapPinStepView: View {
     @Binding var selectedLocation: Location?
     @State private var cameraPosition: MapCameraPosition = .userLocation(fallback: .automatic)
+    @EnvironmentObject var locationPermission: LocationPermissionManager
     @State private var searchText: String = ""
     @StateObject private var searchHelper = CompleterWrapper()
     @State private var region = MKCoordinateRegion(
@@ -19,7 +21,80 @@ struct MapPinStepView: View {
     @State private var addressPreview: String = ""
     
     var body: some View {
-        ZStack {
+        let topSearch = VStack(spacing: 8) {
+            HStack(spacing: 10) {
+                Image(systemName: "magnifyingglass").foregroundColor(AppColors.secondaryText)
+                TextField("Search for a place", text: $searchText)
+                    .textInputAutocapitalization(.words)
+                    .onChange(of: searchText) { _, q in
+                        searchHelper.completer.queryFragment = q
+                    }
+                if !searchText.isEmpty {
+                    Button { searchText = "" } label: {
+                        Image(systemName: "xmark.circle.fill").foregroundColor(AppColors.secondaryText)
+                    }
+                }
+            }
+            .padding(.horizontal, 12)
+            .frame(height: 40)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(.ultraThinMaterial)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(AppColors.dividerColor, lineWidth: 1)
+                    )
+            )
+            if !searchHelper.results.isEmpty {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 0) {
+                        ForEach(searchHelper.results, id: \.self) { s in
+                            Button { performSearch(selection: s) } label: {
+                                HStack {
+                                    Image(systemName: "location.fill").foregroundColor(AppColors.secondaryText)
+                                    VStack(alignment: .leading) {
+                                        Text(s.title).foregroundColor(AppColors.primaryText)
+                                        Text(s.subtitle).foregroundColor(AppColors.secondaryText).font(.caption)
+                                    }
+                                    Spacer()
+                                }
+                                .padding(12)
+                            }
+                            Divider().background(AppColors.dividerColor)
+                        }
+                    }
+                }
+                .frame(maxHeight: 200)
+                .background(.ultraThinMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+            }
+        }
+        .padding(.horizontal, 12)
+        .padding(.top, 8)
+
+        let bottomCTA = VStack(spacing: 8) {
+            if !addressPreview.isEmpty {
+                Text(addressPreview)
+                    .font(AppFonts.footnote)
+                    .foregroundColor(AppColors.primaryText)
+                    .padding(.bottom, 4)
+            }
+            Button(action: confirmLocation) {
+                HStack {
+                    Image(systemName: "checkmark.circle.fill")
+                    Text("Set Activity Location")
+                }
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .frame(height: 52)
+                .background(Color(red: 0.541, green: 0.757, blue: 0.522), in: RoundedRectangle(cornerRadius: 26))
+                .padding(.horizontal, 16)
+                .padding(.bottom, 10)
+            }
+            .buttonStyle(.plain)
+        }
+
+        return ZStack {
             Map(position: $cameraPosition)
                 .mapControls { MapUserLocationButton(); MapCompass() }
                 .onMapCameraChange { ctx in
@@ -27,110 +102,19 @@ struct MapPinStepView: View {
                     reverseGeocode(center: currentCenter)
                 }
                 .onAppear { searchHelper.completer.resultTypes = .address }
-                .task { reverseGeocode(center: currentCenter) }
-            
-            // Center marker with radius overlay
-            VStack(spacing: 6) {
-                Image(systemName: "mappin.circle.fill")
-                    .font(.system(size: 42))
-                    .foregroundColor(.red)
-                    .shadow(radius: 3)
-                Circle()
-                    .stroke(Color.red.opacity(0.5), lineWidth: 2)
-                    .background(Circle().fill(Color.red.opacity(0.08)))
-                    .frame(width: 120, height: 120)
-            }
-            
-            VStack {
-                // Top instruction + search
-                VStack(spacing: 0) {
-                    // Instruction bubble
-                    VStack(spacing: 6) {
-                        Text("Choose a general area")
-                            .font(AppFonts.callout)
-                            .foregroundColor(AppColors.primaryText)
-                        Text("You can adjust details later")
-                            .font(AppFonts.caption)
-                            .foregroundColor(AppColors.secondaryText)
-                    }
-                    .padding(.vertical, 10)
-                    .frame(maxWidth: .infinity)
-                    .background(
-                        RoundedRectangle(cornerRadius: AppCornerRadius.large)
-                            .fill(AppColors.secondaryBackground)
-                            .shadow(color: AppColors.shadowColor.opacity(0.15), radius: 10, x: 0, y: 6)
-                    )
-                    .padding(.bottom, AppSpacing.sm)
+                .task {
+                    locationPermission.requestWhenInUse()
+                    reverseGeocode(center: currentCenter)
+                }
+                .ignoresSafeArea()
 
-                    // Search bar glass
-                    HStack(spacing: 8) {
-                        Image(systemName: "magnifyingglass").foregroundColor(AppColors.secondaryText)
-                        TextField("Search for a place", text: $searchText)
-                            .textInputAutocapitalization(.words)
-                            .onChange(of: searchText) { _, q in
-                                searchHelper.completer.queryFragment = q
-                            }
-                        if !searchText.isEmpty {
-                            Button { searchText = "" } label: {
-                                Image(systemName: "xmark.circle.fill").foregroundColor(AppColors.secondaryText)
-                            }
-                        }
-                    }
-                    .padding(12)
-                    if !searchHelper.results.isEmpty {
-                        Divider().background(AppColors.dividerColor)
-                        ScrollView {
-                            VStack(alignment: .leading, spacing: 0) {
-                                ForEach(searchHelper.results, id: \.self) { s in
-                                    Button {
-                                        performSearch(selection: s)
-                                    } label: {
-                                        HStack {
-                                            Image(systemName: "location.fill").foregroundColor(AppColors.secondaryText)
-                                            VStack(alignment: .leading) {
-                                                Text(s.title).foregroundColor(AppColors.primaryText)
-                                                Text(s.subtitle).foregroundColor(AppColors.secondaryText).font(.caption)
-                                            }
-                                            Spacer()
-                                        }
-                                        .padding(12)
-                                    }
-                                }
-                            }
-                        }.frame(maxHeight: 200)
-                    }
-                }
-                .background(.ultraThinMaterial)
-                .clipShape(RoundedRectangle(cornerRadius: AppCornerRadius.large))
-                .padding(.horizontal, AppSpacing.lg)
-                .padding(.top, AppSpacing.lg)
-                
-                Spacer()
-                
-                if !addressPreview.isEmpty {
-                    Text(addressPreview)
-                        .font(AppFonts.footnote)
-                        .foregroundColor(AppColors.primaryText)
-                        .padding(.bottom, AppSpacing.sm)
-                        .background(Color.clear)
-                }
-                
-                Button(action: confirmLocation) {
-                    HStack {
-                        Image(systemName: "checkmark.circle.fill")
-                        Text("Set Activity Location")
-                    }
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
-                    .background(Color(red: 0.541, green: 0.757, blue: 0.522), in: Capsule())
-                    .padding(.horizontal, AppSpacing.xl)
-                    .padding(.bottom, AppSpacing.lg)
-                }
-                .buttonStyle(.plain)
-            }
+            Image(systemName: "mappin.and.ellipse")
+                .font(.system(size: 44))
+                .foregroundColor(.red)
+                .shadow(radius: 2)
         }
-        // results handled via delegate wrapper
+        .overlay(topSearch, alignment: .top)
+        .overlay(bottomCTA, alignment: .bottom)
     }
     
     private func reverseGeocode(center: CLLocationCoordinate2D) {
