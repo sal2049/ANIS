@@ -101,10 +101,8 @@ This is a Team 13 project, built during the Apple Developer Academy AI Foundatio
 
 ## 🌟 Roadmap
 
-- Nationwide rollout beyond Riyadh
-- Tournament mode and team balancing
-- Skill progression and player reputation
-- Equipment sharing and weather-aware suggestions
+- Real backend and database: migrate from mock data to a production-ready API and database (auth, activities, join requests, profiles)
+- Real-time chat: per-activity group chat with typing indicators, delivery/read states, and notifications
 
 ---
 
