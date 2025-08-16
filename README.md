@@ -7,7 +7,7 @@
   
   **Connect. Play. Thrive.**
   
-  *Meet Hoopoe, your sports companion! ANIS brings athletes together to discover, create, and join sports activities in their community.*
+  *Meet ANIS انيس , your sports companion! ANIS brings athletes together to discover, create, and join sports activities in their community.*
 </div>
 
 ## 🏆 The Idea Behind ANIS
