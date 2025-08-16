@@ -44,7 +44,6 @@ ANIS helps young adults in Saudi cities quickly find, join, or organize group sp
 
 - **Real-Time Sports Map**: Browse nearby games happening now or soon with live availability.
 - **Lightning-Fast Joining**: One-tap requests and instant access to the activity chat.
-- **Smart Matching**: Filter by sport, distance, time, and skill level.
 - **Built-in Coordination**: Group chat per activity to confirm location, teams, and equipment.
 - **Popular Sports**: Football, padel, tennis, volleyball, basketball (and more soon).
 
@@ -95,7 +94,7 @@ git clone https://github.com/yourusername/ANIS.git
 
 ## 🎓 Apple Developer Academy
 
-This is a Team 13 project, built during the Apple Developer Academy Summer Foundation Program with a focus on:
+This is a Team 13 project, built during the Apple Developer Academy AI Foundation Program with a focus on:
 - Liquid glass UI for iOS 26
 - Real-time, location-based sports coordination for Saudi Arabia
 - Human-centered product design for young adults
