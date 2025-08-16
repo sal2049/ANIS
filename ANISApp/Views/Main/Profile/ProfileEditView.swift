@@ -44,12 +44,17 @@ struct ProfileEditView: View {
                 .pickerStyle(.segmented)
                 .padding(.horizontal, AppSpacing.lg)
                 
-                TabView(selection: $segment) {
-                    aboutTab.tag(0)
-                    interestsTab.tag(1)
-                    accountTab.tag(2)
+                Group {
+                    switch segment {
+                    case 0:
+                        aboutTab
+                    case 1:
+                        interestsTab
+                    default:
+                        accountTab
+                    }
                 }
-                .tabViewStyle(.page(indexDisplayMode: .never))
+                .animation(.easeInOut, value: segment)
             }
             .onAppear { hydrate() }
             .background(AppColors.primaryBackground.ignoresSafeArea())
@@ -146,17 +151,23 @@ struct ProfileEditView: View {
     }
     
     private func save() {
-        switch segment {
-        case 0:
-            authViewModel.updateName(name)
-            authViewModel.updateBio(bio)
-        case 1:
-            authViewModel.updateUserInterests(Array(selected))
-        default:
-            let links = SocialLinks(instagram: instagram, x: x, snapchat: snapchat, tiktok: tiktok, website: website)
-            authViewModel.updateSocialLinks(links)
+        Task {
+            switch segment {
+            case 0:
+                authViewModel.updateName(name)
+                authViewModel.updateBio(bio)
+            case 1:
+                authViewModel.updateUserInterests(Array(selected))
+            default:
+                let links = SocialLinks(instagram: instagram, x: x, snapchat: snapchat, tiktok: tiktok, website: website)
+                authViewModel.updateSocialLinks(links)
+            }
+            // Give a small delay to ensure the update completes
+            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+            await MainActor.run {
+                dismiss()
+            }
         }
-        dismiss()
     }
 }
 

@@ -336,6 +336,29 @@ class MockDataService: ObservableObject {
         return false
     }
     
+    func updateUserBio(userId: String, bio: String) async -> Bool {
+        try? await Task.sleep(nanoseconds: 150_000_000)
+        if let userIndex = users.firstIndex(where: { $0.id == userId }) {
+            let updatedUser = User(
+                id: users[userIndex].id,
+                name: users[userIndex].name,
+                email: users[userIndex].email,
+                age: users[userIndex].age,
+                interests: users[userIndex].interests,
+                profileImageURL: users[userIndex].profileImageURL,
+                bio: bio,
+                instagram: users[userIndex].instagram,
+                x: users[userIndex].x,
+                snapchat: users[userIndex].snapchat,
+                tiktok: users[userIndex].tiktok,
+                website: users[userIndex].website
+            )
+            users[userIndex] = updatedUser
+            return true
+        }
+        return false
+    }
+    
     func updateUserSocialLinks(userId: String, links: SocialLinks) async -> Bool {
         try? await Task.sleep(nanoseconds: 200_000_000)
         if let userIndex = users.firstIndex(where: { $0.id == userId }) {

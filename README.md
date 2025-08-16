@@ -1,160 +1,159 @@
-# ANIS
+# ANIS - Sports Activity Platform
 
-A modern iOS SwiftUI application for finding, creating, and joining sports activities in your area.
+<div align="center">
+  <img src="app-icon.png" alt="ANIS App Icon" width="120" height="120" style="border-radius: 20px;">
+  
+  **Connect. Play. Thrive.**
+  
+  *A modern iOS app that brings athletes together to discover, create, and join sports activities in their area.*
+</div>
 
-## 📱 Features
+## 🏆 About
 
-- **Interactive Map**: Discover sports activities on an interactive map with custom pins
-- **Activity Search**: Real-time search functionality to find activities by sport, location, or skill level
-- **Create Activities**: Easy-to-use interface for creating new sports activities
-- **Requests (Incoming & Pending)**: Manage activity join requests without chat
-- **Join Requests**: Send and manage requests to join activities
-- **User Profiles**: Personalized user profiles and settings
+ANIS is a location-based sports networking platform designed for iOS that helps athletes find like-minded people to play sports with. Whether you're looking for a tennis partner, a football team, or a volleyball group, ANIS makes it easy to discover and organize sports activities in your community.
 
-## 🎨 Design
+This project was developed as part of the **Apple Developer Academy Summer Foundation Program**, showcasing modern iOS development practices and liquid glass UI design principles.
 
-The app features a clean, modern design with a carefully chosen color palette:
-- **Primary**: #152C44 (Deep Navy)
-- **Background**: #FFF4DD (Warm Cream)
-- **Accent**: #8AC185 (Fresh Green)
+## ✨ Features
 
-## 🏗️ Architecture
+### 🗺️ Interactive Map Experience
+- **Real-time Activity Discovery**: Browse sports activities on an interactive map
+- **Location-based Search**: Find activities near you or in specific areas
+- **Activity Pins**: Visual markers showing sport type, skill level, and availability
+- **Liquid Glass Design**: Beautiful frosted glass effects throughout the interface
 
-- **Framework**: SwiftUI + iOS 18.5+
-- **Architecture**: MVVM (Model-View-ViewModel)
-- **State Management**: @State, @StateObject, @Binding
-- **Maps**: MapKit integration
-- **UI Components**: Custom reusable components
+### 🏃‍♂️ Activity Management
+- **Create Activities**: Host your own sports sessions with custom details
+- **Join Activities**: Request to join activities that match your interests
+- **Skill Level Matching**: Find players at your experience level (Beginner, Intermediate, Advanced)
+- **Real-time Updates**: Live updates on participant counts and activity status
 
-## 📂 Project Structure
+### 👤 Social Profiles
+- **Personal Profiles**: Showcase your sports interests and experience
+- **Social Integration**: Connect via Instagram, WhatsApp, and X (Twitter)
+- **Profile Customization**: Edit your information and preferences
+- **Join Requests**: Manage incoming requests to your activities
+
+### 🎯 Sports Categories
+- **Padel** 🏓
+- **Football** ⚽
+- **Tennis** 🎾
+- **Volleyball** 🏐
+- **Basketball** 🏀
+
+## 📱 Design Philosophy
+
+ANIS embraces Apple's **liquid glass UI style** with:
+- Ultra-thin material effects and frosted glass surfaces
+- Smooth animations and micro-interactions
+- Accessibility-first design with reduced motion support
+- Consistent color palette inspired by the app mascot
+- Modern typography and spacing following Human Interface Guidelines
+
+## 🛠️ Technical Architecture
+
+### **Built With**
+- **SwiftUI** - Modern declarative UI framework
+- **MapKit** - Interactive maps and location services
+- **Core Location** - GPS and location permissions
+- **Combine** - Reactive programming for data flow
+- **MVVM Architecture** - Clean separation of concerns
+
+### **Key Components**
+- **Models**: Core data structures (Activity, User, JoinRequest)
+- **ViewModels**: Business logic and state management
+- **Views**: Modular, reusable UI components
+- **Services**: Mock data service (ready for backend integration)
+- **Utils**: Constants, themes, and utility functions
+
+### **Mock Data Implementation**
+Currently uses a comprehensive mock data service for development and testing, designed for easy transition to a real backend when ready.
+
+## 🚀 Development Tools
+
+This project was developed using cutting-edge tools including:
+
+### **Cursor AI - The Future of Coding** 🤖
+Cursor AI revolutionized the development process by:
+- **Intelligent Code Completion**: Accelerated development with context-aware suggestions
+- **Architecture Guidance**: Helped implement MVVM patterns and SwiftUI best practices
+- **Rapid Prototyping**: Enabled quick iteration on UI designs and functionality
+- **Code Quality**: Assisted in maintaining consistent code style and documentation
+
+*Cursor AI's ability to understand project context and provide intelligent suggestions made complex iOS development more accessible and efficient.*
+
+## 📸 Screenshots
+
+*Coming Soon - Screenshots will be added showcasing the beautiful liquid glass interface and key features.*
+
+## 🏗️ Project Structure
 
 ```
-ANISApp/
-├── Views/
-│   ├── Main/
-│   │   ├── MapView/          # Map interface and activity pins
-│   │   ├── Chat/             # Messaging and chat functionality
-│   │   ├── Activities/       # Activity lists and management
-│   │   └── Profile/          # User profile and settings
-│   └── Onboarding/           # Welcome and sign-up flows
-├── Models/                   # Data models (Activity, User, Message, etc.)
-├── ViewModels/              # Business logic and state management
-├── Services/                # Mock data and external services
-└── Utils/                   # Constants, helpers, and utilities
+ANIS/
+├── ANISApp/
+│   ├── Models/          # Data models and structures
+│   ├── ViewModels/      # Business logic and state
+│   ├── Views/           # SwiftUI view components
+│   │   ├── Main/        # Core app screens
+│   │   └── Onboarding/  # Welcome flow
+│   ├── Services/        # Data services and APIs
+│   ├── Utils/           # Constants and utilities
+│   └── Assets.xcassets/ # Images and icons
+├── ANISTests/           # Unit tests
+└── ANISUITests/         # UI automation tests
 ```
 
-## 🚀 Getting Started
+## 🎓 Apple Developer Academy
+
+This project represents the culmination of learning and development skills acquired through the **Apple Developer Academy Summer Foundation Program**. The program provided invaluable insights into:
+
+- iOS app development best practices
+- Swift and SwiftUI mastery
+- User experience design principles
+- Accessibility and inclusivity in app design
+- Modern development workflows and tools
+
+## 🔧 Getting Started
 
 ### Prerequisites
-
-- Xcode 16.0+
-- iOS 18.5+ deployment target
-- macOS for development
+- Xcode 15.0+ 
+- iOS 17.0+ deployment target
+- macOS 14.0+ for development
 
 ### Installation
-
 1. Clone the repository:
    ```bash
-   git clone https://github.com/sal2049/ANIS.git
-   cd ANIS
+   git clone https://github.com/yourusername/ANIS.git
    ```
+2. Open `ANIS.xcodeproj` in Xcode
+3. Build and run on your device or simulator
 
-2. Open the project in Xcode:
-   ```bash
-   open ANIS.xcodeproj
-   ```
+### Development Mode Features
+- **Triple-tap reset**: Reset app state during development
+- **Debug builds**: Automatic state reset on each run
+- **Mock data**: Full feature testing without backend
 
-3. Build and run the project (⌘+R)
+## 🌟 Future Roadmap
 
-Note: Group chat is mock-only for now. The Requests tab consolidates Incoming and Pending requests; Group list is a non-functional preview.
-
-## 🎯 Core Components
-
-### MapView
-- Interactive map with custom activity pins
-- Real-time search with filtering
-- Activity detail sheets with join functionality
-
-### Activity Management
-- Grid-style sport selection
-- Skill level categorization
-- Date/time scheduling
-- Location selection
-
-### Requests
-- Incoming and Pending tabs
-- Accept, decline, and cancel flows with haptics and animations
-
-## 🔧 Development
-
-### Building
-```bash
-xcodebuild -scheme ANIS -destination 'platform=iOS Simulator,name=iPhone 16' build
-```
-
-### Testing
-```bash
-xcodebuild test -scheme ANIS -destination 'platform=iOS Simulator,name=iPhone 16'
-```
-
-## 📱 Supported Devices
-
-- iPhone (iOS 18.5+)
-- iPad (iOS 18.5+)
-- Optimized for iPhone 16 and newer
-
-## 🎨 UI Components
-
-- Custom search bar with real-time filtering
-- Interactive activity pins with detailed popups
-- Modern onboarding flow
-- Responsive grid layouts
-- SF Symbols integration
-
-## 🗺️ Key Features in Detail
-
-### Smart Search
-- Real-time activity filtering
-- Search by sport type, location, host name
-- Results counter with smooth animations
-
-### Activity Creation
-- Three-step creation with a full Pinpoint-on-Map step (interactive map + search)
-- Visual sport selection grid
-- Skill level and timing options
-
-### Map Integration
-- Custom activity pins with sport emojis
-- Detailed activity sheets
-- Location-based discovery
-
-## 🔄 Recent Updates
-
-- ✅ Replaced Chat with Requests tab (Incoming & Pending)
-- ✅ Added interactive Pinpoint on Map step in Create Activity
-- ✅ Redesigned Profile to Instagram-like layout with social capsule buttons
-- ✅ Restricted Sports list across app and mock data
+- [ ] Real-time chat integration
+- [ ] Push notifications for activity updates
+- [ ] Advanced filtering and search
+- [ ] Achievement and ranking system
+- [ ] Weather integration
+- [ ] Backend API integration
+- [ ] Android version
 
 ## 🤝 Contributing
 
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+This project was developed as part of an educational program. For questions or feedback, please reach out through the contact information in the app.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is part of the Apple Developer Academy program and follows their guidelines and policies.
 
-## 📞 Contact
+---
 
-- GitHub: [@sal2049](https://github.com/sal2049)
-- Project Link: [https://github.com/sal2049/ANIS](https://github.com/sal2049/ANIS)
-
-## 🙏 Acknowledgments
-
-- SwiftUI framework
-- MapKit for location services
-- SF Symbols for iconography
-- Community feedback and testing
+<div align="center">
+  <p><strong>Built with 💚 at Apple Developer Academy</strong></p>
+  <p><em>Connecting athletes, one activity at a time.</em></p>
+</div>

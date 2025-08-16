@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MainTabView: View {
+    @EnvironmentObject var authViewModel: AuthViewModel
     @State private var selectedTab: Int = 0
     @State private var showCreateActivity: Bool = false
     @StateObject private var mapViewModel: MapViewModel = MapViewModel()
@@ -28,8 +29,8 @@ struct MainTabView: View {
                 
                 RequestsView()
                     .tabItem {
-                        Image(systemName: "tray.and.arrow.down")
-                        Text("Requests")
+                        Image(systemName: "sportscourt")
+                        Text("Activities")
                     }
                     .tag(1)
                 

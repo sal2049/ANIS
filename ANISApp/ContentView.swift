@@ -22,6 +22,7 @@ struct ContentView: View {
                         didShowAppSplash = false
                         hasCompletedOnboarding = false
                         UserDefaults.standard.set(false, forKey: "isSignedIn")
+                        UserDefaults.standard.removeObject(forKey: "currentUserId")
                     })
                     .onAppear {
                         let delay: TimeInterval = didShowAppSplash ? 0.8 : 1.6
@@ -36,6 +37,7 @@ struct ContentView: View {
                 OnboardingView()
             } else if authViewModel.isAuthenticated {
                 MainTabView()
+                    .environmentObject(authViewModel)
             } else {
                 OnboardingView()
             }

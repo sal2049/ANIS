@@ -24,7 +24,6 @@ struct CreateActivityView: View {
     @State private var skillLevel: SkillLevel = .intermediate
     @State private var selectedLocation: Location?
     @State private var isCreating = false
-    @FocusState private var focusedField: Bool
     
     var body: some View {
         ZStack {
@@ -34,8 +33,14 @@ struct CreateActivityView: View {
             VStack(spacing: 0) {
                 // Header
                 HStack {
-                    Button("Cancel") { dismiss() }
-                        .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267))
+                    Button(currentStep == 0 ? "Cancel" : "Back") {
+                        if currentStep == 0 {
+                            dismiss()
+                        } else {
+                            withAnimation(.snappy) { currentStep = 0 }
+                        }
+                    }
+                    .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267))
                     
                     Spacer()
                     
@@ -100,6 +105,9 @@ struct CreateActivityView: View {
             }
         }
         .ignoresSafeArea(.keyboard)
+        .onTapGesture {
+            dismissKeyboard()
+        }
         .onChange(of: selectedLocation) { _, newValue in
             // When location is confirmed on map, create immediately
             if newValue != nil { createActivity() }
@@ -252,21 +260,23 @@ struct DetailsStepView: View {
                         .font(AppFonts.headline)
                         .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267)) // #152C44
                     
-                    HStack(spacing: AppSpacing.md) {
+                    HStack(spacing: AppSpacing.sm) {
                         ForEach(SkillLevel.allCases, id: \.self) { level in
                             Button(action: {
                                 skillLevel = level
                             }) {
                                 Text(level.displayName)
-                                    .font(AppFonts.body)
+                                    .font(AppFonts.subheadline)
                                     .foregroundColor(skillLevel == level ? .white : Color(red: 0.082, green: 0.173, blue: 0.267)) // White or #152C44
-                                    .padding(.horizontal, AppSpacing.md)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.horizontal, AppSpacing.sm)
                                     .padding(.vertical, AppSpacing.sm)
                                     .background(
                                         RoundedRectangle(cornerRadius: AppCornerRadius.small)
                                             .fill(skillLevel == level ? Color(red: 0.541, green: 0.757, blue: 0.522) : Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.1)) // #8AC185 or light #152C44
                                     )
                             }
+                            .buttonStyle(.plain)
                         }
                     }
                 }
@@ -301,19 +311,21 @@ struct DetailsStepTwoView: View {
                 }
                 VStack(alignment: .leading, spacing: AppSpacing.md) {
                     Text("Skill Level").font(AppFonts.headline).foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267))
-                    HStack(spacing: AppSpacing.md) {
+                    HStack(spacing: AppSpacing.sm) {
                         ForEach(SkillLevel.allCases, id: \.self) { level in
                             Button(action: { skillLevel = level }) {
                                 Text(level.displayName)
-                                    .font(AppFonts.body)
+                                    .font(AppFonts.subheadline)
                                     .foregroundColor(skillLevel == level ? .white : Color(red: 0.082, green: 0.173, blue: 0.267))
-                                    .padding(.horizontal, AppSpacing.md)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.horizontal, AppSpacing.sm)
                                     .padding(.vertical, AppSpacing.sm)
                                     .background(
                                         RoundedRectangle(cornerRadius: AppCornerRadius.small)
                                             .fill(skillLevel == level ? Color(red: 0.541, green: 0.757, blue: 0.522) : Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.1))
                                     )
                             }
+                            .buttonStyle(.plain)
                         }
                     }
                 }

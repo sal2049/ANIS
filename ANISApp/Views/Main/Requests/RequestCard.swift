@@ -12,26 +12,56 @@ struct RequestCard: View {
     var onAccept: (() -> Void)?
     var onDecline: (() -> Void)?
     var onCancel: (() -> Void)?
+    var onViewProfile: (() -> Void)?
     @State private var pressed: Bool = false
+    @State private var showProfile = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: AppSpacing.md) {
             HStack(spacing: AppSpacing.md) {
-                ZStack {
-                    Circle().fill(AppColors.secondaryBackground)
-                        .frame(width: 48, height: 48)
-                        .overlay(Circle().stroke(AppColors.dividerColor, lineWidth: 1))
-                    Text(request.sportType.emoji).font(.system(size: 20))
+                // Tappable user info section
+                Button(action: {
+                    if kind == .incoming {
+                        onViewProfile?()
+                    }
+                }) {
+                    HStack(spacing: AppSpacing.md) {
+                        ZStack {
+                            Circle().fill(AppColors.secondaryBackground)
+                                .frame(width: 48, height: 48)
+                                .overlay(Circle().stroke(AppColors.dividerColor, lineWidth: 1))
+                            Text(String(request.requesterName.prefix(1)))
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundColor(AppColors.primaryText)
+                        }
+                        VStack(alignment: .leading, spacing: 2) {
+                            HStack(spacing: 4) {
+                                Text(request.requesterName)
+                                    .font(AppFonts.headline)
+                                    .foregroundColor(AppColors.primaryText)
+                                if kind == .incoming {
+                                    Image(systemName: "person.crop.circle")
+                                        .font(.system(size: 14))
+                                        .foregroundColor(AppColors.secondaryText)
+                                }
+                            }
+                            Text("wants to join")
+                                .font(AppFonts.subheadline)
+                                .foregroundColor(AppColors.secondaryText)
+                        }
+                    }
                 }
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(request.requesterName)
-                        .font(AppFonts.headline)
-                        .foregroundColor(AppColors.primaryText)
-                    Text("wants to join")
-                        .font(AppFonts.subheadline)
-                        .foregroundColor(AppColors.secondaryText)
-                }
+                .buttonStyle(.plain)
+                .disabled(kind != .incoming)
+                
                 Spacer()
+                
+                // Sport emoji indicator
+                ZStack {
+                    Circle().fill(AppColors.secondaryBackground.opacity(0.5))
+                        .frame(width: 32, height: 32)
+                    Text(request.sportType.emoji).font(.system(size: 16))
+                }
             }
             
             HStack(spacing: AppSpacing.lg) {

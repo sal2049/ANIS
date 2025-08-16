@@ -20,18 +20,18 @@ struct SplashView: View {
             
             VStack(spacing: AppSpacing.xl) {
                 // App Logo - Mascot + Text
-                VStack(spacing: AppSpacing.md) {
+                VStack(spacing: AppSpacing.sm) {
                     Image("Mascot")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 280, height: 280)
+                        .frame(width: 350, height: 350) // 280 * 1.25 = 350
                         .shadow(color: .black.opacity(0.1), radius: 6, x: 0, y: 3)
                         .scaleEffect(logoScale)
                         .opacity(logoOpacity)
 
-                    // App name
+                    // App name - smaller and underneath
                     Text("ANIS")
-                        .font(.system(size: 16, weight: .bold, design: .rounded))
+                        .font(.system(size: 12, weight: .bold, design: .rounded)) // Reduced from 16 to 12
                         .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267)) // #152C44
                         .scaleEffect(logoScale)
                         .opacity(logoOpacity)

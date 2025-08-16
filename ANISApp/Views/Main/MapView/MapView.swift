@@ -12,7 +12,7 @@ import Combine
 struct MapView: View {
     @EnvironmentObject var viewModel: MapViewModel
     @EnvironmentObject var locationPermission: LocationPermissionManager
-    @State private var cameraPosition = MapCameraPosition.region(
+    @State private var cameraPosition: MapCameraPosition = .region(
         MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: 24.7136, longitude: 46.6753), // Riyadh
             span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
@@ -53,7 +53,7 @@ struct MapView: View {
         ZStack {
             // Modern iOS 17+ Map with MapContentBuilder
             Map(position: $cameraPosition) {
-                ForEach(filteredActivities) { activity in
+                ForEach(filteredActivities, id: \.id) { activity in
                     Annotation(
                         activity.title,
                         coordinate: activity.location.coordinate,
@@ -77,15 +77,38 @@ struct MapView: View {
             }
             .mapStyle(.standard(elevation: .realistic, pointsOfInterest: .excludingAll))
             .mapControls {
-                MapUserLocationButton()
                 MapCompass()
                 MapScaleView()
             }
-            .safeAreaInset(edge: .top) {
-                VStack(alignment: .leading, spacing: 8) {
+            .overlay(alignment: .top) {
+                VStack(spacing: 0) {
+                    // Search Bar
                     SearchBarView(searchText: $searchText, onFilterTapped: {
-                        withAnimation(.easeInOut(duration: 0.2)) { showFilters.toggle() }
+                        withAnimation(.easeInOut(duration: 0.25)) { 
+                            showFilters.toggle() 
+                        }
                     })
+                    .padding(.horizontal, AppSpacing.lg)
+                    .padding(.top, 60) // Under Dynamic Island
+                    
+                    // Filter chips section
+                    if showFilters {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 8) {
+                                sportChip(title: "All", emoji: "🏃‍♂️", isOn: selectedSportFilter == nil) {
+                                    selectedSportFilter = nil
+                                }
+                                ForEach(SportType.allCases, id: \.self) { sport in
+                                    sportChip(title: sport.displayName, emoji: sport.emoji, isOn: selectedSportFilter == sport) {
+                                        selectedSportFilter = sport
+                                    }
+                                }
+                            }
+                            .padding(.horizontal, AppSpacing.lg)
+                            .padding(.vertical, 8)
+                        }
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                    }
                     
                     // Search results counter
                     if !searchText.isEmpty {
@@ -95,30 +118,22 @@ struct MapView: View {
                                 .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.7))
                             Spacer()
                         }
-                        .padding(.leading, 16) // Align with search bar content
-                        .transition(.opacity.combined(with: .move(edge: .top)))
+                        .padding(.horizontal, AppSpacing.lg)
+                        .padding(.vertical, 4)
+                        .background(.ultraThinMaterial.opacity(0.8))
+                        .transition(.opacity)
                     }
-
-                    if showFilters {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 8) {
-                                sportChip(title: "All", isOn: selectedSportFilter == nil) {
-                                    selectedSportFilter = nil
-                                }
-                                ForEach(SportType.allCases, id: \.self) { sport in
-                                    sportChip(title: sport.displayName, isOn: selectedSportFilter == sport) {
-                                        selectedSportFilter = sport
-                                    }
-                                }
-                            }
-                            .padding(.horizontal, 4)
-                        }
-                        .transition(.move(edge: .top).combined(with: .opacity))
-                    }
+                    
+                    Spacer()
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, AppSpacing.lg)
-                .padding(.top, 60) // Positioned under the Dynamic Island
+                .animation(.easeInOut(duration: 0.25), value: showFilters)
+                .animation(.easeInOut(duration: 0.25), value: searchText.isEmpty)
+            }
+            .overlay(alignment: .bottomTrailing) {
+                // User Location Button - moved to bottom right
+                MapUserLocationButton()
+                    .padding(.trailing, AppSpacing.lg)
+                    .padding(.bottom, 100) // Above tab bar
             }
             .ignoresSafeArea()
             .animation(.easeInOut(duration: 0.3), value: searchText)
@@ -177,8 +192,11 @@ struct MapView: View {
             }
         }
         .onAppear {
-            viewModel.fetchActivities()
-            locationPermission.requestWhenInUse()
+            // Add delay to ensure proper initialization
+            DispatchQueue.main.async {
+                viewModel.fetchActivities()
+                locationPermission.requestWhenInUse()
+            }
         }
         .onReceive(locationPermission.$lastKnownLocation.compactMap { $0 }) { coordinate in
             withAnimation(.snappy) {
@@ -286,19 +304,23 @@ struct SearchBarView: View {
 
 extension MapView {
     @ViewBuilder
-    fileprivate func sportChip(title: String, isOn: Bool, action: @escaping () -> Void) -> some View {
+    fileprivate func sportChip(title: String, emoji: String, isOn: Bool, action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            Text(title)
-                .font(.system(size: 14, weight: .medium))
-                .foregroundColor(isOn ? .white : Color(red: 0.082, green: 0.173, blue: 0.267))
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(
-                    Capsule().fill(isOn ? Color(red: 0.541, green: 0.757, blue: 0.522) : Color.white.opacity(0.8))
-                )
-                .overlay(
-                    Capsule().stroke(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.2), lineWidth: 1)
-                )
+            HStack(spacing: 6) {
+                Text(emoji)
+                    .font(.system(size: 14))
+                Text(title)
+                    .font(.system(size: 14, weight: .medium))
+            }
+            .foregroundColor(isOn ? .white : Color(red: 0.082, green: 0.173, blue: 0.267))
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(
+                Capsule().fill(isOn ? Color(red: 0.541, green: 0.757, blue: 0.522) : Color.white.opacity(0.9))
+            )
+            .overlay(
+                Capsule().stroke(Color(red: 0.082, green: 0.173, blue: 0.267).opacity(0.2), lineWidth: 1)
+            )
         }
         .buttonStyle(.plain)
     }

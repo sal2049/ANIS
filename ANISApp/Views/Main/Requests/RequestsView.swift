@@ -11,6 +11,8 @@ struct RequestsView: View {
     @StateObject private var viewModel = RequestsViewModel()
     @State private var topSegment: Int = 0 // 0 Requests, 1 Groups
     @State private var showProfileShare: Bool = false
+
+    @State private var selectedUser: User?
     @State private var haptics = UIImpactFeedbackGenerator(style: .soft)
     
     var body: some View {
@@ -20,7 +22,7 @@ struct RequestsView: View {
                 VStack(spacing: 0) {
                     // Glass header
                     HStack {
-                        Text("Requests")
+                        Text("Activities")
                             .font(AppFonts.title2)
                             .foregroundColor(AppColors.primaryText)
                         Spacer()
@@ -31,8 +33,8 @@ struct RequestsView: View {
                     .overlay(Divider().background(AppColors.dividerColor), alignment: .bottom)
                     .animatedOnAppear()
                     
-                    // Top-level segmented control: Requests / Groups
-                    Picker("TopSegment", selection: $topSegment) {
+                    // Native Apple segmented control with liquid glass effect
+                    Picker("View Mode", selection: $topSegment) {
                         Text("Requests").tag(0)
                         Text("Groups").tag(1)
                     }
@@ -65,7 +67,9 @@ struct RequestsView: View {
                                                         performAccept(req)
                                                     } onDecline: {
                                                         performDecline(req)
-                                                    } onCancel: { }
+                                                    } onCancel: { } onViewProfile: {
+                                                        performViewProfile(req)
+                                                    }
                                                     .animatedOnAppear(delay: Double(index) * 0.04)
                                                 }
                                             }
@@ -114,22 +118,22 @@ struct RequestsView: View {
                     Spacer(minLength: 0)
                 }
             }
-            .onAppear {
-                if let id = authViewModel.currentUser?.id {
-                    viewModel.load(for: id)
-                } else {
-                    // Fallback to seeded mock current user for request syncing
-                    viewModel.load(for: "user1")
-                }
+        .onAppear {
+            if let id = authViewModel.currentUser?.id {
+                viewModel.load(for: id)
             }
         }
         .sheet(isPresented: $showProfileShare) {
             ProfileShareSheet().environmentObject(authViewModel)
         }
+        .sheet(item: $selectedUser) { user in
+            OtherProfileView(user: user)
+        }
         .onReceive(NotificationCenter.default.publisher(for: .didSendJoinRequest)) { _ in
             if let id = authViewModel.currentUser?.id {
                 viewModel.load(for: id)
             }
+        }
         }
     }
     
@@ -160,6 +164,21 @@ struct RequestsView: View {
         if let hostId = authViewModel.currentUser?.id {
             viewModel.decline(request: req, by: hostId)
         }
+    }
+    
+    private func performViewProfile(_ req: JoinRequest) {
+        haptics.impactOccurred()
+        // For now, create a mock user based on the request data
+        // In a real app, you'd fetch the user by requesterUserId
+        let mockUser = User(
+            id: req.requesterUserId,
+            name: req.requesterName,
+            email: "\(req.requesterName.lowercased())@example.com",
+            age: Int.random(in: 20...35),
+            interests: [req.sportType, SportType.allCases.randomElement() ?? .football],
+            bio: "Sports enthusiast who loves \(req.sportType.displayName.lowercased()) and staying active!"
+        )
+        selectedUser = mockUser
     }
 }
 

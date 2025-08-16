@@ -18,15 +18,15 @@ struct SignUpView: View {
             Spacer()
             
             // App branding
-            VStack(spacing: AppSpacing.lg) {
+            VStack(spacing: AppSpacing.sm) {
                 Image("Mascot")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 240, height: 240)
+                    .frame(width: 300, height: 300) // 240 * 1.25 = 300
                     .animatedOnAppear()
-                // App logo text only
+                // App logo text - smaller and underneath
                 Text("ANIS")
-                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                    .font(.system(size: 12, weight: .bold, design: .rounded)) // Reduced from 16 to 12
                     .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267)) // #152C44
                     .animatedOnAppear(delay: 0.06)
             }

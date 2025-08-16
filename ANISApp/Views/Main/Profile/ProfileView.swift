@@ -259,6 +259,9 @@ private struct ProfileInterestsSection: View {
 }
 
 private struct ProfilePastActivitiesSection: View {
+    @State private var isExpanded = false
+    private let maxVisibleActivities = 2
+    
     var body: some View {
         VStack(alignment: .leading, spacing: AppSpacing.sm) {
             HStack {
@@ -266,12 +269,50 @@ private struct ProfilePastActivitiesSection: View {
                     .font(AppFonts.title3)
                     .foregroundColor(AppColors.primaryText)
                 Spacer()
-                Text("\(mockPastActivities.count) activities")
-                    .font(AppFonts.footnote)
-                    .foregroundColor(AppColors.secondaryText)
+                
+                HStack(spacing: AppSpacing.xs) {
+                    Text("\(mockPastActivities.count) activities")
+                        .font(AppFonts.footnote)
+                        .foregroundColor(AppColors.secondaryText)
+                    
+                    // Show More/Less Button - Compact version next to activities count
+                    if mockPastActivities.count > maxVisibleActivities {
+                        Button(action: {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                isExpanded.toggle()
+                            }
+                        }) {
+                            HStack(spacing: 4) {
+                                Text(isExpanded ? "Show Less" : "Show More")
+                                    .font(AppFonts.caption)
+                                    .foregroundColor(AppColors.primaryText)
+                                
+                                Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                                    .font(.system(size: 10, weight: .medium))
+                                    .foregroundColor(AppColors.primaryText)
+                                    .rotationEffect(.degrees(isExpanded ? 180 : 0))
+                                    .animation(.easeInOut(duration: 0.2), value: isExpanded)
+                            }
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(
+                                RoundedRectangle(cornerRadius: 6)
+                                    .fill(AppColors.secondaryBackground)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 6)
+                                            .stroke(AppColors.dividerColor, lineWidth: 1)
+                                    )
+                            )
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
             }
+            
             VStack(spacing: AppSpacing.md) {
-                ForEach(mockPastActivities, id: \.id) { activity in
+                let activitiesToShow = isExpanded ? mockPastActivities : Array(mockPastActivities.prefix(maxVisibleActivities))
+                
+                ForEach(activitiesToShow, id: \.id) { activity in
                     ActivityHistoryCard(activity: activity)
                         .animatedOnAppear()
                 }

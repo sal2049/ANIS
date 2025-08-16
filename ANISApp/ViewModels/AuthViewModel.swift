@@ -14,6 +14,7 @@ import Foundation
 @MainActor
 class AuthViewModel: ObservableObject {
     private let signedInFlagKey = "isSignedIn"
+    private let currentUserIdKey = "currentUserId"
     @Published var isAuthenticated: Bool = UserDefaults.standard.bool(forKey: "isSignedIn")
     @Published var currentUser: User?
     @Published var isLoading = false
@@ -28,9 +29,10 @@ class AuthViewModel: ObservableObject {
         // Restore authentication state from persistence
         isAuthenticated = UserDefaults.standard.bool(forKey: signedInFlagKey)
         if isAuthenticated {
-            // Only hydrate a user if already signed in
+            // Get the stored user ID and hydrate the user
+            let userId = UserDefaults.standard.string(forKey: currentUserIdKey) ?? "user1"
             Task {
-                let mockUser = await mockDataService.fetchUser(id: "user1")
+                let mockUser = await mockDataService.fetchUser(id: userId)
                 await MainActor.run {
                     self.currentUser = mockUser
                 }
@@ -47,18 +49,15 @@ class AuthViewModel: ObservableObject {
         // Simulate network delay
         try? await Task.sleep(nanoseconds: 1_000_000_000)
         
-        let user = User(
-            id: "user_\(UUID().uuidString)",
-            name: "Current User",
-            email: "user@example.com",
-            age: 25,
-            interests: [.padel, .football]
-        )
+        // Use the same ID that exists in MockDataService for consistency
+        let userId = "user1"
+        let mockUser = await mockDataService.fetchUser(id: userId)
         
         await MainActor.run {
-            self.currentUser = user
+            self.currentUser = mockUser
             self.isAuthenticated = true
             UserDefaults.standard.set(true, forKey: signedInFlagKey)
+            UserDefaults.standard.set(userId, forKey: currentUserIdKey)
         }
         
         if let stored = UserDefaults.standard.array(forKey: "onboarding_selected_interests") as? [String] {
@@ -76,6 +75,7 @@ class AuthViewModel: ObservableObject {
         // Simulate sign out for mock data
         isAuthenticated = false
         UserDefaults.standard.set(false, forKey: signedInFlagKey)
+        UserDefaults.standard.removeObject(forKey: currentUserIdKey)
         currentUser = nil
         // Firebase sign out commented out for mock data phase
         // do {
@@ -156,24 +156,28 @@ class AuthViewModel: ObservableObject {
 
     func updateBio(_ bio: String) {
         guard let user = currentUser else { return }
-        let updatedUser = User(
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            age: user.age,
-            interests: user.interests,
-            profileImageURL: user.profileImageURL,
-            bio: bio,
-            instagram: user.instagram,
-            x: user.x,
-            snapchat: user.snapchat,
-            tiktok: user.tiktok,
-            website: user.website
-        )
+        
         Task {
-            // Reuse interests update as persistence is mock; replace entire user via social links method if needed
-            _ = await MockDataService.shared.updateUserInterests(user.interests, for: user.id)
-            await MainActor.run { self.currentUser = updatedUser }
+            let ok = await MockDataService.shared.updateUserBio(userId: user.id, bio: bio)
+            if ok {
+                let updatedUser = User(
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    age: user.age,
+                    interests: user.interests,
+                    profileImageURL: user.profileImageURL,
+                    bio: bio,
+                    instagram: user.instagram,
+                    x: user.x,
+                    snapchat: user.snapchat,
+                    tiktok: user.tiktok,
+                    website: user.website
+                )
+                await MainActor.run { 
+                    self.currentUser = updatedUser 
+                }
+            }
         }
     }
     
@@ -203,6 +207,7 @@ class AuthViewModel: ObservableObject {
 
     func updateName(_ name: String) {
         guard let user = currentUser else { return }
+        
         Task {
             let ok = await MockDataService.shared.updateUserName(userId: user.id, name: name)
             if ok {
@@ -220,7 +225,9 @@ class AuthViewModel: ObservableObject {
                     tiktok: user.tiktok,
                     website: user.website
                 )
-                await MainActor.run { self.currentUser = updated }
+                await MainActor.run { 
+                    self.currentUser = updated 
+                }
             }
         }
     }

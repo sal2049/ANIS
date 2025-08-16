@@ -23,6 +23,7 @@ struct ANISApp: App {
         UserDefaults.standard.set(false, forKey: "isSignedIn")
         UserDefaults.standard.set(false, forKey: "hasCompletedOnboarding")
         UserDefaults.standard.set(false, forKey: "didShowAppSplash")
+        UserDefaults.standard.removeObject(forKey: "currentUserId")
         #endif
 
         // Tab bar: liquid/blurred glass effect

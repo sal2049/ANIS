@@ -61,19 +61,20 @@ struct WelcomeView: View {
             Spacer()
             
                 // Welcome content without mascot
-            VStack(spacing: AppSpacing.xl) {
-                // Mascot
+            VStack(spacing: AppSpacing.lg) {
+                // Mascot - 25% bigger and centered
                 Image("Mascot")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 260, height: 260)
+                    .frame(width: 325, height: 325) // 260 * 1.25 = 325
                     .shadow(color: .black.opacity(0.1), radius: 6, x: 0, y: 3)
                     .animatedOnAppear()
 
-                // App logo text
+                // App logo text - smaller and underneath
                 Text("ANIS")
-                    .font(.system(size: 18, weight: .bold, design: .rounded))
-                        .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267)) // #152C44
+                    .font(.system(size: 14, weight: .bold, design: .rounded)) // Reduced from 18 to 14
+                    .foregroundColor(Color(red: 0.082, green: 0.173, blue: 0.267)) // #152C44
+                    .animatedOnAppear(delay: 0.06)
                 
                 VStack(spacing: AppSpacing.lg) {
                     Text("Connect through sports")

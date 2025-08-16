@@ -160,15 +160,16 @@ struct ActivityDetailSheet: View {
             
             // Action button
             Button {
+                guard let currentUser = authViewModel.currentUser else { return }
                 isRequesting = true
                 Task {
-                    let uid = authViewModel.currentUser?.id
-                    let requesterId = (MockDataService.shared.users.contains { $0.id == uid } ? (uid ?? "user1") : "user1")
-                    _ = await MockDataService.shared.sendJoinRequest(activityId: activity.id, requesterUserId: requesterId)
+                    let success = await MockDataService.shared.sendJoinRequest(activityId: activity.id, requesterUserId: currentUser.id)
                     await MainActor.run {
                         isRequesting = false
-                        showRequestPending = true
-                        NotificationCenter.default.post(name: .didSendJoinRequest, object: nil)
+                        if success {
+                            showRequestPending = true
+                            NotificationCenter.default.post(name: .didSendJoinRequest, object: nil)
+                        }
                     }
                 }
             } label: {
