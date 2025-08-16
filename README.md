@@ -2,17 +2,23 @@
 
 <div align="center">
   <img src="app-icon.png" alt="ANIS App Icon" width="120" height="120" style="border-radius: 20px;">
+  <br/>
+  <img src="hoopoe-mascot.png" alt="Hoopoe Mascot" width="80" height="80" style="margin-top: 10px;">
   
   **Connect. Play. Thrive.**
   
-  *A modern iOS app that brings athletes together to discover, create, and join sports activities in their area.*
+  *Meet Hoopoe, your sports companion! ANIS brings athletes together to discover, create, and join sports activities in their community.*
 </div>
 
-## 🏆 About
+## 🏆 The Idea Behind ANIS
 
-ANIS is a location-based sports networking platform designed for iOS that helps athletes find like-minded people to play sports with. Whether you're looking for a tennis partner, a football team, or a volleyball group, ANIS makes it easy to discover and organize sports activities in your community.
+**ANIS** was born from a simple yet powerful idea: *What if finding the perfect sports partner or group was as easy as opening an app?* 
 
-This project was developed as part of the **Apple Developer Academy Summer Foundation Program**, showcasing modern iOS development practices and liquid glass UI design principles.
+In a world where people often struggle to find others who share their passion for sports, ANIS creates a bridge between athletes of all levels. Whether you're a beginner looking to learn tennis, an intermediate player seeking a volleyball team, or an advanced footballer wanting competitive matches, ANIS connects you with the right people at the right time.
+
+Our mascot, **Hoopoe** 🐦, represents the spirit of connection and community that drives our platform. Just as the Hoopoe bird is known for bringing messages and connecting distant places, ANIS brings together athletes who might never have met otherwise.
+
+This location-based sports networking platform was developed as part of the **Apple Developer Academy Summer Foundation Program**, showcasing modern iOS development practices and the beautiful liquid glass UI design that makes every interaction feel magical.
 
 ## ✨ Features
 
@@ -69,18 +75,15 @@ ANIS embraces Apple's **liquid glass UI style** with:
 ### **Mock Data Implementation**
 Currently uses a comprehensive mock data service for development and testing, designed for easy transition to a real backend when ready.
 
-## 🚀 Development Tools
+## 🚀 Development Process
 
-This project was developed using cutting-edge tools including:
+This project was developed using modern iOS development practices and tools:
 
-### **Cursor AI - The Future of Coding** 🤖
-Cursor AI revolutionized the development process by:
-- **Intelligent Code Completion**: Accelerated development with context-aware suggestions
-- **Architecture Guidance**: Helped implement MVVM patterns and SwiftUI best practices
-- **Rapid Prototyping**: Enabled quick iteration on UI designs and functionality
-- **Code Quality**: Assisted in maintaining consistent code style and documentation
+- **Xcode & SwiftUI**: Primary development environment for iOS app creation
+- **Git Version Control**: Systematic tracking of development progress
+- **Cursor AI Assistant**: Used as a development assistant to accelerate coding, provide architecture suggestions, and maintain code quality throughout the project
 
-*Cursor AI's ability to understand project context and provide intelligent suggestions made complex iOS development more accessible and efficient.*
+The development process emphasized clean architecture, accessibility, and following Apple's Human Interface Guidelines to create a polished, professional application.
 
 ## 📸 Screenshots
 
