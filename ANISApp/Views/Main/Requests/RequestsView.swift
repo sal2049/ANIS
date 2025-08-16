@@ -10,7 +10,7 @@ struct RequestsView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @StateObject private var viewModel = RequestsViewModel()
     @State private var topSegment: Int = 0 // 0 Requests, 1 Groups
-    @State private var showProfileShare: Bool = false
+
 
     @State private var selectedUser: User?
     @State private var haptics = UIImpactFeedbackGenerator(style: .soft)
@@ -55,23 +55,28 @@ struct RequestsView: View {
                                             .font(AppFonts.title3)
                                             .foregroundColor(AppColors.primaryText)
                                             .padding(.top, AppSpacing.lg)
+                                            .padding(.horizontal, AppSpacing.lg)
                                             .animatedOnAppear()
 
                                         if viewModel.incoming.isEmpty {
                                             emptyState(text: "No incoming requests")
                                                 .animatedOnAppear()
                                         } else {
-                                            VStack(spacing: AppSpacing.md) {
-                                                ForEach(Array(viewModel.incoming.enumerated()), id: \.element.id) { index, req in
-                                                    RequestCard(request: req, kind: .incoming) {
-                                                        performAccept(req)
-                                                    } onDecline: {
-                                                        performDecline(req)
-                                                    } onCancel: { } onViewProfile: {
-                                                        performViewProfile(req)
+                                            ScrollView(.horizontal, showsIndicators: false) {
+                                                HStack(spacing: AppSpacing.md) {
+                                                    ForEach(Array(viewModel.incoming.enumerated()), id: \.element.id) { index, req in
+                                                        RequestCard(request: req, kind: .incoming) {
+                                                            performAccept(req)
+                                                        } onDecline: {
+                                                            performDecline(req)
+                                                        } onCancel: { } onViewProfile: {
+                                                            performViewProfile(req)
+                                                        }
+                                                        .frame(width: 280)
+                                                        .animatedOnAppear(delay: Double(index) * 0.04)
                                                     }
-                                                    .animatedOnAppear(delay: Double(index) * 0.04)
                                                 }
+                                                .padding(.horizontal, AppSpacing.lg)
                                             }
                                         }
                                     }
@@ -82,26 +87,30 @@ struct RequestsView: View {
                                             .font(AppFonts.title3)
                                             .foregroundColor(AppColors.primaryText)
                                             .padding(.top, AppSpacing.lg)
+                                            .padding(.horizontal, AppSpacing.lg)
                                             .animatedOnAppear()
 
                                         if viewModel.pending.isEmpty {
                                             emptyState(text: "No pending requests")
                                                 .animatedOnAppear()
                                         } else {
-                                            VStack(spacing: AppSpacing.md) {
-                                                ForEach(Array(viewModel.pending.enumerated()), id: \.element.id) { index, req in
-                                                    RequestCard(request: req, kind: .pending) {
-                                                        // none
-                                                    } onDecline: { } onCancel: {
-                                                        viewModel.cancel(request: req, by: authViewModel.currentUser?.id ?? "")
+                                            ScrollView(.horizontal, showsIndicators: false) {
+                                                HStack(spacing: AppSpacing.md) {
+                                                    ForEach(Array(viewModel.pending.enumerated()), id: \.element.id) { index, req in
+                                                        RequestCard(request: req, kind: .pending) {
+                                                            // none
+                                                        } onDecline: { } onCancel: {
+                                                            viewModel.cancel(request: req, by: authViewModel.currentUser?.id ?? "")
+                                                        }
+                                                        .frame(width: 280)
+                                                        .animatedOnAppear(delay: Double(index) * 0.04)
                                                     }
-                                                    .animatedOnAppear(delay: Double(index) * 0.04)
                                                 }
+                                                .padding(.horizontal, AppSpacing.lg)
                                             }
                                         }
                                     }
                                 }
-                                .padding(.horizontal, AppSpacing.lg)
                             }
                             .transition(.move(edge: .bottom).combined(with: .opacity))
                         } else {
@@ -123,9 +132,7 @@ struct RequestsView: View {
                 viewModel.load(for: id)
             }
         }
-        .sheet(isPresented: $showProfileShare) {
-            ProfileShareSheet().environmentObject(authViewModel)
-        }
+
         .sheet(item: $selectedUser) { user in
             OtherProfileView(user: user)
         }
@@ -154,9 +161,6 @@ struct RequestsView: View {
         haptics.impactOccurred()
         if let hostId = authViewModel.currentUser?.id {
             viewModel.accept(request: req, by: hostId)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                showProfileShare = true
-            }
         }
     }
     private func performDecline(_ req: JoinRequest) {

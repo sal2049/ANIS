@@ -159,7 +159,9 @@ class MockDataService: ObservableObject {
         ]
 
         // Seed join requests (incoming for hosts and pending for current user user1)
+        // Add several requests so the Requests screen has multiple items to show
         joinRequests = [
+            // Incoming requests for activities hosted by user1
             JoinRequest(
                 id: UUID().uuidString,
                 requesterUserId: "user2",
@@ -173,6 +175,30 @@ class MockDataService: ObservableObject {
             ),
             JoinRequest(
                 id: UUID().uuidString,
+                requesterUserId: "user3",
+                requesterName: "Sarah Johnson",
+                requesterAvatar: nil,
+                sportType: activities[0].sportType,
+                targetActivityId: activities[0].id,
+                targetActivityTitle: activities[0].title,
+                status: .incoming,
+                createdAt: Date().addingTimeInterval(-2400)
+            ),
+            JoinRequest(
+                id: UUID().uuidString,
+                requesterUserId: "user4",
+                requesterName: "Mike Rodriguez",
+                requesterAvatar: nil,
+                sportType: activities[0].sportType,
+                targetActivityId: activities[0].id,
+                targetActivityTitle: activities[0].title,
+                status: .incoming,
+                createdAt: Date().addingTimeInterval(-1200)
+            ),
+
+            // Pending requests sent by user1 to other hosts
+            JoinRequest(
+                id: UUID().uuidString,
                 requesterUserId: "user1",
                 requesterName: "Yazeed Al-Rashid",
                 requesterAvatar: nil,
@@ -181,6 +207,28 @@ class MockDataService: ObservableObject {
                 targetActivityTitle: activities[2].title,
                 status: .pending,
                 createdAt: Date().addingTimeInterval(-7200)
+            ),
+            JoinRequest(
+                id: UUID().uuidString,
+                requesterUserId: "user1",
+                requesterName: "Yazeed Al-Rashid",
+                requesterAvatar: nil,
+                sportType: activities[4].sportType,
+                targetActivityId: activities[4].id,
+                targetActivityTitle: activities[4].title,
+                status: .pending,
+                createdAt: Date().addingTimeInterval(-5400)
+            ),
+            JoinRequest(
+                id: UUID().uuidString,
+                requesterUserId: "user1",
+                requesterName: "Yazeed Al-Rashid",
+                requesterAvatar: nil,
+                sportType: activities[1].sportType,
+                targetActivityId: activities[1].id,
+                targetActivityTitle: activities[1].title,
+                status: .pending,
+                createdAt: Date().addingTimeInterval(-3600)
             )
         ]
     }

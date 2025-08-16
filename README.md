@@ -1,162 +1,116 @@
-# ANIS - Sports Activity Platform
+# ANIS — Instant Sports for Saudi Cities
 
 <div align="center">
   <img src="app-icon.png" alt="ANIS App Icon" width="120" height="120" style="border-radius: 20px;">
   <br/>
   <img src="hoopoe-mascot.png" alt="Hoopoe Mascot" width="80" height="80" style="margin-top: 10px;">
-  
-  **Connect. Play. Thrive.**
-  
-  *Meet ANIS انيس , your sports companion! ANIS brings athletes together to discover, create, and join sports activities in their community.*
+  <br/>
+  <strong>Connect. Play. Thrive.</strong>
+  <br/>
+  <em>The fastest way to see, host, and join real-time group sports in Saudi cities.</em>
+  <br/>
+  <strong>Team 13 — Apple Developer Academy</strong>
 </div>
 
-## 🏆 The Idea Behind ANIS
+## 🎯 Problem Statement
 
-**ANIS** was born from a simple yet powerful idea: *What if finding the perfect sports partner or group was as easy as opening an app?* 
+Young adults in Saudi cities struggle to quickly fill or join group activities when plans change last minute, so spontaneous fun is often lost. No existing tool lets them see, host, or join real-time group sports—football, padel, tennis, volleyball—within minutes.
 
-In a world where people often struggle to find others who share their passion for sports, ANIS creates a bridge between athletes of all levels. Whether you're a beginner looking to learn tennis, an intermediate player seeking a volleyball team, or an advanced footballer wanting competitive matches, ANIS connects you with the right people at the right time.
+## 💡 What ANIS Does
 
-Our mascot, **Hoopoe** 🐦, represents the spirit of connection and community that drives our platform. Just as the Hoopoe bird is known for bringing messages and connecting distant places, ANIS brings together athletes who might never have met otherwise.
+ANIS helps young adults in Saudi cities quickly find, join, or organize group sport activities nearby. Whether you are saving an empty padel court, looking for a safe game after work, or organizing weekly football, ANIS connects you to players within minutes.
 
-This location-based sports networking platform was developed as part of the **Apple Developer Academy Summer Foundation Program**, showcasing modern iOS development practices and the beautiful liquid glass UI design that makes every interaction feel magical.
+## 👥 User Personas
 
-## ✨ Features
+### 🏓 Hadi — Host
+26 y/o padel fan; empty court slots cost money.
+- Wants a fast way to publish openings and build balanced teams.
 
-### 🗺️ Interactive Map Experience
-- **Real-time Activity Discovery**: Browse sports activities on an interactive map
-- **Location-based Search**: Find activities near you or in specific areas
-- **Activity Pins**: Visual markers showing sport type, skill level, and availability
-- **Liquid Glass Design**: Beautiful frosted glass effects throughout the interface
+### 🎾 Leila — Joiner
+23 y/o newcomer to Riyadh; bored after work.
+- Seeks safe, nearby sports she can join on the spur of the moment.
 
-### 🏃‍♂️ Activity Management
-- **Create Activities**: Host your own sports sessions with custom details
-- **Join Activities**: Request to join activities that match your interests
-- **Skill Level Matching**: Find players at your experience level (Beginner, Intermediate, Advanced)
-- **Real-time Updates**: Live updates on participant counts and activity status
+### ⚽ Omar — Captain
+30 y/o football enthusiast who organizes weekly pick-up games.
+- Needs one hub for posting matches and coordinating group chat.
 
-### 👤 Social Profiles
-- **Personal Profiles**: Showcase your sports interests and experience
-- **Social Integration**: Connect via Instagram, WhatsApp, and X (Twitter)
-- **Profile Customization**: Edit your information and preferences
-- **Join Requests**: Manage incoming requests to your activities
+## 🗺️ Core Use Cases
 
-### 🎯 Sports Categories
-- **Padel** 🏓
-- **Football** ⚽
-- **Tennis** 🎾
-- **Volleyball** 🏐
-- **Basketball** 🏀
+- Hadi posts a padel match for tonight, sets skill level and needed players; sees join requests within minutes.
+- Leila opens the map, spots a tennis doubles game 500 m away, taps "Request," and is auto-added to the activity chat.
+- Omar’s 5-a-side football game fills; the in-activity chat finalizes the exact pitch entrance.
 
-## 📱 Design Philosophy
+## ✨ Key Features
 
-ANIS embraces Apple's **liquid glass UI style** with:
-- Ultra-thin material effects and frosted glass surfaces
-- Smooth animations and micro-interactions
-- Accessibility-first design with reduced motion support
-- Consistent color palette inspired by the app mascot
-- Modern typography and spacing following Human Interface Guidelines
+- **Real-Time Sports Map**: Browse nearby games happening now or soon with live availability.
+- **Lightning-Fast Joining**: One-tap requests and instant access to the activity chat.
+- **Smart Matching**: Filter by sport, distance, time, and skill level.
+- **Built-in Coordination**: Group chat per activity to confirm location, teams, and equipment.
+- **Popular Sports**: Football, padel, tennis, volleyball, basketball (and more soon).
 
-## 🛠️ Technical Architecture
+## 📱 Design & Technology
 
-### **Built With**
-- **SwiftUI** - Modern declarative UI framework
-- **MapKit** - Interactive maps and location services
-- **Core Location** - GPS and location permissions
-- **Combine** - Reactive programming for data flow
-- **MVVM Architecture** - Clean separation of concerns
+### iOS 26 Liquid Glass Experience
+Built using Apple’s iOS 26 liquid glass components and feel, delivering:
+- Ultra-smooth animations and responsive interactions
+- Frosted glass, depth, and dimensionality across the UI
+- Modern visual hierarchy aligned with Apple’s latest design language
 
-### **Key Components**
-- **Models**: Core data structures (Activity, User, JoinRequest)
-- **ViewModels**: Business logic and state management
-- **Views**: Modular, reusable UI components
-- **Services**: Mock data service (ready for backend integration)
-- **Utils**: Constants, themes, and utility functions
-
-### **Mock Data Implementation**
-Currently uses a comprehensive mock data service for development and testing, designed for easy transition to a real backend when ready.
-
-## 🚀 Development Process
-
-This project was developed using modern iOS development practices and tools:
-
-- **Xcode & SwiftUI**: Primary development environment for iOS app creation
-- **Git Version Control**: Systematic tracking of development progress
-- **Cursor AI Assistant**: Used as a development assistant to accelerate coding, provide architecture suggestions, and maintain code quality throughout the project
-
-The development process emphasized clean architecture, accessibility, and following Apple's Human Interface Guidelines to create a polished, professional application.
-
-## 📸 Screenshots
-
-*Coming Soon - Screenshots will be added showcasing the beautiful liquid glass interface and key features.*
+### Technical Foundation
+- SwiftUI on iOS 26 with MVVM architecture
+- Location Services for precise Saudi city mapping
+- Real-time style updates and notifications (designed)
+- Mock backend via `MockDataService` for rapid iteration, with a path to real APIs later
 
 ## 🏗️ Project Structure
 
 ```
 ANIS/
 ├── ANISApp/
-│   ├── Models/          # Data models and structures
-│   ├── ViewModels/      # Business logic and state
-│   ├── Views/           # SwiftUI view components
-│   │   ├── Main/        # Core app screens
-│   │   └── Onboarding/  # Welcome flow
-│   ├── Services/        # Data services and APIs
-│   ├── Utils/           # Constants and utilities
-│   └── Assets.xcassets/ # Images and icons
-├── ANISTests/           # Unit tests
-└── ANISUITests/         # UI automation tests
+│   ├── Models/          # Activity, User, JoinRequest
+│   ├── ViewModels/      # App state (MVVM)
+│   ├── Views/           # Liquid glass UI
+│   │   ├── Main/
+│   │   └── Onboarding/
+│   ├── Services/        # Location, mock data
+│   └── Utils/           # Constants, permissions
+├── ANISTests/
+└── ANISUITests/
 ```
+
+## 🚀 Getting Started
+
+### Prerequisites
+- iOS device or simulator (designed for iOS 26 look-and-feel)
+- Location services enabled
+- Xcode 15.0+
+
+### Installation
+1) Clone the repository
+```bash
+git clone https://github.com/yourusername/ANIS.git
+```
+2) Open `ANIS.xcodeproj` in Xcode
+3) Build and run on device or simulator
 
 ## 🎓 Apple Developer Academy
 
-This project represents the culmination of learning and development skills acquired through the **Apple Developer Academy Summer Foundation Program**. The program provided invaluable insights into:
+This is a Team 13 project, built during the Apple Developer Academy Summer Foundation Program with a focus on:
+- Liquid glass UI for iOS 26
+- Real-time, location-based sports coordination for Saudi Arabia
+- Human-centered product design for young adults
 
-- iOS app development best practices
-- Swift and SwiftUI mastery
-- User experience design principles
-- Accessibility and inclusivity in app design
-- Modern development workflows and tools
+## 🌟 Roadmap
 
-## 🔧 Getting Started
-
-### Prerequisites
-- Xcode 15.0+ 
-- iOS 17.0+ deployment target
-- macOS 14.0+ for development
-
-### Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/ANIS.git
-   ```
-2. Open `ANIS.xcodeproj` in Xcode
-3. Build and run on your device or simulator
-
-### Development Mode Features
-- **Triple-tap reset**: Reset app state during development
-- **Debug builds**: Automatic state reset on each run
-- **Mock data**: Full feature testing without backend
-
-## 🌟 Future Roadmap
-
-- [ ] Real-time chat integration
-- [ ] Push notifications for activity updates
-- [ ] Advanced filtering and search
-- [ ] Achievement and ranking system
-- [ ] Weather integration
-- [ ] Backend API integration
-- [ ] Android version
-
-## 🤝 Contributing
-
-This project was developed as part of an educational program. For questions or feedback, please reach out through the contact information in the app.
-
-## 📄 License
-
-This project is part of the Apple Developer Academy program and follows their guidelines and policies.
+- Nationwide rollout beyond Riyadh
+- Tournament mode and team balancing
+- Skill progression and player reputation
+- Equipment sharing and weather-aware suggestions
 
 ---
 
 <div align="center">
   <p><strong>Built with 💚 at Apple Developer Academy</strong></p>
-  <p><em>Connecting athletes, one activity at a time.</em></p>
+  <p><em>Bringing Saudi Arabia's sports community together, one game at a time.</em></p>
+  <p>🐦 <strong>Let Hoopoe guide you to your next great game!</strong></p>
 </div>
